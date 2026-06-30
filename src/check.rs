@@ -1,15 +1,6 @@
 use std::{fs, path::Path};
 use syn::UseTree;
 
-// The rules behind these tests are:
-// 1. a file can only import from its own directory or sub directories
-// 2. Exception to rule 1 is that files can import from c directories if the prefix of
-//    that c directory path is in the files prefix
-// 3. Rules 1 and 2 also apply within a c directory as if that c directory where its
-//    own root directory project.
-// 4. The rules don't apply inside 's' (static data) and 't' (types) directories, nor
-//    when any other file imports from these directories.
-
 pub fn check_dir(root: &Path, dir_name: &str) -> (usize, usize) {
     let dir = root.join(dir_name);
     let pattern = format!("{}/**/*.rs", dir.to_string_lossy().replace('\\', "/"));
