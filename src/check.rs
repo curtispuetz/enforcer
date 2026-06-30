@@ -11,10 +11,7 @@ use syn::UseTree;
 //    when any other file imports from these directories.
 
 pub fn check_dir(root: &Path, dir_name: &str) -> usize {
-    let dir = root
-        .join(dir_name)
-        .canonicalize()
-        .expect("failed to canonicalize dir");
+    let dir = root.join(dir_name);
     let pattern = format!("{}/**/*.rs", dir.to_string_lossy().replace('\\', "/"));
     let mut total = 0;
     for path in glob::glob(&pattern)
