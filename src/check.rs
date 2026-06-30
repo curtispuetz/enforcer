@@ -10,17 +10,22 @@ use syn::UseTree;
 // 4. The rules don't apply inside 's' (static data) and 't' (types) directories, nor
 //    when any other file imports from these directories.
 
-pub fn check_dir(root: &Path, dir_name: &str) -> usize {
+pub fn check_dir(root: &Path, dir_name: &str) -> (usize, usize) {
     let dir = root.join(dir_name);
     let pattern = format!("{}/**/*.rs", dir.to_string_lossy().replace('\\', "/"));
-    let mut total = 0;
+    let mut passed = 0;
+    let mut failed = 0;
     for path in glob::glob(&pattern)
         .expect("invalid glob")
         .filter_map(|p| p.ok())
     {
-        total += _check_file(&path, &dir);
+        if _check_file(&path, &dir) > 0 {
+            failed += 1;
+        } else {
+            passed += 1;
+        }
     }
-    total
+    (passed, failed)
 }
 
 fn _check_file(path: &Path, src_dir: &Path) -> usize {
