@@ -15,6 +15,7 @@ fn main() {
     if total_violations > 0 {
         process::exit(1);
     }
+    println!("All files good");
 }
 
 fn _find_manifest_dir() -> Option<PathBuf> {
