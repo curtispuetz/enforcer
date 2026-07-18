@@ -1,4 +1,5 @@
 mod check;
+mod macros;
 
 use std::{path::PathBuf, process};
 
@@ -7,9 +8,22 @@ fn main() {
     let mut total_passed = 0;
     let mut total_failed = 0;
 
+    let mut config = check::Config {
+        ignore_exported_macros: std::env::args().any(|a| a == "--ignore-exported-macros"),
+        ..Default::default()
+    };
+
+    if config.ignore_exported_macros {
+        for dir_name in ["src", "tests"] {
+            if root.join(dir_name).exists() {
+                macros::collect_exported_macros(&root, dir_name, &mut config.exported_macros);
+            }
+        }
+    }
+
     for dir_name in ["src", "tests"] {
         if root.join(dir_name).exists() {
-            let (passed, failed) = check::check_dir(&root, dir_name);
+            let (passed, failed) = check::check_dir(&root, dir_name, &config);
             total_passed += passed;
             total_failed += failed;
         }

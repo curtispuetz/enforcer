@@ -1,16 +1,22 @@
+use std::collections::HashSet;
 use std::{fs, path::Path};
 use syn::UseTree;
 
-pub fn check_dir(root: &Path, dir_name: &str) -> (usize, usize) {
+/// Names of macros defined with `#[macro_export]`, which live at the crate root
+/// and are therefore imported as `use crate::<name>;`. When
+/// `ignore_exported_macros` is set, imports of these are skipped by the checker.
+#[derive(Default)]
+pub struct Config {
+    pub ignore_exported_macros: bool,
+    pub exported_macros: HashSet<String>,
+}
+
+pub fn check_dir(root: &Path, dir_name: &str, config: &Config) -> (usize, usize) {
     let dir = root.join(dir_name);
-    let pattern = format!("{}/**/*.rs", dir.to_string_lossy().replace('\\', "/"));
     let mut passed = 0;
     let mut failed = 0;
-    for path in glob::glob(&pattern)
-        .expect("invalid glob")
-        .filter_map(|p| p.ok())
-    {
-        if _check_file(&path, &dir) > 0 {
+    for path in rs_files(root, dir_name) {
+        if _check_file(&path, &dir, config) > 0 {
             failed += 1;
         } else {
             passed += 1;
@@ -19,7 +25,16 @@ pub fn check_dir(root: &Path, dir_name: &str) -> (usize, usize) {
     (passed, failed)
 }
 
-fn _check_file(path: &Path, src_dir: &Path) -> usize {
+pub fn rs_files(root: &Path, dir_name: &str) -> Vec<std::path::PathBuf> {
+    let dir = root.join(dir_name);
+    let pattern = format!("{}/**/*.rs", dir.to_string_lossy().replace('\\', "/"));
+    glob::glob(&pattern)
+        .expect("invalid glob")
+        .filter_map(|p| p.ok())
+        .collect()
+}
+
+fn _check_file(path: &Path, src_dir: &Path, config: &Config) -> usize {
     let file_dir = match _file_dir_segments(path, src_dir) {
         Some(d) => d,
         None => return 0,
@@ -35,6 +50,11 @@ fn _check_file(path: &Path, src_dir: &Path) -> usize {
         if let syn::Item::Use(u) = item {
             for use_path in _expand_use_tree(vec![], &u.tree) {
                 if use_path.first().map(|s| s.as_str()) != Some("crate") {
+                    continue;
+                }
+                if config.ignore_exported_macros
+                    && crate::macros::is_exported_macro(&use_path, &config.exported_macros)
+                {
                     continue;
                 }
                 if !_is_import_allowed(&use_path, &file_dir) {
