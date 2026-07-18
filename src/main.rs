@@ -74,8 +74,9 @@ fn print_failures(passed: usize, failed: usize) {
         directory were its own root directory project."
     );
     println!(
-        "  4. The rules don't apply inside 's' (static data) and 't' (types) \
-        directories, nor when any other file imports from these directories."
+        "  4. The rules don't apply inside 's' (static data), 't' (types), \
+        or 'ext_traits' directories, nor when any other file imports from \
+        these directories."
     );
 }
 
