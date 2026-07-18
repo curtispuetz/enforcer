@@ -1,5 +1,7 @@
 use std::path::{Component, Path};
 
+static EXEMPT_DIRS: [&str; 3] = ["s", "t", "ext_traits"];
+
 pub fn file_dir_segments(path: &Path, src_dir: &Path) -> Option<Vec<String>> {
     let rel = path.strip_prefix(src_dir).ok()?;
     let mut segments = vec!["crate".to_string()];
@@ -13,5 +15,5 @@ pub fn file_dir_segments(path: &Path, src_dir: &Path) -> Option<Vec<String>> {
 
 // 's' is a static-data directory, 't' is a types directory; both are exempt from the rules.
 pub fn is_static_or_types(seg: &str) -> bool {
-    seg == "s" || seg == "t"
+    EXEMPT_DIRS.contains(&seg)
 }
