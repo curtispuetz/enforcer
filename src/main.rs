@@ -1,15 +1,6 @@
-mod c;
-mod check;
-mod macros;
-mod report;
-mod s;
-mod t;
-
 use std::process;
 
-use t::config::Config;
-
-use crate::s::main::EXISTING_SRC_DIRS;
+use enforcer::{check, report::report, s::main::EXISTING_SRC_DIRS, t::config::Config};
 
 fn main() {
     match subcommand().as_deref() {
@@ -41,7 +32,7 @@ fn subcommand() -> Option<String> {
 fn import_rules() {
     let config = Config::new();
     let (passed, failed) = check_all(&config);
-    report::report(passed, failed);
+    report(passed, failed);
 }
 
 fn check_all(config: &Config) -> (usize, usize) {
