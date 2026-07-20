@@ -7,10 +7,10 @@ pub fn is_import_allowed(use_path: &[String], file_dir: &[String]) -> bool {
     if use_path.starts_with(file_dir) {
         return true;
     }
-    allowed_through_c_dir(use_path, file_dir)
+    _allowed_through_c_dir(use_path, file_dir)
 }
 
-fn allowed_through_c_dir(use_path: &[String], file_dir: &[String]) -> bool {
+fn _allowed_through_c_dir(use_path: &[String], file_dir: &[String]) -> bool {
     for (i, seg) in use_path.iter().enumerate() {
         if seg != "c" || !file_dir.starts_with(&use_path[..i]) {
             continue;
