@@ -1,8 +1,8 @@
+mod c;
 mod check;
-mod config;
-mod files;
 mod macros;
 mod source;
+mod t;
 
 use std::{
     collections::HashSet,
@@ -10,7 +10,7 @@ use std::{
     process,
 };
 
-use config::Config;
+use t::config::Config;
 
 const SOURCE_DIRS: [&str; 2] = ["src", "tests"];
 
@@ -67,7 +67,7 @@ fn check_all(root: &Path, config: &Config) -> (usize, usize) {
     let mut passed = 0;
     let mut failed = 0;
     for dir_name in existing_source_dirs(root) {
-        let (p, f) = check::check_dir(root, dir_name, config);
+        let (p, f) = check::dir(root, dir_name, config);
         passed += p;
         failed += f;
     }

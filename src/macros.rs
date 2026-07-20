@@ -1,9 +1,9 @@
 use std::{collections::HashSet, path::Path};
 
-use crate::{files::rs_files, source::parse_file};
+use crate::{c::files, source::parse_file};
 
 pub fn collect_exported_macros(root: &Path, dir_name: &str) -> HashSet<String> {
-    rs_files(root, dir_name)
+    files::rs(root, dir_name)
         .iter()
         .flat_map(|path| exported_macros_in_file(path))
         .collect()
