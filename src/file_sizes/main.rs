@@ -11,20 +11,22 @@ use crate::{
 
 pub fn run() {
     let config = Config::new();
-    let violations = _violations(&config);
-    report(&config, &violations);
+    let (passed, violations) = _check_all(&config);
+    report(&config, passed, &violations);
 }
 
-fn _violations(config: &Config) -> Vec<Violation> {
+fn _check_all(config: &Config) -> (usize, Vec<Violation>) {
+    let mut passed = 0;
     let mut violations = Vec::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for path in files::rs(dir_name) {
-            if let Some(violation) = _check_file(&path, config) {
-                violations.push(violation);
+            match _check_file(&path, config) {
+                Some(violation) => violations.push(violation),
+                None => passed += 1,
             }
         }
     }
-    violations
+    (passed, violations)
 }
 
 fn _check_file(path: &Path, config: &Config) -> Option<Violation> {
