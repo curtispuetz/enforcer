@@ -27,6 +27,9 @@
             `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
             `rustenforcer.toml` from the project root (`ROOT`), allows users to configure the checks.
         </rustenforcer.toml>
+        <std-out>
+            All commands should print good messages to the console about the results. A message of the "all passed" sort if all pass, and if failures should print details, so the user knowns where the failures happened and can click links, if possible, to go fix.
+        </std-out>
     </architecture>
     <commands>
         <build>cargo build</build>
