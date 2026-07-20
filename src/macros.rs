@@ -1,8 +1,6 @@
-use std::collections::HashSet;
-use std::path::Path;
+use std::{collections::HashSet, path::Path};
 
-use crate::files::rs_files;
-use crate::source::parse_file;
+use crate::{files::rs_files, source::parse_file};
 
 pub fn collect_exported_macros(root: &Path, dir_name: &str) -> HashSet<String> {
     rs_files(root, dir_name)
@@ -32,6 +30,9 @@ fn is_macro_export(attrs: &[syn::Attribute]) -> bool {
 }
 
 // A `#[macro_export]` macro lives at the crate root, so it is imported as `use crate::<name>;`.
-pub fn is_exported_macro(use_path: &[String], exported_macros: &HashSet<String>) -> bool {
+pub fn is_exported_macro(
+    use_path: &[String],
+    exported_macros: &HashSet<String>,
+) -> bool {
     use_path.len() == 2 && exported_macros.contains(&use_path[1])
 }

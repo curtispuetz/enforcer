@@ -1,0 +1,58 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "cargo run",
+        },
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "cargo build",
+        },
+        {
+            "label": "Fix",
+            "type": "shell",
+            "command": "cargo fix --allow-dirty",
+            "presentation": {
+                "reveal": "never",
+                "focus": false,
+            }
+        },
+        {
+            "label": "clippy",
+            "type": "shell",
+            "command": "cargo clippy",
+        },
+        {
+            "label": "struct-check",
+            "type": "shell",
+            "command": "cargo file-structure-check",
+        },
+        {
+            "label": "Nightly fmt",
+            "type": "shell",
+            "command": "cargo +nightly fmt",
+            "presentation": {
+                "reveal": "never",
+                "focus": false,
+            }
+        },
+        {
+            "label": "Fix imports",
+            "type": "shell",
+            "command": "python",
+            "osx": {
+                "command": "python3"
+            },
+            "args": [
+                "${userHome}/Tools/bin/fix_rust_imports.py",
+                "${workspaceFolder}/",
+                "todo_package_name"
+            ]
+        }
+    ]
+}

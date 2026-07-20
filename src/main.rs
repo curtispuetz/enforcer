@@ -4,15 +4,44 @@ mod files;
 mod macros;
 mod source;
 
-use std::collections::HashSet;
-use std::path::{Path, PathBuf};
-use std::process;
+use std::{
+    collections::HashSet,
+    path::{Path, PathBuf},
+    process,
+};
 
 use config::Config;
 
 const SOURCE_DIRS: [&str; 2] = ["src", "tests"];
 
 fn main() {
+    match subcommand().as_deref() {
+        Some("import-rules") => import_rules(),
+        Some(other) => {
+            eprintln!("enforcer: unknown check '{other}'");
+            eprintln!("available checks: import-rules");
+            process::exit(2);
+        }
+        None => {
+            eprintln!("enforcer: no check specified");
+            eprintln!("usage: cargo enforcer <check>");
+            eprintln!("available checks: import-rules");
+            process::exit(2);
+        }
+    }
+}
+
+/// Returns the requested check name. When invoked as `cargo enforcer <check>`,
+/// cargo injects a leading `enforcer` argument, which we skip.
+fn subcommand() -> Option<String> {
+    let mut positional = std::env::args().skip(1).filter(|a| !a.starts_with('-'));
+    match positional.next() {
+        Some(arg) if arg == "enforcer" => positional.next(),
+        other => other,
+    }
+}
+
+fn import_rules() {
     let root = manifest_dir().unwrap_or_else(|| PathBuf::from("."));
     let config = build_config(&root);
     let (passed, failed) = check_all(&root, &config);
@@ -20,7 +49,8 @@ fn main() {
 }
 
 fn build_config(root: &Path) -> Config {
-    let ignore_exported_macros = std::env::args().any(|a| a == "--ignore-exported-macros");
+    let ignore_exported_macros =
+        std::env::args().any(|a| a == "--ignore-exported-macros");
     let mut exported_macros = HashSet::new();
     if ignore_exported_macros {
         for dir_name in existing_source_dirs(root) {

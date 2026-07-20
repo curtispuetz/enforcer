@@ -1,7 +1,11 @@
 [package]
-name = "cargo-file-structure-check"
+name = "enforcer"
 version = "0.1.0"
 edition = "2021"
+
+[[bin]]
+name = "cargo-enforcer"
+path = "src/main.rs"
 
 [dependencies]
 syn = { version = "2", features = ["full"] }

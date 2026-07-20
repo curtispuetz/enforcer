@@ -4,10 +4,9 @@ mod rules;
 
 use std::path::Path;
 
-use crate::config::Config;
-use crate::files::rs_files;
-use crate::macros::is_exported_macro;
-use crate::source::parse_file;
+use crate::{
+    config::Config, files::rs_files, macros::is_exported_macro, source::parse_file,
+};
 use imports::crate_use_paths;
 use location::{file_dir_segments, is_static_or_types};
 use rules::is_import_allowed;
@@ -38,7 +37,11 @@ fn check_file(path: &Path, src_dir: &Path, config: &Config) -> usize {
     violations.len()
 }
 
-fn disallowed_imports(path: &Path, file_dir: &[String], config: &Config) -> Vec<String> {
+fn disallowed_imports(
+    path: &Path,
+    file_dir: &[String],
+    config: &Config,
+) -> Vec<String> {
     let mut violations = Vec::new();
     for use_path in crate_use_paths(&parse_file(path)) {
         if is_ignored_macro(&use_path, config) {
@@ -52,7 +55,8 @@ fn disallowed_imports(path: &Path, file_dir: &[String], config: &Config) -> Vec<
 }
 
 fn is_ignored_macro(use_path: &[String], config: &Config) -> bool {
-    config.ignore_exported_macros && is_exported_macro(use_path, &config.exported_macros)
+    config.ignore_exported_macros
+        && is_exported_macro(use_path, &config.exported_macros)
 }
 
 fn report_violations(path: &Path, violations: &[String]) {

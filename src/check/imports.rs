@@ -22,7 +22,9 @@ fn starts_at_crate(path: &[String]) -> bool {
 
 fn expand_use_tree(prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>> {
     match tree {
-        UseTree::Path(p) => expand_use_tree(pushed(prefix, p.ident.to_string()), &p.tree),
+        UseTree::Path(p) => {
+            expand_use_tree(pushed(prefix, p.ident.to_string()), &p.tree)
+        }
         UseTree::Name(n) => vec![pushed(prefix, n.ident.to_string())],
         UseTree::Rename(r) => vec![pushed(prefix, r.ident.to_string())],
         UseTree::Glob(_) => vec![prefix],
