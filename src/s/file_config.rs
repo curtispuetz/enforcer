@@ -1,4 +1,4 @@
-use std::sync::LazyLock;
+use std::{process, sync::LazyLock};
 
 use serde::Deserialize;
 
@@ -6,13 +6,18 @@ use crate::s::main::ROOT;
 
 pub static FILE_CONFIG: LazyLock<FileConfig> = LazyLock::new(|| {
     let path = ROOT.join("rustenforcer.toml");
-    let Ok(contents) = std::fs::read_to_string(path) else {
+    let Ok(contents) = std::fs::read_to_string(&path) else {
         return FileConfig::default();
     };
-    toml::from_str(&contents).unwrap_or_default()
+    toml::from_str(&contents).unwrap_or_else(|e| {
+        eprintln!("enforcer: invalid config in {}", path.display());
+        eprintln!("{e}");
+        process::exit(2);
+    })
 });
 
 #[derive(Deserialize, Default)]
+#[serde(deny_unknown_fields)]
 pub struct FileConfig {
     #[serde(default)]
     pub import_rules: ImportRules,
@@ -21,12 +26,14 @@ pub struct FileConfig {
 }
 
 #[derive(Deserialize, Default)]
+#[serde(deny_unknown_fields)]
 pub struct ImportRules {
     #[serde(default)]
     pub ignore_export_macros: bool,
 }
 
 #[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct LessThanLines {
     #[serde(default = "_default_num")]
     pub num: usize,
