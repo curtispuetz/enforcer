@@ -28,9 +28,9 @@
             "command": "cargo clippy",
         },
         {
-            "label": "struct-check",
+            "label": "import-rules",
             "type": "shell",
-            "command": "cargo file-structure-check",
+            "command": "cargo enforcer import-rules",
         },
         {
             "label": "Nightly fmt",
