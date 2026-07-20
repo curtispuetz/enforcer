@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::{macros, s::main::EXISTING_SRC_DIRS};
+use crate::{import_rules::macros, s::main::EXISTING_SRC_DIRS};
 
 #[derive(Default)]
 pub struct Config {

@@ -1,10 +1,10 @@
 use std::process;
 
-use enforcer::{check, report::report, s::main::EXISTING_SRC_DIRS, t::config::Config};
+use enforcer::import_rules;
 
 fn main() {
     match subcommand().as_deref() {
-        Some("import-rules") => import_rules(),
+        Some("import-rules") => import_rules::run(),
         Some(other) => {
             eprintln!("enforcer: unknown check '{other}'");
             eprintln!("available checks: import-rules");
@@ -27,21 +27,4 @@ fn subcommand() -> Option<String> {
         Some(arg) if arg == "enforcer" => positional.next(),
         other => other,
     }
-}
-
-fn import_rules() {
-    let config = Config::new();
-    let (passed, failed) = check_all(&config);
-    report(passed, failed);
-}
-
-fn check_all(config: &Config) -> (usize, usize) {
-    let mut passed = 0;
-    let mut failed = 0;
-    for dir_name in EXISTING_SRC_DIRS.iter() {
-        let (p, f) = check::dir(dir_name, config);
-        passed += p;
-        failed += f;
-    }
-    (passed, failed)
 }

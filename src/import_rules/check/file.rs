@@ -2,30 +2,17 @@ use std::{collections::HashSet, path::Path};
 
 use crate::{
     c::files,
-    check::{
-        imports::crate_use_paths,
-        location::{file_dir_segments, is_static_or_types},
-        rules::is_import_allowed,
+    import_rules::{
+        check::{
+            imports::crate_use_paths,
+            location::{file_dir_segments, is_static_or_types},
+            rules::is_import_allowed,
+        },
+        t::config::Config,
     },
-    s::main::ROOT,
-    t::config::Config,
 };
 
-pub fn dir(dir_name: &str, config: &Config) -> (usize, usize) {
-    let mut passed = 0;
-    let mut failed = 0;
-    let dir = ROOT.join(dir_name);
-    for path in files::rs(dir_name) {
-        if _check_file(&path, &dir, config) > 0 {
-            failed += 1;
-        } else {
-            passed += 1;
-        }
-    }
-    (passed, failed)
-}
-
-fn _check_file(path: &Path, src_dir: &Path, config: &Config) -> usize {
+pub fn run(path: &Path, src_dir: &Path, config: &Config) -> usize {
     let Some(file_dir) = file_dir_segments(path, src_dir) else {
         return 0;
     };

@@ -1,4 +1,4 @@
-use super::location::is_static_or_types;
+use crate::import_rules::check::location::is_static_or_types;
 
 pub fn is_import_allowed(use_path: &[String], file_dir: &[String]) -> bool {
     if use_path.iter().any(|s| is_static_or_types(s)) {
