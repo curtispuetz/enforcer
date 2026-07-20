@@ -1,6 +1,6 @@
 use std::process;
 
-use crate::less_than_lines::t::{config::Config, violation::Violation};
+use crate::file_sizes::t::{config::Config, violation::Violation};
 
 pub fn report(config: &Config, violations: &[Violation]) {
     if !violations.is_empty() {

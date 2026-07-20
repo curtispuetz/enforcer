@@ -2,7 +2,7 @@ use std::{fs, path::Path};
 
 use crate::{
     c::files,
-    less_than_lines::{
+    file_sizes::{
         report::report,
         t::{config::Config, violation::Violation},
     },

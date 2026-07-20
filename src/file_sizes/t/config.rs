@@ -10,11 +10,11 @@ pub struct Config {
 impl Config {
     pub fn new() -> Self {
         let mut ignore = HashSet::new();
-        for path in FILE_CONFIG.less_than_lines.ignore.iter() {
+        for path in FILE_CONFIG.file_sizes.ignore.iter() {
             ignore.insert(path.replace('\\', "/"));
         }
         Config {
-            max_lines: FILE_CONFIG.less_than_lines.num,
+            max_lines: FILE_CONFIG.file_sizes.num,
             ignore,
         }
     }

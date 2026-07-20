@@ -1,19 +1,19 @@
 use strum::{Display, EnumIter, EnumString, IntoEnumIterator};
 
-use crate::{import_rules, less_than_lines};
+use crate::{file_sizes, import_rules};
 
 #[derive(Clone, Copy, Display, EnumIter, EnumString)]
 #[strum(serialize_all = "kebab-case")]
 pub enum Command {
     ImportRules,
-    LessThanLines,
+    FileSizes,
 }
 
 impl Command {
     pub fn run(self) {
         match self {
             Command::ImportRules => import_rules::run(),
-            Command::LessThanLines => less_than_lines::run(),
+            Command::FileSizes => file_sizes::run(),
         }
     }
 

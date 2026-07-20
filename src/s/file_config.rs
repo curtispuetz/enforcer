@@ -22,7 +22,7 @@ pub struct FileConfig {
     #[serde(default)]
     pub import_rules: ImportRules,
     #[serde(default)]
-    pub less_than_lines: LessThanLines,
+    pub file_sizes: FileSizes,
 }
 
 #[derive(Deserialize, Default)]
@@ -34,16 +34,16 @@ pub struct ImportRules {
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct LessThanLines {
+pub struct FileSizes {
     #[serde(default = "_default_num")]
     pub num: usize,
     #[serde(default)]
     pub ignore: Vec<String>,
 }
 
-impl Default for LessThanLines {
+impl Default for FileSizes {
     fn default() -> Self {
-        LessThanLines {
+        FileSizes {
             num: _default_num(),
             ignore: Vec::new(),
         }
