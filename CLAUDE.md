@@ -8,6 +8,22 @@
         a set of rules. The enforcer runs that check telling you if your codebase has any
         violations.
     </what-this-is>
+    <architecture>
+        <entrypoints>
+            The crate builds a `cargo-enforcer` binary (see Cargo.toml `[[bin]]`). `src/main.rs`
+            is the thin CLI shell: it reads the subcommand argument (skipping the leading
+            `enforcer` arg that cargo injects for `cargo enforcer &lt;check&gt;`), parses it into a
+            `Command`, and calls `command.run()`.
+        </entrypoints>
+        <commands-dispatch>
+            `src/t/command.rs` defines the `Command` enum. `Command::run` dispatches to
+            each check's module (e.g. `import_rules::run()`). Adding a check = new enum variant +
+            new check module.
+        </commands-dispatch>
+        <shared-leaves>
+            `src/s/` holds static data. `src/c/files.rs` is shared logic.
+        </shared-leaves>
+    </architecture>
     <commands>
         <build>cargo build</build>
         <test>
