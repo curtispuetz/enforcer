@@ -1,15 +1,22 @@
 use std::path::Path;
 
-use crate::check::imports::crate_use_paths;
-use crate::check::location::{file_dir_segments, is_static_or_types};
-use crate::check::rules::is_import_allowed;
-use crate::{c::files, macros::is_exported_macro, t::config::Config};
+use crate::{
+    c::files,
+    check::{
+        imports::crate_use_paths,
+        location::{file_dir_segments, is_static_or_types},
+        rules::is_import_allowed,
+    },
+    macros::is_exported,
+    s::main::ROOT,
+    t::config::Config,
+};
 
-pub fn dir(root: &Path, dir_name: &str, config: &Config) -> (usize, usize) {
+pub fn dir(dir_name: &str, config: &Config) -> (usize, usize) {
     let mut passed = 0;
     let mut failed = 0;
-    let dir = root.join(dir_name);
-    for path in files::rs(root, dir_name) {
+    let dir = ROOT.join(dir_name);
+    for path in files::rs(dir_name) {
         if _check_file(&path, &dir, config) > 0 {
             failed += 1;
         } else {
@@ -49,8 +56,7 @@ fn _disallowed_imports(
 }
 
 fn _is_ignored_macro(use_path: &[String], config: &Config) -> bool {
-    config.ignore_exported_macros
-        && is_exported_macro(use_path, &config.exported_macros)
+    config.ignore_exported_macros && is_exported(use_path, &config.exported_macros)
 }
 
 fn _report_violations(path: &Path, violations: &[String]) {

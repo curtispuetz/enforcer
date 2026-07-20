@@ -1,8 +1,11 @@
-use std::fs;
-use std::path::{Path, PathBuf};
+use crate::s::main::ROOT;
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
-pub fn rs(root: &Path, dir_name: &str) -> Vec<PathBuf> {
-    let dir = root.join(dir_name);
+pub fn rs(dir_name: &str) -> Vec<PathBuf> {
+    let dir = ROOT.join(dir_name);
     let pattern = format!("{}/**/*.rs", dir.to_string_lossy().replace('\\', "/"));
     glob::glob(&pattern)
         .expect("invalid glob")
