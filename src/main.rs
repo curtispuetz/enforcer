@@ -1,19 +1,21 @@
 use std::process;
 
-use enforcer::import_rules;
+use enforcer::t::command::Command;
 
 fn main() {
     match subcommand().as_deref() {
-        Some("import-rules") => import_rules::run(),
-        Some(other) => {
-            eprintln!("enforcer: unknown check '{other}'");
-            eprintln!("available checks: import-rules");
-            process::exit(2);
-        }
+        Some(name) => match Command::parse(name) {
+            Some(command) => command.run(),
+            None => {
+                eprintln!("enforcer: unknown check '{name}'");
+                eprintln!("available checks: {}", Command::available());
+                process::exit(2);
+            }
+        },
         None => {
             eprintln!("enforcer: no check specified");
             eprintln!("usage: cargo enforcer <check>");
-            eprintln!("available checks: import-rules");
+            eprintln!("available checks: {}", Command::available());
             process::exit(2);
         }
     }
