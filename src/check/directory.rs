@@ -3,9 +3,7 @@ use std::path::Path;
 use crate::check::imports::crate_use_paths;
 use crate::check::location::{file_dir_segments, is_static_or_types};
 use crate::check::rules::is_import_allowed;
-use crate::{
-    c::files, macros::is_exported_macro, source::parse_file, t::config::Config,
-};
+use crate::{c::files, macros::is_exported_macro, t::config::Config};
 
 pub fn dir(root: &Path, dir_name: &str, config: &Config) -> (usize, usize) {
     let mut passed = 0;
@@ -39,7 +37,7 @@ fn _disallowed_imports(
     config: &Config,
 ) -> Vec<String> {
     let mut violations = Vec::new();
-    for use_path in crate_use_paths(&parse_file(path)) {
+    for use_path in crate_use_paths(&files::parse(path)) {
         if _is_ignored_macro(&use_path, config) {
             continue;
         }

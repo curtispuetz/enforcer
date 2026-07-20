@@ -1,6 +1,6 @@
 use std::{collections::HashSet, path::Path};
 
-use crate::{c::files, source::parse_file};
+use crate::c::files;
 
 pub fn collect_exported_macros(root: &Path, dir_name: &str) -> HashSet<String> {
     files::rs(root, dir_name)
@@ -10,7 +10,7 @@ pub fn collect_exported_macros(root: &Path, dir_name: &str) -> HashSet<String> {
 }
 
 fn exported_macros_in_file(path: &Path) -> Vec<String> {
-    parse_file(path)
+    files::parse(path)
         .items
         .iter()
         .filter_map(exported_macro_name)

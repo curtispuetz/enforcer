@@ -1,7 +1,6 @@
 mod c;
 mod check;
 mod macros;
-mod source;
 mod t;
 
 use std::{
