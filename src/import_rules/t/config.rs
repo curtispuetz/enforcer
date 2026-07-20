@@ -1,6 +1,9 @@
 use std::collections::HashSet;
 
-use crate::{import_rules::macros, s::main::EXISTING_SRC_DIRS};
+use crate::{
+    import_rules::{macros, read_toml},
+    s::main::EXISTING_SRC_DIRS,
+};
 
 #[derive(Default)]
 pub struct Config {
@@ -10,8 +13,7 @@ pub struct Config {
 
 impl Config {
     pub fn new() -> Self {
-        let ignore_exported_macros =
-            std::env::args().any(|a| a == "--ignore-exported-macros");
+        let ignore_exported_macros = read_toml::ignore_export_macros();
         let mut exported_macros = HashSet::new();
         if ignore_exported_macros {
             for dir_name in EXISTING_SRC_DIRS.iter() {

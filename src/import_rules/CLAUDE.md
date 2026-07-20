@@ -1,6 +1,8 @@
 <import-rules-check>
     Flow:
-    `main::run` builds a `Config` (from `t/config.rs`; reads `--ignore-exported-macros` and,
+    `main::run` builds a `Config` (from `t/config.rs`; reads `ignore_export_macros` from the
+    `[import_rules]` section of `rustenforcer.toml` in the project root via `read_toml.rs`,
+    defaulting to false if the file or key is absent, and,
     if set, collects `#[macro_export]` names via `macros.rs`), iterates every `.rs` file in
     each existing src dir, and calls `check::file::run` on each, then `report::report`
     prints the pass/fail summary and exits non-zero on any failure. Inside `check/`:
