@@ -1,4 +1,4 @@
-use crate::s::main::ROOT;
+use crate::s::ROOT;
 use std::{
     fs,
     path::{Path, PathBuf},

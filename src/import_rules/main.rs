@@ -1,7 +1,7 @@
 use crate::{
     c::files,
     import_rules::{check, report::report, t::config::Config},
-    s::main::{EXISTING_SRC_DIRS, ROOT},
+    s::{EXISTING_SRC_DIRS, ROOT},
 };
 
 pub fn run() {
