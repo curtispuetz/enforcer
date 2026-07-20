@@ -9,10 +9,6 @@ pub fn collect_exported(dir_name: &str) -> HashSet<String> {
         .collect()
 }
 
-pub fn is_exported(use_path: &[String], exported_macros: &HashSet<String>) -> bool {
-    use_path.len() == 2 && exported_macros.contains(&use_path[1])
-}
-
 fn _exported_macros_in_file(path: &Path) -> Vec<String> {
     files::parse(path)
         .items

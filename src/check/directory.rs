@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{collections::HashSet, path::Path};
 
 use crate::{
     c::files,
@@ -7,7 +7,6 @@ use crate::{
         location::{file_dir_segments, is_static_or_types},
         rules::is_import_allowed,
     },
-    macros::is_exported,
     s::main::ROOT,
     t::config::Config,
 };
@@ -56,7 +55,12 @@ fn _disallowed_imports(
 }
 
 fn _is_ignored_macro(use_path: &[String], config: &Config) -> bool {
-    config.ignore_exported_macros && is_exported(use_path, &config.exported_macros)
+    config.ignore_exported_macros
+        && _macro_is_exported(use_path, &config.exported_macros)
+}
+
+fn _macro_is_exported(use_path: &[String], exported_macros: &HashSet<String>) -> bool {
+    use_path.len() == 2 && exported_macros.contains(&use_path[1])
 }
 
 fn _report_violations(path: &Path, violations: &[String]) {
