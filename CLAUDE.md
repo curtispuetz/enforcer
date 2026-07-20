@@ -23,6 +23,10 @@
         <shared-leaves>
             `src/s/` holds static data. `src/c/files.rs` is shared logic.
         </shared-leaves>
+        <rustenforcer.toml>
+            `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
+            `rustenforcer.toml` from the project root (`ROOT`), allows users to configure the checks.
+        </rustenforcer.toml>
     </architecture>
     <commands>
         <build>cargo build</build>
