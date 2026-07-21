@@ -1,20 +1,19 @@
 use strum::IntoEnumIterator;
 
-use super::{
-    comment_rules, file_sizes, import_rules, mod_lib_contents, mod_location,
-    static_location, t::Command, type_location,
-};
+use super::t::Command;
+
+use super::checks;
 
 pub fn check(command: Command) -> bool {
     let ret = match command {
         Command::All => _all(),
-        Command::ImportRules => import_rules::run(),
-        Command::FileSizes => file_sizes::run(),
-        Command::ModLocation => mod_location::run(),
-        Command::ModLibContents => mod_lib_contents::run(),
-        Command::CommentRules => comment_rules::run(),
-        Command::TypeLocation => type_location::run(),
-        Command::StaticLocation => static_location::run(),
+        Command::ImportRules => checks::import_rules::run(),
+        Command::FileSizes => checks::file_sizes::run(),
+        Command::ModLocation => checks::mod_location::run(),
+        Command::ModLibContents => checks::mod_lib_contents::run(),
+        Command::CommentRules => checks::comment_rules::run(),
+        Command::TypeLocation => checks::type_location::run(),
+        Command::StaticLocation => checks::static_location::run(),
     };
     println!();
     ret

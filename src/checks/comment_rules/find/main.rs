@@ -1,4 +1,4 @@
-use crate::comment_rules::t::comment::Comment;
+use crate::checks::comment_rules::t::comment::Comment;
 
 use super::{delimit, group, literal, locate};
 

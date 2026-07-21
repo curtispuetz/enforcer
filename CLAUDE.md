@@ -24,7 +24,7 @@
             `src/s/` holds static data. `src/c/` is shared logic. `src/t/` is shared types.
         </shared-code>
         <check-impls>
-            Asside from the shared-code, each check is implemented in its own folder under `src/`. When relevent, descriptions of each check are in the folders CLAUDE.md.
+            Asside from the shared-code, each check is implemented in its own folder under `src/checks`. When relevent, descriptions of each check are in the folders CLAUDE.md.
         </check-impls>
         <rustenforcer.toml>
             `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
