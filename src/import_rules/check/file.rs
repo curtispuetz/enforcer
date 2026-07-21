@@ -2,19 +2,22 @@ use std::{collections::HashSet, path::Path};
 
 use crate::{
     c::{files, path},
-    import_rules::{
-        check::{
-            imports::crate_use_paths,
-            location::file_dir_segments,
-            rules::is_import_allowed,
-        },
-        t::{config::Config, violation::Violation},
+    import_rules::t::{
+        config::Config,
+        violation::{BadImport, Violation},
     },
+};
+
+use super::{
+    imports::internal_use_paths,
+    location::{file_dir_segments, own_module_segments},
+    rules::import_violation,
 };
 
 pub fn run(path: &Path, config: &Config) -> Option<Violation> {
     let file_dir = file_dir_segments(path)?;
-    let imports = _disallowed_imports(path, &file_dir, config);
+    let own_module = own_module_segments(path)?;
+    let imports = _disallowed_imports(path, &file_dir, &own_module, config);
     if imports.is_empty() {
         None
     } else {
@@ -28,15 +31,19 @@ pub fn run(path: &Path, config: &Config) -> Option<Violation> {
 fn _disallowed_imports(
     path: &Path,
     file_dir: &[String],
+    own_module: &[String],
     config: &Config,
-) -> Vec<String> {
+) -> Vec<BadImport> {
     let mut violations = Vec::new();
-    for use_path in crate_use_paths(&files::parse(path)) {
+    for use_path in internal_use_paths(&files::parse(path)) {
         if _is_ignored_macro(&use_path, config) {
             continue;
         }
-        if !is_import_allowed(&use_path, file_dir) {
-            violations.push(format!("use {};", use_path.join("::")));
+        if let Some(reason) = import_violation(&use_path, file_dir, own_module) {
+            violations.push(BadImport {
+                text: format!("use {};", use_path.join("::")),
+                reason,
+            });
         }
     }
     violations

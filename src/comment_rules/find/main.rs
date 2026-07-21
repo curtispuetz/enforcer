@@ -1,7 +1,6 @@
-use crate::comment_rules::{
-    find::{delimit, group, literal, locate},
-    t::comment::Comment,
-};
+use crate::comment_rules::t::comment::Comment;
+
+use super::{delimit, group, literal, locate};
 
 pub fn comments(source: &str) -> Vec<Comment> {
     let chars: Vec<char> = source.chars().collect();

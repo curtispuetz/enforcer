@@ -16,6 +16,19 @@ pub fn file_dir_segments(path: &Path) -> Option<Vec<String>> {
     Some(segments)
 }
 
+pub fn own_module_segments(path: &Path) -> Option<Vec<String>> {
+    let mut segments = file_dir_segments(path)?;
+    let stem = path.file_stem()?.to_str()?;
+    if !_is_folder_module(stem) {
+        segments.push(stem.to_string());
+    }
+    Some(segments)
+}
+
+fn _is_folder_module(stem: &str) -> bool {
+    stem == "mod" || stem == "lib"
+}
+
 pub fn is_commons(seg: &str) -> bool {
     COMMONS_DIRS.contains(&seg)
 }

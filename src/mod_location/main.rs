@@ -1,9 +1,8 @@
 use std::path::Path;
 
-use crate::{
-    c::{files, path, scan},
-    mod_location::{report::report, t::violation::Violation},
-};
+use crate::c::{files, path, scan};
+
+use super::{report::report, t::violation::Violation};
 
 pub fn run() -> bool {
     let (passed, violations) = scan::src_files(_check_file);

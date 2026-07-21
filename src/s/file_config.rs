@@ -2,7 +2,7 @@ use std::{process, sync::LazyLock};
 
 use serde::Deserialize;
 
-use crate::s::main::ROOT;
+use super::main::ROOT;
 
 pub static FILE_CONFIG: LazyLock<FileConfig> = LazyLock::new(|| {
     let path = ROOT.join("rustenforcer.toml");

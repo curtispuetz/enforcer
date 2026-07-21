@@ -3,6 +3,22 @@
         Checks that a file's imports only point sideways (to siblings in its own folder) or
         deeper (into nested modules), never up to a parent folder or across into a different
         branch of the tree. Imports that reach up or across are violations.
+
+        The direction is enforced through the import's syntactic form:
+        <item>
+            Sideways/deeper imports must be written with `super::` (or `self::`), never
+            `crate::`. Because a single `super` resolves to the containing folder and appending
+            segments only goes deeper, a `super::`-rooted path can only ever point sideways or
+            deeper — so the form itself proves the direction. `use super::super::...` is a
+            violation: it walks up out of the folder.
+        </item>
+        <item>
+            `crate::`-rooted imports are allowed only when reaching a commons dir that lives
+            above the file's own folder (see &lt;commons-dirs&gt;); those genuinely go up, which
+            `super` cannot express without `super::super`. A `crate::` path that is actually
+            sideways/deeper is a violation (it should use `super::`), and one that reaches a
+            non-commons target up/across is a violation as before.
+        </item>
     </desc>
     <commons-dirs>
         c/, t/, s/, ext_traits/ — shared-code commons folders (general shared logic, types, static data,
@@ -28,10 +44,14 @@
         if set, collects `#[macro_export]` names via `macros.rs`), iterates every `.rs` file in
         each existing src dir, and calls `check::file::run` on each, then `report::report`
         prints the pass/fail summary and exits non-zero on any failure. Inside `check/`:
-        `file.rs` orchestrates one file's check; `location.rs` derives a file's module-path
-        segments and flags the commons `c`/`s`/`t`/`ext_traits` dirs; `imports.rs` walks the syn
-        AST to extract `crate::`-rooted use paths (expanding groups/globs/renames); `rules.rs`
-        holds the core allow/deny logic including the commons-directory recursion. This mirrors the
+        `file.rs` orchestrates one file's check; `location.rs` derives a file's containing-folder
+        segments (`file_dir_segments`) and its own module path (`own_module_segments`, which
+        appends the file stem for a normal file but not for `mod.rs`/`lib.rs`) and flags the
+        commons `c`/`s`/`t`/`ext_traits` dirs; `imports.rs` walks the syn AST to extract
+        `crate::`/`super::`/`self::`-rooted use paths (expanding groups/globs/renames); `rules.rs`
+        resolves each path to an absolute module path (using `own_module` for `super`/`self`) and
+        returns the violation reason, if any, including the commons-directory recursion. This
+        mirrors the
         &lt;import-rules&gt; preferences documented below — the check enforces the same rules the
         codebase itself follows.
     </code-architecture>

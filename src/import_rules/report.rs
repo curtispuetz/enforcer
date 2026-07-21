@@ -1,6 +1,8 @@
 use colored::Colorize;
 
-use crate::{c::report, import_rules::t::violation::Violation, s::SUCCESS_TAG};
+use crate::{c::report, s::SUCCESS_TAG};
+
+use super::t::violation::Violation;
 
 pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
@@ -21,7 +23,8 @@ fn _print_failures(violations: Vec<Violation>) {
     for violation in &violations {
         println!("{} has disallowed imports:", violation.path.bold());
         for import in &violation.imports {
-            println!("  {}", import.red());
+            println!("  {}", import.text.red());
+            println!("    {}", import.reason.dimmed());
         }
     }
 }

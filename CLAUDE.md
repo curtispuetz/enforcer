@@ -115,6 +115,15 @@
                 what
                 keeps a leaf from reaching across the codebase.
             </general>
+            <use-super>
+                Sideways and deeper imports must be written with `super::` (or `self::`), never
+                `crate::`. A single `super` points at the containing folder, so `super::sibling`
+                and `super::child::thing` stay within the file's own subtree by construction —
+                the form itself is the proof of direction. Never use `super::super::...`: that
+                walks up out of the folder, which is exactly the "reaching up" this rule forbids.
+                Reserve `crate::` for the one case `super` cannot express: reaching a commons
+                folder that lives above your own folder (see &lt;commons-folders&gt;).
+            </use-super>
             <commons-folders>
                 c/, t/, s/, ext_traits/ — shared code, scoped to one level. All four behave the
                 same way. A commons folder is reachable by everything at or below its parent:

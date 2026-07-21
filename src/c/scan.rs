@@ -1,6 +1,8 @@
 use std::path::Path;
 
-use crate::{c::files, s::EXISTING_SRC_DIRS};
+use crate::s::EXISTING_SRC_DIRS;
+
+use super::files;
 
 pub fn src_files<V>(mut check: impl FnMut(&Path) -> Option<V>) -> (usize, Vec<V>) {
     let mut passed = 0;

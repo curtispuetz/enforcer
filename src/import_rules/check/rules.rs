@@ -1,10 +1,51 @@
-use crate::import_rules::check::location::is_commons;
+use super::location::is_commons;
 
-pub fn is_import_allowed(use_path: &[String], file_dir: &[String]) -> bool {
-    if use_path.starts_with(file_dir) {
-        return true;
+enum Form {
+    Crate,
+    Relative,
+}
+
+pub fn import_violation(
+    use_path: &[String],
+    file_dir: &[String],
+    own_module: &[String],
+) -> Option<&'static str> {
+    let (form, resolved) = _resolve(use_path, own_module)?;
+    let sideways_or_deeper = resolved.starts_with(file_dir);
+    match form {
+        Form::Relative if sideways_or_deeper => None,
+        Form::Relative => Some("`super` must not go up, only sideways or deeper"),
+        Form::Crate if sideways_or_deeper => {
+            Some("sideways or deeper import must use `super::`, not `crate::`")
+        }
+        Form::Crate if _allowed_through_commons_dir(&resolved, file_dir) => None,
+        Form::Crate => Some("import reaches up or across the module tree"),
     }
-    _allowed_through_commons_dir(use_path, file_dir)
+}
+
+fn _resolve(use_path: &[String], own_module: &[String]) -> Option<(Form, Vec<String>)> {
+    match use_path.first()?.as_str() {
+        "crate" => Some((Form::Crate, use_path.to_vec())),
+        "self" => Some((Form::Relative, _joined(own_module, &use_path[1..]))),
+        "super" => Some((Form::Relative, _resolved_super(use_path, own_module))),
+        _ => None,
+    }
+}
+
+fn _resolved_super(use_path: &[String], own_module: &[String]) -> Vec<String> {
+    let supers = use_path.iter().take_while(|seg| *seg == "super").count();
+    let base = own_module.len().saturating_sub(supers);
+    _joined(&own_module[..base], &use_path[supers..])
+}
+
+fn _joined(base: &[String], rest: &[String]) -> Vec<String> {
+    let mut ret = base.to_vec();
+    ret.extend_from_slice(rest);
+    ret
+}
+
+fn _within_or_commons(use_path: &[String], file_dir: &[String]) -> bool {
+    use_path.starts_with(file_dir) || _allowed_through_commons_dir(use_path, file_dir)
 }
 
 fn _allowed_through_commons_dir(use_path: &[String], file_dir: &[String]) -> bool {
@@ -13,7 +54,7 @@ fn _allowed_through_commons_dir(use_path: &[String], file_dir: &[String]) -> boo
             continue;
         }
         if file_dir.get(i) == Some(seg) {
-            return is_import_allowed(&use_path[i + 1..], &file_dir[i + 1..]);
+            return _within_or_commons(&use_path[i + 1..], &file_dir[i + 1..]);
         }
         return true;
     }

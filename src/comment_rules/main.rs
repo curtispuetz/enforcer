@@ -1,15 +1,14 @@
 use std::{fs, path::Path};
 
-use crate::{
-    c::{path, scan},
-    comment_rules::{
-        find::comments,
-        report::report,
-        rules,
-        t::{
-            config::Config,
-            violation::{BadComment, Violation},
-        },
+use crate::c::{path, scan};
+
+use super::{
+    find::comments,
+    report::report,
+    rules,
+    t::{
+        config::Config,
+        violation::{BadComment, Violation},
     },
 };
 

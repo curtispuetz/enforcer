@@ -1,6 +1,6 @@
 use std::{process, str::FromStr};
 
-use enforcer::t::command::Command;
+use enforcer::{run, t::command::Command};
 
 fn main() {
     let names = subcommands();
@@ -23,7 +23,7 @@ fn main() {
     }
     let mut all_passed = true;
     for command in commands {
-        if !command.run() {
+        if run::check(command) {
             all_passed = false;
         }
     }

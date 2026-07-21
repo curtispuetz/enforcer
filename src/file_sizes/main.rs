@@ -1,11 +1,10 @@
 use std::{fs, path::Path};
 
-use crate::{
-    c::{path, scan},
-    file_sizes::{
-        report::report,
-        t::{config::Config, violation::Violation},
-    },
+use crate::c::{path, scan};
+
+use super::{
+    report::report,
+    t::{config::Config, violation::Violation},
 };
 
 pub fn run() -> bool {

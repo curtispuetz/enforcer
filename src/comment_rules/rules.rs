@@ -1,6 +1,4 @@
-use crate::comment_rules::t::{
-    comment::Comment, config::Config, violation::BadComment,
-};
+use super::t::{comment::Comment, config::Config, violation::BadComment};
 
 const NOT_OBVIOUS: &str = "not-obvious: ";
 

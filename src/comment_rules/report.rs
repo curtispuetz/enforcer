@@ -1,10 +1,8 @@
 use colored::Colorize;
 
-use crate::{
-    c::report,
-    comment_rules::t::{config::Config, violation::Violation},
-    s::SUCCESS_TAG,
-};
+use crate::{c::report, s::SUCCESS_TAG};
+
+use super::t::{config::Config, violation::Violation};
 
 pub fn report(config: Config, passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
