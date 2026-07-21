@@ -1,5 +1,5 @@
 use crate::comment_rules::{
-    find::{delimit, literal, locate},
+    find::{delimit, group, literal, locate},
     t::comment::Comment,
 };
 
@@ -10,7 +10,7 @@ pub fn comments(source: &str) -> Vec<Comment> {
     while i < chars.len() {
         i = _step(&chars, i, &mut found);
     }
-    found
+    group::merge(found)
 }
 
 fn _step(chars: &[char], i: usize, found: &mut Vec<Comment>) -> usize {
@@ -44,6 +44,7 @@ fn _emit(
     let full: String = chars[start..end].iter().collect();
     found.push(Comment {
         line: locate::line_at(chars, start),
+        col: locate::col(chars, start),
         full: full.trim_end().to_string(),
         is_block,
         trailing: locate::trailing(chars, start),

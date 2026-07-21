@@ -32,7 +32,7 @@ fn main() {
     }
 }
 
-// non-obvious: When invoked as `cargo enforcer <check>`, cargo injects a leading
+// not-obvious: When invoked as `cargo enforcer <check>`, cargo injects a leading
 // `enforcer` argument, which we skip.
 fn subcommands() -> Vec<String> {
     let mut positional: Vec<String> = std::env::args()

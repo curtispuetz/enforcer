@@ -8,6 +8,19 @@ pub fn line_at(chars: &[char], start: usize) -> usize {
     line
 }
 
+pub fn col(chars: &[char], start: usize) -> usize {
+    let mut c = 0;
+    let mut j = start;
+    while j > 0 {
+        j -= 1;
+        if chars[j] == '\n' {
+            break;
+        }
+        c += 1;
+    }
+    c
+}
+
 pub fn trailing(chars: &[char], start: usize) -> bool {
     let mut j = start;
     while j > 0 {
