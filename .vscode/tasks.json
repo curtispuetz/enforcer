@@ -30,7 +30,7 @@
         {
             "label": "enforcer",
             "type": "shell",
-            "command": "cargo enforcer import-rules file-sizes",
+            "command": "cargo enforcer import-rules file-sizes mod-location mod-lib-contents comment-rules",
         },
         {
             "label": "nightly fmt",
