@@ -1,7 +1,5 @@
 use crate::comment_rules::t::{
-    comment::Comment,
-    config::Config,
-    violation::BadComment,
+    comment::Comment, config::Config, violation::BadComment,
 };
 
 const NOT_OBVIOUS: &str = "not-obvious: ";
@@ -24,7 +22,9 @@ fn _is_not_obvious(comment: &Comment) -> bool {
 }
 
 fn _allowed_trailing(comment: &Comment, config: &Config) -> bool {
-    !comment.is_block && comment.trailing && comment.full.chars().count() <= config.max_trailing_len
+    !comment.is_block
+        && comment.trailing
+        && comment.full.chars().count() <= config.max_trailing_len
 }
 
 fn _reason(comment: &Comment, config: &Config) -> String {

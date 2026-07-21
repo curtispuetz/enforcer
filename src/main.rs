@@ -35,8 +35,10 @@ fn main() {
 // non-obvious: When invoked as `cargo enforcer <check>`, cargo injects a leading
 // `enforcer` argument, which we skip.
 fn subcommands() -> Vec<String> {
-    let mut positional: Vec<String> =
-        std::env::args().skip(1).filter(|a| !a.starts_with('-')).collect();
+    let mut positional: Vec<String> = std::env::args()
+        .skip(1)
+        .filter(|a| !a.starts_with('-'))
+        .collect();
     if positional.first().map(String::as_str) == Some("enforcer") {
         positional.remove(0);
     }

@@ -16,11 +16,17 @@ pub fn comments(source: &str) -> Vec<Comment> {
 fn _step(chars: &[char], i: usize, found: &mut Vec<Comment>) -> usize {
     let next = chars.get(i + 1).copied();
     match chars[i] {
-        '/' if next == Some('/') => _emit(chars, i, delimit::line_end(chars, i), false, found),
-        '/' if next == Some('*') => _emit(chars, i, delimit::block_end(chars, i), true, found),
+        '/' if next == Some('/') => {
+            _emit(chars, i, delimit::line_end(chars, i), false, found)
+        }
+        '/' if next == Some('*') => {
+            _emit(chars, i, delimit::block_end(chars, i), true, found)
+        }
         '"' => literal::string_end(chars, i),
         '\'' => literal::char_end(chars, i),
-        'r' if next == Some('"') || next == Some('#') => literal::raw_end(chars, i).unwrap_or(i + 1),
+        'r' if next == Some('"') || next == Some('#') => {
+            literal::raw_end(chars, i).unwrap_or(i + 1)
+        }
         'b' if next == Some('"') => literal::string_end(chars, i + 1),
         'b' if next == Some('\'') => literal::char_end(chars, i + 1),
         'b' if next == Some('r') => literal::raw_end(chars, i + 1).unwrap_or(i + 1),
@@ -28,7 +34,13 @@ fn _step(chars: &[char], i: usize, found: &mut Vec<Comment>) -> usize {
     }
 }
 
-fn _emit(chars: &[char], start: usize, end: usize, is_block: bool, found: &mut Vec<Comment>) -> usize {
+fn _emit(
+    chars: &[char],
+    start: usize,
+    end: usize,
+    is_block: bool,
+    found: &mut Vec<Comment>,
+) -> usize {
     let full: String = chars[start..end].iter().collect();
     found.push(Comment {
         line: locate::line_at(chars, start),

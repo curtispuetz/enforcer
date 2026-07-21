@@ -10,7 +10,10 @@ pub fn summary<V>(
         on_pass();
         return true;
     }
-    println!("\n{passed} files passed, {} files failed\n", violations.len());
+    println!(
+        "\n{passed} files passed, {} files failed\n",
+        violations.len()
+    );
     on_fail(violations);
     false
 }

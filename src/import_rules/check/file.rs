@@ -1,8 +1,7 @@
 use std::{collections::HashSet, path::Path};
 
-use crate::c::path;
 use crate::{
-    c::files,
+    c::{files, path},
     import_rules::{
         check::{
             imports::crate_use_paths,
