@@ -72,5 +72,5 @@ impl Default for CommentRules {
 }
 
 fn _default_trailing_max() -> usize {
-    10
+    20
 }

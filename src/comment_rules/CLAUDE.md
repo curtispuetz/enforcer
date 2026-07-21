@@ -7,6 +7,6 @@
     <condition>Is a short trailing comment, up to a maximum length.</condition>
     <config>
       Configurable in `rustenforcer.toml` under `[comment_rules]`:
-      <item>max_trailing_comment_len (default 10)<item>
+      <item>max_trailing_comment_len (default 20)<item>
     </config>
 </comment-rules-check>
