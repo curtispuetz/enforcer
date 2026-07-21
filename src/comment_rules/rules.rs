@@ -24,7 +24,13 @@ fn _is_not_obvious(comment: &Comment) -> bool {
 fn _allowed_trailing(comment: &Comment, config: &Config) -> bool {
     !comment.is_block
         && comment.trailing
-        && comment.full.chars().count() <= config.max_trailing_len
+        && _trailing_len(&comment.full) <= config.max_trailing_len
+}
+
+fn _trailing_len(full: &str) -> usize {
+    let slashes = full.chars().take_while(|c| *c == '/').count();
+    let body = full[slashes..].trim_start();
+    slashes + body.chars().count()
 }
 
 fn _reason(comment: &Comment, config: &Config) -> String {
