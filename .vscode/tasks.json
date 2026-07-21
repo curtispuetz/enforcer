@@ -9,7 +9,7 @@
             "command": "cargo run",
         },
         {
-            "label": "b${fileBasename}uild",
+            "label": "build",
             "type": "shell",
             "command": "cargo build",
         },

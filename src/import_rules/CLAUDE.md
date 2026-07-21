@@ -1,4 +1,29 @@
 <import-rules-check>
+    <desc>
+        Checks that a file's imports only point sideways (to siblings in its own folder) or
+        deeper (into nested modules), never up to a parent folder or across into a different
+        branch of the tree. Imports that reach up or across are violations.
+    </desc>
+    <exemptions>
+        <item>
+            c/ — shared code scoped to one level: a `c` folder is reachable by everything at or
+            below its parent (e.g. `crate::c` would be the whole-crate commons; `crate::app::c` would be
+            app-local). Inside a `c` folder the default rule starts over as if it were the crate
+            root.
+        </item>
+        <item>
+            t/, s/, ext_traits/ — universal leaves for types, static data, and extension traits.
+            Any file may import them from anywhere, and a path is exempt if any of its segments
+            is one of these.
+        </item>
+    </exemptions>
+    <config>
+        Configurable in `rustenforcer.toml` under `[import_rules]`:
+        <item>
+            ignore_export_macros - when true, imports of `#[macro_export]` macros are exempt
+            (default false)
+        </item>
+    </config>
     <code-architecture>
         Flow:
         `main::run` builds a `Config` (from `t/config.rs`; reads `ignore_export_macros` from the
