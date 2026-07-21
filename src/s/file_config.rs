@@ -23,6 +23,8 @@ pub struct FileConfig {
     pub import_rules: ImportRules,
     #[serde(default)]
     pub file_sizes: FileSizes,
+    #[serde(default, rename = "comment-rules")]
+    pub comment_rules: CommentRules,
 }
 
 #[derive(Deserialize, Default)]
@@ -52,4 +54,23 @@ impl Default for FileSizes {
 
 fn _default_num() -> usize {
     100
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CommentRules {
+    #[serde(default = "_default_trailing_max")]
+    pub trailing_comment_length: usize,
+}
+
+impl Default for CommentRules {
+    fn default() -> Self {
+        CommentRules {
+            trailing_comment_length: _default_trailing_max(),
+        }
+    }
+}
+
+fn _default_trailing_max() -> usize {
+    10
 }
