@@ -12,7 +12,7 @@ use crate::{
 pub fn run() -> bool {
     let config = Config::new();
     let (passed, violations) = _check_all(&config);
-    report(&config, passed, &violations)
+    report(config, passed, violations)
 }
 
 fn _check_all(config: &Config) -> (usize, Vec<Violation>) {

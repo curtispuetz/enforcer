@@ -8,20 +8,25 @@ use crate::{
             location::{file_dir_segments, is_static_or_types},
             rules::is_import_allowed,
         },
-        t::config::Config,
+        t::{config::Config, violation::Violation},
     },
+    s::ROOT,
 };
 
-pub fn run(path: &Path, src_dir: &Path, config: &Config) -> usize {
-    let Some(file_dir) = file_dir_segments(path, src_dir) else {
-        return 0;
-    };
+pub fn run(path: &Path, src_dir: &Path, config: &Config) -> Option<Violation> {
+    let file_dir = file_dir_segments(path, src_dir)?;
     if file_dir.iter().any(|s| is_static_or_types(s)) {
-        return 0;
+        return None;
     }
-    let violations = _disallowed_imports(path, &file_dir, config);
-    _report_violations(path, &violations);
-    violations.len()
+    let imports = _disallowed_imports(path, &file_dir, config);
+    if imports.is_empty() {
+        None
+    } else {
+        Some(Violation {
+            path: _relative(path),
+            imports,
+        })
+    }
 }
 
 fn _disallowed_imports(
@@ -35,10 +40,17 @@ fn _disallowed_imports(
             continue;
         }
         if !is_import_allowed(&use_path, file_dir) {
-            violations.push(format!("  use {};", use_path.join("::")));
+            violations.push(format!("use {};", use_path.join("::")));
         }
     }
     violations
+}
+
+fn _relative(path: &Path) -> String {
+    path.strip_prefix(ROOT.as_path())
+        .unwrap_or(path)
+        .to_string_lossy()
+        .replace('\\', "/")
 }
 
 fn _is_ignored_macro(use_path: &[String], config: &Config) -> bool {
@@ -48,14 +60,4 @@ fn _is_ignored_macro(use_path: &[String], config: &Config) -> bool {
 
 fn _macro_is_exported(use_path: &[String], exported_macros: &HashSet<String>) -> bool {
     use_path.len() == 2 && exported_macros.contains(&use_path[1])
-}
-
-fn _report_violations(path: &Path, violations: &[String]) {
-    if violations.is_empty() {
-        return;
-    }
-    eprintln!("{} has disallowed imports:", path.display());
-    for v in violations {
-        eprintln!("{v}");
-    }
 }

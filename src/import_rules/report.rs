@@ -1,15 +1,31 @@
-pub fn report(passed: usize, failed: usize) -> bool {
+use crate::import_rules::t::violation::Violation;
+
+pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
     println!("import-rules report:");
-    if failed > 0 {
-        _print_failures(passed, failed);
+    if !violations.is_empty() {
+        _print_failures(passed, violations);
         return false;
     }
     println!("All files good ({passed} files checked)");
     true
 }
 
-fn _print_failures(passed: usize, failed: usize) {
-    println!("\n{passed} files passed, {failed} files failed\n");
+fn _print_failures(passed: usize, violations: Vec<Violation>) {
+    println!(
+        "\n{passed} files passed, {} files failed\n",
+        violations.len()
+    );
+    for violation in &violations {
+        println!("{} has disallowed imports:", violation.path);
+        for import in &violation.imports {
+            println!("  {import}");
+        }
+    }
+    println!();
+    _print_rules();
+}
+
+fn _print_rules() {
     println!(
         "For failures, they are somehow breaking the file structure rules (which \
         checked for both src/ and test/ files): "

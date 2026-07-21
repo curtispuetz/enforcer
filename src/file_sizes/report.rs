@@ -1,6 +1,6 @@
 use crate::file_sizes::t::{config::Config, violation::Violation};
 
-pub fn report(config: &Config, passed: usize, violations: &[Violation]) -> bool {
+pub fn report(config: Config, passed: usize, violations: Vec<Violation>) -> bool {
     println!("file-sizes report:");
     if !violations.is_empty() {
         _print_failures(config, passed, violations);
@@ -13,7 +13,7 @@ pub fn report(config: &Config, passed: usize, violations: &[Violation]) -> bool 
     true
 }
 
-fn _print_failures(config: &Config, passed: usize, violations: &[Violation]) {
+fn _print_failures(config: Config, passed: usize, violations: Vec<Violation>) {
     println!(
         "\n{passed} files passed, {} files failed\n",
         violations.len()
