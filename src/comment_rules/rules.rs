@@ -36,7 +36,8 @@ fn _trailing_len(full: &str) -> usize {
 fn _reason(comment: &Comment, config: &Config) -> String {
     if !comment.is_block && comment.trailing {
         format!(
-            "trailing comment over {} characters",
+            "trailing comment is {} characters, over the max of {}",
+            _trailing_len(&comment.full),
             config.max_trailing_len
         )
     } else {
