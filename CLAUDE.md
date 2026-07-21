@@ -116,7 +116,7 @@
                 keeps a leaf from reaching across the codebase.
             </general>
             <use-super>
-                Sideways and deeper imports must be written with `super::` (or `self::`), never
+                Sideways and deeper imports must be written with `super::`, never
                 `crate::`. A single `super` points at the containing folder, so `super::sibling`
                 and `super::child::thing` stay within the file's own subtree by construction —
                 the form itself is the proof of direction. Never use `super::super::...`: that

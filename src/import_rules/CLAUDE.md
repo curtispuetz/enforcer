@@ -6,7 +6,7 @@
 
         The direction is enforced through the import's syntactic form:
         <item>
-            Sideways/deeper imports must be written with `super::` (or `self::`), never
+            Sideways/deeper imports must be written with `super::`, never
             `crate::`. Because a single `super` resolves to the containing folder and appending
             segments only goes deeper, a `super::`-rooted path can only ever point sideways or
             deeper — so the form itself proves the direction. `use super::super::...` is a
@@ -48,8 +48,8 @@
         segments (`file_dir_segments`) and its own module path (`own_module_segments`, which
         appends the file stem for a normal file but not for `mod.rs`/`lib.rs`) and flags the
         commons `c`/`s`/`t`/`ext_traits` dirs; `imports.rs` walks the syn AST to extract
-        `crate::`/`super::`/`self::`-rooted use paths (expanding groups/globs/renames); `rules.rs`
-        resolves each path to an absolute module path (using `own_module` for `super`/`self`) and
+        `crate::`/`super::`-rooted use paths (expanding groups/globs/renames); `rules.rs`
+        resolves each path to an absolute module path (using `own_module` for `super`) and
         returns the violation reason, if any, including the commons-directory recursion. This
         mirrors the
         &lt;import-rules&gt; preferences documented below — the check enforces the same rules the

@@ -2,7 +2,7 @@ use super::location::is_commons;
 
 enum Form {
     Crate,
-    Relative,
+    Super,
 }
 
 pub fn import_violation(
@@ -13,8 +13,8 @@ pub fn import_violation(
     let (form, resolved) = _resolve(use_path, own_module)?;
     let sideways_or_deeper = resolved.starts_with(file_dir);
     match form {
-        Form::Relative if sideways_or_deeper => None,
-        Form::Relative => Some("`super` must not go up, only sideways or deeper"),
+        Form::Super if sideways_or_deeper => None,
+        Form::Super => Some("`super` must not go up, only sideways or deeper"),
         Form::Crate if sideways_or_deeper => {
             Some("sideways or deeper import must use `super::`, not `crate::`")
         }
@@ -26,8 +26,7 @@ pub fn import_violation(
 fn _resolve(use_path: &[String], own_module: &[String]) -> Option<(Form, Vec<String>)> {
     match use_path.first()?.as_str() {
         "crate" => Some((Form::Crate, use_path.to_vec())),
-        "self" => Some((Form::Relative, _joined(own_module, &use_path[1..]))),
-        "super" => Some((Form::Relative, _resolved_super(use_path, own_module))),
+        "super" => Some((Form::Super, _resolved_super(use_path, own_module))),
         _ => None,
     }
 }

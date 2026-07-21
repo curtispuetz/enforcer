@@ -22,10 +22,7 @@ fn use_tree(item: &syn::Item) -> Option<&UseTree> {
 }
 
 fn is_internal(path: &[String]) -> bool {
-    matches!(
-        path.first().map(String::as_str),
-        Some("crate" | "super" | "self")
-    )
+    matches!(path.first().map(String::as_str), Some("crate" | "super"))
 }
 
 fn expand_use_tree(prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>> {
