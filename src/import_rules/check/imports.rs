@@ -1,12 +1,17 @@
 use syn::UseTree;
 
 pub fn crate_use_paths(file: &syn::File) -> Vec<Vec<String>> {
-    file.items
-        .iter()
-        .filter_map(use_tree)
-        .flat_map(|tree| expand_use_tree(vec![], tree))
-        .filter(|path| starts_at_crate(path))
-        .collect()
+    let mut ret = Vec::new();
+    for item in &file.items {
+        if let Some(tree) = use_tree(item) {
+            for path in expand_use_tree(vec![], tree) {
+                if starts_at_crate(&path) {
+                    ret.push(path);
+                }
+            }
+        }
+    }
+    ret
 }
 
 fn use_tree(item: &syn::Item) -> Option<&UseTree> {
