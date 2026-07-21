@@ -1,11 +1,14 @@
 use std::path::{Component, Path};
 
+use crate::s::ROOT;
+
 static EXEMPT_DIRS: [&str; 3] = ["s", "t", "ext_traits"];
 
-pub fn file_dir_segments(path: &Path, src_dir: &Path) -> Option<Vec<String>> {
-    let rel = path.strip_prefix(src_dir).ok()?;
+pub fn file_dir_segments(path: &Path) -> Option<Vec<String>> {
+    let rel = path.strip_prefix(ROOT.as_path()).ok()?;
     let mut segments = vec!["crate".to_string()];
-    for component in rel.parent()?.components() {
+    // skip(1) drops the top-level src dir (src/ or tests/).
+    for component in rel.parent()?.components().skip(1) {
         if let Component::Normal(s) = component {
             segments.push(s.to_str()?.to_string());
         }
@@ -13,7 +16,6 @@ pub fn file_dir_segments(path: &Path, src_dir: &Path) -> Option<Vec<String>> {
     Some(segments)
 }
 
-// 's' is a static-data directory, 't' is a types directory; both are exempt from the rules.
 pub fn is_static_or_types(seg: &str) -> bool {
     EXEMPT_DIRS.contains(&seg)
 }

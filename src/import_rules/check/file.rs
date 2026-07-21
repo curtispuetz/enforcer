@@ -13,8 +13,8 @@ use crate::{
     },
 };
 
-pub fn run(path: &Path, src_dir: &Path, config: &Config) -> Option<Violation> {
-    let file_dir = file_dir_segments(path, src_dir)?;
+pub fn run(path: &Path, config: &Config) -> Option<Violation> {
+    let file_dir = file_dir_segments(path)?;
     if file_dir.iter().any(|s| is_static_or_types(s)) {
         return None;
     }

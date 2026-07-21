@@ -1,33 +1,17 @@
 use std::{fs, path::Path};
 
-use crate::c::path;
 use crate::{
-    c::files,
+    c::{path, scan},
     file_sizes::{
         report::report,
         t::{config::Config, violation::Violation},
     },
-    s::EXISTING_SRC_DIRS,
 };
 
 pub fn run() -> bool {
     let config = Config::new();
-    let (passed, violations) = _check_all(&config);
+    let (passed, violations) = scan::src_files(|path| _check_file(path, &config));
     report(config, passed, violations)
-}
-
-fn _check_all(config: &Config) -> (usize, Vec<Violation>) {
-    let mut passed = 0;
-    let mut violations = Vec::new();
-    for dir_name in EXISTING_SRC_DIRS.iter() {
-        for path in files::rs(dir_name) {
-            match _check_file(&path, config) {
-                Some(violation) => violations.push(violation),
-                None => passed += 1,
-            }
-        }
-    }
-    (passed, violations)
 }
 
 fn _check_file(path: &Path, config: &Config) -> Option<Violation> {
