@@ -60,13 +60,13 @@ fn _default_num() -> usize {
 #[serde(deny_unknown_fields)]
 pub struct CommentRules {
     #[serde(default = "_default_trailing_max")]
-    pub trailing_comment_length: usize,
+    pub max_trailing_comment_len: usize,
 }
 
 impl Default for CommentRules {
     fn default() -> Self {
         CommentRules {
-            trailing_comment_length: _default_trailing_max(),
+            max_trailing_comment_len: _default_trailing_max(),
         }
     }
 }

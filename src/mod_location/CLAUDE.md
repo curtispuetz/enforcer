@@ -1,0 +1,5 @@
+<mod-location-check>
+    <desc>
+        Checks that `mod` statements appear only in `mod.rs` and `lib.rs` files. A `mod` declaration in any other file is a violation.
+    </desc>
+</mod-location-check>
