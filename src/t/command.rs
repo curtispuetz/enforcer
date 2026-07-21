@@ -9,6 +9,8 @@ pub enum Command {
     ModLocation,
     ModLibContents,
     CommentRules,
+    TypeLocation,
+    StaticLocation,
 }
 
 impl Command {
