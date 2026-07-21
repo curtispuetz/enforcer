@@ -5,7 +5,7 @@
         branch of the tree. Imports that reach up or across are violations.
     </desc>
     <commons-dirs>
-        c/, t/, s/, ext_traits/ — shared-code folders (general shared logic, types, static data,
+        c/, t/, s/, ext_traits/ — shared-code commons folders (general shared logic, types, static data,
         and extension traits respectively). All four behave the same way: a commons folder is
         reachable by everything at or below its parent (e.g. `crate::c` is the whole-crate
         commons, reachable everywhere; `crate::app::t` is app-local, reachable only from files
