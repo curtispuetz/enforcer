@@ -7,7 +7,7 @@ pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
         violations,
         || {
             println!(
-                "All mod statements are in mod.rs or lib.rs files ({passed} files checked)"
+                "[success] All mod statements are in mod.rs or lib.rs files ({passed} files checked)"
             )
         },
         _print_failures,

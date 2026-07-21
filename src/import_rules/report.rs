@@ -5,7 +5,11 @@ pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
         "import-rules",
         passed,
         violations,
-        || println!("All files followed import-rules ({passed} files checked)"),
+        || {
+            println!(
+                "[success] All files followed import-rules ({passed} files checked)"
+            )
+        },
         _print_failures,
     )
 }

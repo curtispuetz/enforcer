@@ -11,7 +11,7 @@ pub fn run() -> bool {
 }
 
 fn _check_file(path: &Path) -> Option<Violation> {
-    if _is_mod_or_lib(path) {
+    if path::is_mod_or_lib(path) {
         return None;
     }
     let mods = _mod_names(path);
@@ -23,13 +23,6 @@ fn _check_file(path: &Path) -> Option<Violation> {
             mods,
         })
     }
-}
-
-fn _is_mod_or_lib(path: &Path) -> bool {
-    matches!(
-        path.file_name().and_then(|n| n.to_str()),
-        Some("mod.rs" | "lib.rs")
-    )
 }
 
 fn _mod_names(path: &Path) -> Vec<String> {

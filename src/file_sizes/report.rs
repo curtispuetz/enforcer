@@ -10,7 +10,7 @@ pub fn report(config: Config, passed: usize, violations: Vec<Violation>) -> bool
         violations,
         || {
             println!(
-                "All files under {} lines ({passed} files checked)",
+                "[success]All files under {} lines ({passed} files checked)",
                 config.max_lines
             )
         },

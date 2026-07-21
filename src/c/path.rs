@@ -7,3 +7,10 @@ pub fn rel(path: &Path) -> String {
         .to_string_lossy()
         .replace('\\', "/")
 }
+
+pub fn is_mod_or_lib(path: &Path) -> bool {
+    matches!(
+        path.file_name().and_then(|n| n.to_str()),
+        Some("mod.rs" | "lib.rs")
+    )
+}
