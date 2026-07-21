@@ -1,12 +1,13 @@
 use strum::{Display, EnumIter, EnumString, IntoEnumIterator};
 
-use crate::{file_sizes, import_rules};
+use crate::{file_sizes, import_rules, mod_location};
 
 #[derive(Clone, Copy, Display, EnumIter, EnumString)]
 #[strum(serialize_all = "kebab-case")]
 pub enum Command {
     ImportRules,
     FileSizes,
+    ModLocation,
 }
 
 impl Command {
@@ -14,6 +15,7 @@ impl Command {
         let ret = match self {
             Command::ImportRules => import_rules::run(),
             Command::FileSizes => file_sizes::run(),
+            Command::ModLocation => mod_location::run(),
         };
         println!();
         ret
