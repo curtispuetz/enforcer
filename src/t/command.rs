@@ -11,10 +11,12 @@ pub enum Command {
 
 impl Command {
     pub fn run(self) -> bool {
-        match self {
+        let ret = match self {
             Command::ImportRules => import_rules::run(),
             Command::FileSizes => file_sizes::run(),
-        }
+        };
+        println!();
+        ret
     }
 
     pub fn available() -> String {
