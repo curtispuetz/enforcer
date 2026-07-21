@@ -4,20 +4,15 @@
         deeper (into nested modules), never up to a parent folder or across into a different
         branch of the tree. Imports that reach up or across are violations.
     </desc>
-    <exemptions>
-        <item>
-            c/ — shared code scoped to one level: a `c` folder is reachable by everything at or
-            below its parent (e.g. `crate::c` would be the whole-crate commons; `crate::app::c` would be
-            app-local). Inside a `c` folder the default rule starts over as if it were the crate
-            root.
-        </item>
-        <item>
-            t/, s/, ext_traits/ — universal leaves for types, static data, and extension traits.
-            The rules don't apply to these in either direction: any file may import them from
-            anywhere (an import is exempt if any segment of its path is one of these), and files
-            that live inside them aren't checked at all. TODO: we well actually change this.
-        </item>
-    </exemptions>
+    <commons-dirs>
+        c/, t/, s/, ext_traits/ — shared-code folders (general shared logic, types, static data,
+        and extension traits respectively). All four behave the same way: a commons folder is
+        reachable by everything at or below its parent (e.g. `crate::c` is the whole-crate
+        commons, reachable everywhere; `crate::app::t` is app-local, reachable only from files
+        at or below `crate::app`), and inside a commons folder the default rule starts over as if
+        that folder were the crate root. So a shared item must live in the commons folder at the
+        narrowest level that covers everything using it.
+    </commons-dirs>
     <config>
         Configurable in `rustenforcer.toml` under `[import_rules]`:
         <item>
@@ -34,9 +29,9 @@
         each existing src dir, and calls `check::file::run` on each, then `report::report`
         prints the pass/fail summary and exits non-zero on any failure. Inside `check/`:
         `file.rs` orchestrates one file's check; `location.rs` derives a file's module-path
-        segments and flags the exempt `s`/`t`/`ext_traits` dirs; `imports.rs` walks the syn AST
-        to extract `crate::`-rooted use paths (expanding groups/globs/renames); `rules.rs`
-        holds the core allow/deny logic including the `c`-directory recursion. This mirrors the
+        segments and flags the commons `c`/`s`/`t`/`ext_traits` dirs; `imports.rs` walks the syn
+        AST to extract `crate::`-rooted use paths (expanding groups/globs/renames); `rules.rs`
+        holds the core allow/deny logic including the commons-directory recursion. This mirrors the
         &lt;import-rules&gt; preferences documented below — the check enforces the same rules the
         codebase itself follows.
     </code-architecture>

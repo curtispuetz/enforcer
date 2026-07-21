@@ -115,32 +115,19 @@
                 what
                 keeps a leaf from reaching across the codebase.
             </general>
-            <opt-out-folders>
-                <c>
-                    c/ — shared code, scoped to one level. A `c` folder is reachable by everything at or below
-                    its parent. `crate::c` is the whole-crate commons (any file may import it);
-                    `crate::app::c`
-                    is app-local commons (only files under `crate::app` may import it). Inside a `c`
-                    folder
-                    the
-                    default rule starts over, as if that folder were the crate root — so a s`c`
-                    nested in a
-                    `c`
-                    scopes its own commons the same way.
-                </c>
-                <t_s_ext_traits>
-                    t/, s/, ext_traits/ — universal leaves for types, static data, and extension
-                    traits. Any
-                    file may import them from anywhere, and they don't count against the file doing
-                    the
-                    importing. A path is exempt if any of its segments is one of these.
-                </t_s_ext_traits>
+            <commons-folders>
+                c/, t/, s/, ext_traits/ — shared code, scoped to one level. All four behave the
+                same way. A commons folder is reachable by everything at or below its parent:
+                `crate::c` is the whole-crate commons (any file may import it); `crate::app::c` is
+                app-local commons (only files under `crate::app` may import it). Inside a commons
+                folder the default rule starts over, as if that folder were the crate root — so a
+                commons folder nested in another scopes its own commons the same way.
                 <note>
-                    So shared *types* go in a `t/`; shared *logic* goes in the narrowest `c/` that
-                    covers
-                    every file needing it.
+                    So a shared item goes in the folder for its kind — `c/` for logic, `t/` for
+                    types, `s/` for static data, `ext_traits/` for extension traits — at the
+                    narrowest level that covers every file needing it.
                 </note>
-            </opt-out-folders>
+            </commons-folders>
             <general-guide>
                 The idea is to put all static data in 's' dirs and public types in 't' dirs. There
                 can also
