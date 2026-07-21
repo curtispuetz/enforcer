@@ -1,4 +1,6 @@
-use crate::{c::report, mod_location::t::violation::Violation};
+use colored::Colorize;
+
+use crate::{c::report, mod_location::t::violation::Violation, s::SUCCESS_TAG};
 
 pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
@@ -7,7 +9,8 @@ pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
         violations,
         || {
             println!(
-                "[success] All mod statements are in mod.rs or lib.rs files ({passed} files checked)"
+                "{} All mod statements are in mod.rs or lib.rs files ({passed} files checked)",
+                *SUCCESS_TAG
             )
         },
         _print_failures,
@@ -20,9 +23,9 @@ fn _print_failures(violations: Vec<Violation>) {
     );
     for violation in &violations {
         println!(
-            "  {} (mod {})",
-            violation.path,
-            violation.mods.join(", mod ")
+            "  {} ({})",
+            violation.path.bold(),
+            format!("mod {}", violation.mods.join(", mod ")).red()
         );
     }
 }

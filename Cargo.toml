@@ -13,3 +13,4 @@ glob = "0.3"
 strum = { version = "0.28", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 toml = "1.1"
+colored = "3"

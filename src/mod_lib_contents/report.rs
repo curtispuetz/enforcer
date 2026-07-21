@@ -1,4 +1,6 @@
-use crate::{c::report, mod_lib_contents::t::violation::Violation};
+use colored::Colorize;
+
+use crate::{c::report, mod_lib_contents::t::violation::Violation, s::SUCCESS_TAG};
 
 pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
@@ -7,7 +9,8 @@ pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
         violations,
         || {
             println!(
-                "[success] All mod.rs and lib.rs files contain only mod and use statements ({passed} files checked)"
+                "{} All mod.rs and lib.rs files contain only mod and use statements ({passed} files checked)",
+                *SUCCESS_TAG
             )
         },
         _print_failures,
@@ -19,6 +22,10 @@ fn _print_failures(violations: Vec<Violation>) {
         "The following mod.rs or lib.rs file(s) contain statements other than mod and use:\n"
     );
     for violation in &violations {
-        println!("  {} ({})", violation.path, violation.items.join(", "));
+        println!(
+            "  {} ({})",
+            violation.path.bold(),
+            violation.items.join(", ").red()
+        );
     }
 }

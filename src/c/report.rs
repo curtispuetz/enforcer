@@ -1,3 +1,5 @@
+use colored::Colorize;
+
 pub fn summary<V>(
     name: &str,
     passed: usize,
@@ -5,14 +7,16 @@ pub fn summary<V>(
     on_pass: impl FnOnce(),
     on_fail: impl FnOnce(Vec<V>),
 ) -> bool {
-    println!("{name} report:");
+    println!("{}", format!("{name} report:").bold().cyan());
     if violations.is_empty() {
         on_pass();
         return true;
     }
+    let failed = violations.len();
     println!(
-        "\n{passed} files passed, {} files failed\n",
-        violations.len()
+        "\n{}, {}\n",
+        format!("{passed} files passed").green(),
+        format!("{failed} files failed").red().bold()
     );
     on_fail(violations);
     false
