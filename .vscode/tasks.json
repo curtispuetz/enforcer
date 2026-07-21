@@ -28,14 +28,9 @@
             "command": "cargo clippy",
         },
         {
-            "label": "import-rules",
+            "label": "enforcer",
             "type": "shell",
-            "command": "cargo enforcer import-rules",
-        },
-        {
-            "label": "file-sizes",
-            "type": "shell",
-            "command": "cargo enforcer file-sizes",
+            "command": "cargo enforcer import-rules file-sizes",
         },
         {
             "label": "Nightly fmt",
