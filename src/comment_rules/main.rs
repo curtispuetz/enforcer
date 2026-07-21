@@ -4,8 +4,7 @@ use crate::c::{path, scan};
 
 use super::{
     find::comments,
-    report::report,
-    rules,
+    report, rules,
     t::{
         config::Config,
         violation::{BadComment, Violation},
