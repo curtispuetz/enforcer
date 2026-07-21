@@ -13,8 +13,9 @@
         </item>
         <item>
             t/, s/, ext_traits/ — universal leaves for types, static data, and extension traits.
-            Any file may import them from anywhere, and a path is exempt if any of its segments
-            is one of these.
+            The rules don't apply to these in either direction: any file may import them from
+            anywhere (an import is exempt if any segment of its path is one of these), and files
+            that live inside them aren't checked at all. TODO: we well actually change this.
         </item>
     </exemptions>
     <config>
