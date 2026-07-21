@@ -20,7 +20,7 @@ fn _check_file(path: &Path, config: &Config) -> Option<Violation> {
         return None;
     }
     let lines = _line_count(path);
-    if lines >= config.max_lines {
+    if lines > config.max_lines {
         Some(Violation {
             path: relative,
             lines,

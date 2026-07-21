@@ -14,7 +14,7 @@ impl Config {
             ignore.insert(path.replace('\\', "/"));
         }
         Config {
-            max_lines: FILE_CONFIG.file_sizes.num,
+            max_lines: FILE_CONFIG.file_sizes.max,
             ignore,
         }
     }

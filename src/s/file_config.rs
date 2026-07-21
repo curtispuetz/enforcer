@@ -38,7 +38,7 @@ pub struct ImportRules {
 #[serde(deny_unknown_fields)]
 pub struct FileSizes {
     #[serde(default = "_default_num")]
-    pub num: usize,
+    pub max: usize,
     #[serde(default)]
     pub ignore: Vec<String>,
 }
@@ -46,14 +46,14 @@ pub struct FileSizes {
 impl Default for FileSizes {
     fn default() -> Self {
         FileSizes {
-            num: _default_num(),
+            max: _default_num(),
             ignore: Vec::new(),
         }
     }
 }
 
 fn _default_num() -> usize {
-    100
+    99
 }
 
 #[derive(Deserialize)]

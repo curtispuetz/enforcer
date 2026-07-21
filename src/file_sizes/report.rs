@@ -14,7 +14,8 @@ pub fn report(config: Config, passed: usize, violations: Vec<Violation>) -> bool
         || {
             println!(
                 "{} All files under {} lines ({passed} files checked)",
-                *SUCCESS_TAG, config.max_lines
+                *SUCCESS_TAG,
+                config.max_lines + 1
             )
         },
         |violations| _print_failures(&config, violations),
@@ -23,7 +24,7 @@ pub fn report(config: Config, passed: usize, violations: Vec<Violation>) -> bool
 
 fn _print_failures(config: &Config, violations: Vec<Violation>) {
     println!(
-        "The following file(s) have {} or more lines:\n",
+        "The following file(s) have more than {} lines:\n",
         config.max_lines
     );
     for violation in &violations {
