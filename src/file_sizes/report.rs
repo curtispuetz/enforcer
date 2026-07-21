@@ -1,17 +1,16 @@
-use std::process;
-
 use crate::file_sizes::t::{config::Config, violation::Violation};
 
-pub fn report(config: &Config, passed: usize, violations: &[Violation]) {
+pub fn report(config: &Config, passed: usize, violations: &[Violation]) -> bool {
     println!("file-sizes report:");
     if !violations.is_empty() {
         _print_failures(config, passed, violations);
-        process::exit(1);
+        return false;
     }
     println!(
         "All files under {} lines ({passed} files checked)",
         config.max_lines
     );
+    true
 }
 
 fn _print_failures(config: &Config, passed: usize, violations: &[Violation]) {

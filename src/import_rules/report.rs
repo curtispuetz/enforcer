@@ -1,12 +1,11 @@
-use std::process;
-
-pub fn report(passed: usize, failed: usize) {
+pub fn report(passed: usize, failed: usize) -> bool {
     println!("import-rules report:");
     if failed > 0 {
         _print_failures(passed, failed);
-        process::exit(1);
+        return false;
     }
     println!("All files good ({passed} files checked)");
+    true
 }
 
 fn _print_failures(passed: usize, failed: usize) {

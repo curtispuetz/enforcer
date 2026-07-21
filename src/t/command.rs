@@ -10,7 +10,7 @@ pub enum Command {
 }
 
 impl Command {
-    pub fn run(self) {
+    pub fn run(self) -> bool {
         match self {
             Command::ImportRules => import_rules::run(),
             Command::FileSizes => file_sizes::run(),

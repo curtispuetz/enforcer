@@ -4,10 +4,10 @@ use crate::{
     s::{EXISTING_SRC_DIRS, ROOT},
 };
 
-pub fn run() {
+pub fn run() -> bool {
     let config = Config::new();
     let (passed, failed) = _check_all(&config);
-    report(passed, failed);
+    report(passed, failed)
 }
 
 fn _check_all(config: &Config) -> (usize, usize) {

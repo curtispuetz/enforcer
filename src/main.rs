@@ -3,30 +3,42 @@ use std::{process, str::FromStr};
 use enforcer::t::command::Command;
 
 fn main() {
-    match subcommand().as_deref() {
-        Some(name) => match Command::from_str(name) {
-            Ok(command) => command.run(),
+    let names = subcommands();
+    if names.is_empty() {
+        eprintln!("enforcer: no check specified");
+        eprintln!("usage: cargo enforcer <check> [<check>...]");
+        eprintln!("available checks: {}", Command::available());
+        process::exit(2);
+    }
+    let mut commands = Vec::new();
+    for name in &names {
+        match Command::from_str(name) {
+            Ok(command) => commands.push(command),
             Err(_) => {
                 eprintln!("enforcer: unknown check '{name}'");
                 eprintln!("available checks: {}", Command::available());
                 process::exit(2);
             }
-        },
-        None => {
-            eprintln!("enforcer: no check specified");
-            eprintln!("usage: cargo enforcer <check>");
-            eprintln!("available checks: {}", Command::available());
-            process::exit(2);
         }
+    }
+    let mut all_passed = true;
+    for command in commands {
+        if !command.run() {
+            all_passed = false;
+        }
+    }
+    if !all_passed {
+        process::exit(1);
     }
 }
 
 // non-obvious: When invoked as `cargo enforcer <check>`, cargo injects a leading
 // `enforcer` argument, which we skip.
-fn subcommand() -> Option<String> {
-    let mut positional = std::env::args().skip(1).filter(|a| !a.starts_with('-'));
-    match positional.next() {
-        Some(arg) if arg == "enforcer" => positional.next(),
-        other => other,
+fn subcommands() -> Vec<String> {
+    let mut positional: Vec<String> =
+        std::env::args().skip(1).filter(|a| !a.starts_with('-')).collect();
+    if positional.first().map(String::as_str) == Some("enforcer") {
+        positional.remove(0);
     }
+    positional
 }
