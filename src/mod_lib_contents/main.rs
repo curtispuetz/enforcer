@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::{
     c::{files, path, scan},
-    mod_contents::{report::report, t::violation::Violation},
+    mod_lib_contents::{report::report, t::violation::Violation},
 };
 
 pub fn run() -> bool {

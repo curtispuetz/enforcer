@@ -1,6 +1,6 @@
 use strum::{Display, EnumIter, EnumString, IntoEnumIterator};
 
-use crate::{file_sizes, import_rules, mod_contents, mod_location};
+use crate::{file_sizes, import_rules, mod_lib_contents, mod_location};
 
 #[derive(Clone, Copy, Display, EnumIter, EnumString)]
 #[strum(serialize_all = "kebab-case")]
@@ -8,7 +8,7 @@ pub enum Command {
     ImportRules,
     FileSizes,
     ModLocation,
-    ModContents,
+    ModLibContents,
 }
 
 impl Command {
@@ -17,7 +17,7 @@ impl Command {
             Command::ImportRules => import_rules::run(),
             Command::FileSizes => file_sizes::run(),
             Command::ModLocation => mod_location::run(),
-            Command::ModContents => mod_contents::run(),
+            Command::ModLibContents => mod_lib_contents::run(),
         };
         println!();
         ret

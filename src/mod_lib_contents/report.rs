@@ -1,8 +1,8 @@
-use crate::{c::report, mod_contents::t::violation::Violation};
+use crate::{c::report, mod_lib_contents::t::violation::Violation};
 
 pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
-        "mod-contents",
+        "mod-lib-contents",
         passed,
         violations,
         || {
