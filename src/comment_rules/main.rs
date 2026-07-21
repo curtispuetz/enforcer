@@ -3,8 +3,7 @@ use std::{fs, path::Path};
 use crate::c::{path, scan};
 
 use super::{
-    find::comments,
-    report, rules,
+    find, report, rules,
     t::{
         config::Config,
         violation::{BadComment, Violation},
@@ -32,7 +31,7 @@ fn _check_file(path: &Path, config: &Config) -> Option<Violation> {
 fn _bad_comments(path: &Path, config: &Config) -> Vec<BadComment> {
     let source = fs::read_to_string(path).unwrap_or_default();
     let mut bad = Vec::new();
-    for comment in comments(&source) {
+    for comment in find::comments(&source) {
         if let Some(violation) = rules::check(&comment, config) {
             bad.push(violation);
         }
