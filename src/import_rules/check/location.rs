@@ -2,7 +2,7 @@ use std::path::{Component, Path};
 
 use crate::s::ROOT;
 
-static EXEMPT_DIRS: [&str; 3] = ["s", "t", "ext_traits"];
+static COMMONS_DIRS: [&str; 4] = ["c", "s", "t", "ext_traits"];
 
 pub fn file_dir_segments(path: &Path) -> Option<Vec<String>> {
     let rel = path.strip_prefix(ROOT.as_path()).ok()?;
@@ -16,6 +16,6 @@ pub fn file_dir_segments(path: &Path) -> Option<Vec<String>> {
     Some(segments)
 }
 
-pub fn is_static_or_types(seg: &str) -> bool {
-    EXEMPT_DIRS.contains(&seg)
+pub fn is_commons(seg: &str) -> bool {
+    COMMONS_DIRS.contains(&seg)
 }

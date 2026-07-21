@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "run",
+            "label": "run on self",
             "type": "shell",
-            "command": "cargo run",
+            "command": "cargo run enforcer import-rules file-sizes mod-location mod-lib-contents comment-rules",
         },
         {
             "label": "build",

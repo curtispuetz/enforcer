@@ -5,7 +5,7 @@ use crate::{
     import_rules::{
         check::{
             imports::crate_use_paths,
-            location::{file_dir_segments, is_static_or_types},
+            location::file_dir_segments,
             rules::is_import_allowed,
         },
         t::{config::Config, violation::Violation},
@@ -14,9 +14,6 @@ use crate::{
 
 pub fn run(path: &Path, config: &Config) -> Option<Violation> {
     let file_dir = file_dir_segments(path)?;
-    if file_dir.iter().any(|s| is_static_or_types(s)) {
-        return None;
-    }
     let imports = _disallowed_imports(path, &file_dir, config);
     if imports.is_empty() {
         None
