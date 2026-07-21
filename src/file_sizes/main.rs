@@ -1,12 +1,13 @@
 use std::{fs, path::Path};
 
+use crate::c::path;
 use crate::{
     c::files,
     file_sizes::{
         report::report,
         t::{config::Config, violation::Violation},
     },
-    s::{EXISTING_SRC_DIRS, ROOT},
+    s::EXISTING_SRC_DIRS,
 };
 
 pub fn run() -> bool {
@@ -30,7 +31,7 @@ fn _check_all(config: &Config) -> (usize, Vec<Violation>) {
 }
 
 fn _check_file(path: &Path, config: &Config) -> Option<Violation> {
-    let relative = _relative(path);
+    let relative = path::rel(path);
     if config.ignore.contains(&relative) {
         return None;
     }
@@ -49,11 +50,4 @@ fn _line_count(path: &Path) -> usize {
     fs::read_to_string(path)
         .map(|contents| contents.lines().count())
         .unwrap_or(0)
-}
-
-fn _relative(path: &Path) -> String {
-    path.strip_prefix(ROOT.as_path())
-        .unwrap_or(path)
-        .to_string_lossy()
-        .replace('\\', "/")
 }

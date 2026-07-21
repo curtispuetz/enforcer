@@ -1,5 +1,6 @@
 use std::{collections::HashSet, path::Path};
 
+use crate::c::path;
 use crate::{
     c::files,
     import_rules::{
@@ -10,7 +11,6 @@ use crate::{
         },
         t::{config::Config, violation::Violation},
     },
-    s::ROOT,
 };
 
 pub fn run(path: &Path, src_dir: &Path, config: &Config) -> Option<Violation> {
@@ -23,7 +23,7 @@ pub fn run(path: &Path, src_dir: &Path, config: &Config) -> Option<Violation> {
         None
     } else {
         Some(Violation {
-            path: _relative(path),
+            path: path::rel(path),
             imports,
         })
     }
@@ -44,13 +44,6 @@ fn _disallowed_imports(
         }
     }
     violations
-}
-
-fn _relative(path: &Path) -> String {
-    path.strip_prefix(ROOT.as_path())
-        .unwrap_or(path)
-        .to_string_lossy()
-        .replace('\\', "/")
 }
 
 fn _is_ignored_macro(use_path: &[String], config: &Config) -> bool {

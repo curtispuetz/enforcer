@@ -1,9 +1,10 @@
 use std::path::Path;
 
+use crate::c::path;
 use crate::{
     c::files,
     mod_location::{report::report, t::violation::Violation},
-    s::{EXISTING_SRC_DIRS, ROOT},
+    s::EXISTING_SRC_DIRS,
 };
 
 pub fn run() -> bool {
@@ -34,7 +35,7 @@ fn _check_file(path: &Path) -> Option<Violation> {
         None
     } else {
         Some(Violation {
-            path: _relative(path),
+            path: path::rel(path),
             mods,
         })
     }
@@ -56,12 +57,3 @@ fn _mod_names(path: &Path) -> Vec<String> {
     }
     names
 }
-
-fn _relative(path: &Path) -> String {
-    path.strip_prefix(ROOT.as_path())
-        .unwrap_or(path)
-        .to_string_lossy()
-        .replace('\\', "/")
-}
-
-
