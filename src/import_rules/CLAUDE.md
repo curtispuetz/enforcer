@@ -1,24 +1,20 @@
 <import-rules-check>
     <desc>
-        Checks that a file's imports only point sideways (to siblings in its own folder) or
-        deeper (into nested modules), never up to a parent folder or across into a different
+        Checks that a file's imports only point sideways (to siblings in its own module) or
+        deeper (into nested modules), never up to a parent module or across into a different
         branch of the tree. Imports that reach up or across are violations.
-
-        The direction is enforced through the import's syntactic form:
-        <item>
+        <rule>
             Sideways/deeper imports must be written with `super::`, never
-            `crate::`. Because a single `super` resolves to the containing folder and appending
-            segments only goes deeper, a `super::`-rooted path can only ever point sideways or
-            deeper — so the form itself proves the direction. `use super::super::...` is a
-            violation: it walks up out of the folder.
-        </item>
-        <item>
+            `crate::`. Because a single `super` resolves to the containing module and appending
+            segments only goes deeper. So, a `super::`-rooted path can only ever point sideways or
+            deeper. `use super::super::...` is a violation because it walks up out of the folder.
+        </rule>
+        <rule>
             `crate::`-rooted imports are allowed only when reaching a commons dir that lives
-            above the file's own folder (see &lt;commons-dirs&gt;); those genuinely go up, which
-            `super` cannot express without `super::super`. A `crate::` path that is actually
-            sideways/deeper is a violation (it should use `super::`), and one that reaches a
-            non-commons target up/across is a violation as before.
-        </item>
+            above the file's own folder (see &lt;commons-dirs&gt; below); those genuinely go up, which
+            `super` cannot express without `super::super`. A `crate::` path that reaches a
+            non-commons target up/across is a violation.
+        </rule>
     </desc>
     <commons-dirs>
         c/, t/, s/, ext_traits/ — shared-code commons folders (general shared logic, types, static data,
