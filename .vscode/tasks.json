@@ -6,7 +6,7 @@
         {
             "label": "run on self",
             "type": "shell",
-            "command": "cargo run enforcer import-rules file-sizes mod-location mod-lib-contents comment-rules",
+            "command": "cargo run enforcer all",
         },
         {
             "label": "build",
@@ -30,7 +30,7 @@
         {
             "label": "enforcer",
             "type": "shell",
-            "command": "cargo enforcer import-rules file-sizes mod-location mod-lib-contents comment-rules",
+            "command": "cargo enforcer all",
         },
         {
             "label": "nightly fmt",

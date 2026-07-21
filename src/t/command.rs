@@ -3,6 +3,7 @@ use strum::{Display, EnumIter, EnumString, IntoEnumIterator};
 #[derive(Clone, Copy, Display, EnumIter, EnumString)]
 #[strum(serialize_all = "kebab-case")]
 pub enum Command {
+    All,
     ImportRules,
     FileSizes,
     ModLocation,
