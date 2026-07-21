@@ -1,8 +1,8 @@
 use strum::IntoEnumIterator;
 
 use super::{
-    comment_rules, file_sizes, import_rules, mod_lib_contents, mod_location, static_location,
-    type_location, t::command::Command,
+    comment_rules, file_sizes, import_rules, mod_lib_contents, mod_location,
+    static_location, t::Command, type_location,
 };
 
 pub fn check(command: Command) -> bool {

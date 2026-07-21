@@ -1,6 +1,6 @@
 use std::{process, str::FromStr};
 
-use enforcer::{run, t::command::Command};
+use enforcer::{run, t::Command};
 
 fn main() {
     let names = subcommands();

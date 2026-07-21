@@ -20,9 +20,7 @@ pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
 }
 
 fn _print_failures(violations: Vec<Violation>) {
-    println!(
-        "The following file(s) define public types outside a t/ directory:\n"
-    );
+    println!("The following file(s) define public types outside a t/ directory:\n");
     for violation in &violations {
         println!(
             "  {} ({})",

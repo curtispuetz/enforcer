@@ -20,9 +20,7 @@ pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
 }
 
 fn _print_failures(violations: Vec<Violation>) {
-    println!(
-        "The following file(s) define public statics outside an s/ directory:\n"
-    );
+    println!("The following file(s) define public statics outside an s/ directory:\n");
     for violation in &violations {
         println!(
             "  {} ({})",

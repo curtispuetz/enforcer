@@ -1,0 +1,60 @@
+use serde::Deserialize;
+
+#[derive(Deserialize, Default)]
+#[serde(deny_unknown_fields)]
+pub struct FileConfig {
+    #[serde(default)]
+    pub import_rules: ImportRules,
+    #[serde(default)]
+    pub file_sizes: FileSizes,
+    #[serde(default, rename = "comment-rules")]
+    pub comment_rules: CommentRules,
+}
+
+#[derive(Deserialize, Default)]
+#[serde(deny_unknown_fields)]
+pub struct ImportRules {
+    #[serde(default)]
+    pub ignore_export_macros: bool,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FileSizes {
+    #[serde(default = "_default_num")]
+    pub max: usize,
+    #[serde(default)]
+    pub ignore: Vec<String>,
+}
+
+impl Default for FileSizes {
+    fn default() -> Self {
+        FileSizes {
+            max: _default_num(),
+            ignore: Vec::new(),
+        }
+    }
+}
+
+fn _default_num() -> usize {
+    99
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CommentRules {
+    #[serde(default = "_default_trailing_max")]
+    pub max_trailing_comment_len: usize,
+}
+
+impl Default for CommentRules {
+    fn default() -> Self {
+        CommentRules {
+            max_trailing_comment_len: _default_trailing_max(),
+        }
+    }
+}
+
+fn _default_trailing_max() -> usize {
+    20
+}
