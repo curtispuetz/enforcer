@@ -4,17 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run",
+            "label": "run",
             "type": "shell",
             "command": "cargo run",
         },
         {
-            "label": "Build",
+            "label": "b${fileBasename}uild",
             "type": "shell",
             "command": "cargo build",
         },
         {
-            "label": "Fix",
+            "label": "fix",
             "type": "shell",
             "command": "cargo fix --allow-dirty",
             "presentation": {
@@ -33,7 +33,7 @@
             "command": "cargo enforcer import-rules file-sizes",
         },
         {
-            "label": "Nightly fmt",
+            "label": "nightly fmt",
             "type": "shell",
             "command": "cargo +nightly fmt",
             "presentation": {
@@ -42,7 +42,7 @@
             }
         },
         {
-            "label": "Fix imports",
+            "label": "fix imports",
             "type": "shell",
             "command": "python",
             "osx": {
