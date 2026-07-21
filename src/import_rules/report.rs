@@ -1,6 +1,7 @@
 use std::process;
 
 pub fn report(passed: usize, failed: usize) {
+    println!("import-rules report:");
     if failed > 0 {
         _print_failures(passed, failed);
         process::exit(1);

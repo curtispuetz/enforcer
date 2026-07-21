@@ -33,6 +33,11 @@
             "command": "cargo enforcer import-rules",
         },
         {
+            "label": "file-sizes",
+            "type": "shell",
+            "command": "cargo enforcer file-sizes",
+        },
+        {
             "label": "Nightly fmt",
             "type": "shell",
             "command": "cargo +nightly fmt",
