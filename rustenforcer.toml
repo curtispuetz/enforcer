@@ -1,0 +1,2 @@
+[mod_count]
+ignore = ["src/checks"]

@@ -1,11 +1,9 @@
 <commons-exports-check>
     <desc>
-        Checks the root `mod.rs` of every `t/` and `s/` directory (a `mod.rs` whose parent folder
-        is named `t` or `s`). For a `t/` directory, every top-level public `struct`, `enum`,
+        Checks the root `mod.rs` of every `t/` and `s/` commons directory. For a `t/` directory, every top-level public `struct`, `enum`,
         `trait`, and `type` alias defined anywhere in the directory must be re-exported by a
-        `pub use` in the root `mod.rs`. For an `s/` directory, every top-level public `static`
-        defined anywhere in the directory must be re-exported. In both cases every module declared
-        in the root `mod.rs` must be private (`mod x;`, never `pub mod x;`).
+        `pub use` in the root `mod.rs`. For an `s/` directory, the same for every `static`
+        defined anywhere. In both cases every module declared in the root `mod.rs` must be private (`mod x;`, never `pub mod x;`).
     </desc>
     <rationale>
         Users import flat: `use ...::t::TypeName`, never `use ...::t::submodule::TypeName`.

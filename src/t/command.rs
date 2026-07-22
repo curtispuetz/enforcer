@@ -16,6 +16,7 @@ pub enum Command {
     CModContents,
     CommonsNesting,
     CommonsExports,
+    ModCount,
 }
 
 impl Command {

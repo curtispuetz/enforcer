@@ -5,6 +5,7 @@ pub mod commons_exports;
 pub mod commons_nesting;
 pub mod file_sizes;
 pub mod import_rules;
+pub mod mod_count;
 pub mod mod_lib_contents;
 pub mod mod_location;
 pub mod mod_over_file;
