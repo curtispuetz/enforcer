@@ -1,4 +1,4 @@
-use super::t::{comment::Comment, config::Config, violation::BadComment};
+use super::t::{BadComment, Comment, Config};
 
 const NOT_OBVIOUS: &str = "not-obvious: ";
 

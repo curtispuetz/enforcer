@@ -5,3 +5,4 @@ mod report;
 mod t;
 
 pub use main::run;
+pub use report::report;

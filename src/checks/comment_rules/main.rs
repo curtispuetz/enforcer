@@ -4,10 +4,7 @@ use crate::c::{path, scan};
 
 use super::{
     find, report, rules,
-    t::{
-        config::Config,
-        violation::{BadComment, Violation},
-    },
+    t::{BadComment, Config, Violation},
 };
 
 pub fn run() -> bool {

@@ -1,1 +1,3 @@
-pub mod violation;
+mod violation;
+
+pub use violation::Violation;

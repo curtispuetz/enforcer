@@ -1,2 +1,5 @@
-pub mod config;
-pub mod violation;
+mod config;
+mod violation;
+
+pub use config::Config;
+pub use violation::Violation;

@@ -3,8 +3,8 @@ use std::{fs, path::Path};
 use crate::c::{path, scan};
 
 use super::{
-    report::report,
-    t::{config::Config, violation::Violation},
+    report,
+    t::{Config, Violation},
 };
 
 pub fn run() -> bool {

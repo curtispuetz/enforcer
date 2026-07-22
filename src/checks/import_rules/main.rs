@@ -5,7 +5,7 @@ use crate::{
     s::{EXISTING_SRC_DIRS, FILE_CONFIG},
 };
 
-use super::{check, macros, report::report, t::config::Config};
+use super::{check, macros, report, t::Config};
 
 pub fn run() -> bool {
     let config = _init_config();

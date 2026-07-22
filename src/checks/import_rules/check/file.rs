@@ -2,10 +2,7 @@ use std::{collections::HashSet, path::Path};
 
 use crate::{
     c::{files, path},
-    checks::import_rules::t::{
-        config::Config,
-        violation::{BadImport, Violation},
-    },
+    checks::import_rules::t::{BadImport, Config, Violation},
 };
 
 use super::{

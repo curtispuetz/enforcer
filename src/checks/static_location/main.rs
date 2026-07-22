@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::c::{ast, files, path, scan};
 
-use super::{report::report, t::violation::Violation};
+use super::{report, t::Violation};
 
 pub fn run() -> bool {
     let (passed, violations) = scan::src_files(_check_file);
