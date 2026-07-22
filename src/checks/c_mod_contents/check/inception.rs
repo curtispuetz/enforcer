@@ -1,6 +1,10 @@
+use std::path::Path;
+
 use crate::c::ast;
 
-pub fn violations(file: &syn::File) -> Vec<String> {
+use super::reexports;
+
+pub fn violations(path: &Path, file: &syn::File) -> Vec<String> {
     let mut issues = Vec::new();
     if !_has_inception_allow(&file.attrs) {
         issues.push("missing `#![allow(clippy::module_inception)]`".to_string());
@@ -8,8 +12,13 @@ pub fn violations(file: &syn::File) -> Vec<String> {
     if !_has_private_mod_c(&file.items) {
         issues.push("missing `mod c;` declaration".to_string());
     }
-    if !_has_single_pub_use_c(&file.items) {
-        issues.push("missing single `pub use c::{...}` statement".to_string());
+    match _single_pub_use_c(&file.items) {
+        Some(u) => {
+            for name in reexports::missing(u, path) {
+                issues.push(format!("`pub use c` does not re-export `{name}`"));
+            }
+        }
+        None => issues.push("missing single `pub use c::{...}` statement".to_string()),
     }
     for item in &file.items {
         if let syn::Item::Mod(m) = item
@@ -44,14 +53,14 @@ fn _has_private_mod_c(items: &[syn::Item]) -> bool {
     })
 }
 
-fn _has_single_pub_use_c(items: &[syn::Item]) -> bool {
+fn _single_pub_use_c(items: &[syn::Item]) -> Option<&syn::ItemUse> {
     let mut uses = items.iter().filter_map(|item| match item {
         syn::Item::Use(u) => Some(u),
         _ => None,
     });
     match (uses.next(), uses.next()) {
-        (Some(u), None) => _is_pub_use_c(u),
-        _ => false,
+        (Some(u), None) if _is_pub_use_c(u) => Some(u),
+        _ => None,
     }
 }
 

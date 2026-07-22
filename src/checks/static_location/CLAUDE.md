@@ -1,7 +1,7 @@
 <static-location-check>
     <desc>
-        Checks that every public `static` is defined in an `s/` directory. A public static defined
+        Checks that every top-level public `static` is defined in an `s/` directory. A public static defined
         anywhere outside an `s/` directory is a violation. Private (non-`pub`) statics are allowed
-        anywhere. Only top-level items are checked.
+        anywhere.
     </desc>
 </static-location-check>

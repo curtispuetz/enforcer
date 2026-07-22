@@ -13,4 +13,11 @@
             items, alongside its other `pub mod` statements.
         </item>
     </exception>
+    <reexport-completeness>
+        The `pub use c::{...}` must re-export every public name of the nested `c` module. The
+        nested module's public names are gathered from its own `c/mod.rs` (the `pub mod` idents
+        plus the exposed names of its `pub use` re-exports); any that are missing from the outer
+        `pub use c::{...}` group are reported. A `pub use c::*` glob satisfies this by re-exporting
+        everything.
+    </reexport-completeness>
 </c-mod-contents-check>
