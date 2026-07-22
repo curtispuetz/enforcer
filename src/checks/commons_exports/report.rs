@@ -9,8 +9,8 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
         violations,
         || {
             println!(
-                "{} All t/ and s/ root mod.rs files re-export their public items and \
-                keep modules private ({passed} files checked)",
+                "{} All t/ and s/ root mod.rs files glob re-export their modules and \
+                keep them private ({passed} files checked)",
                 *SUCCESS_TAG
             )
         },

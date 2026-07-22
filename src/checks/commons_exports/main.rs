@@ -13,8 +13,10 @@ pub fn run() -> bool {
 }
 
 fn _check_file(path: &Path) -> Option<ItemsViolation> {
-    let kind = classify::kind_of(path)?;
-    let items = issues::of(path, kind);
+    if !classify::is_commons_root(path) {
+        return None;
+    }
+    let items = issues::of(path);
     if items.is_empty() {
         None
     } else {

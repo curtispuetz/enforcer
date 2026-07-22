@@ -2,15 +2,9 @@ use std::path::Path;
 
 use crate::c::path;
 
-use super::t::Kind;
-
-pub fn kind_of(path: &Path) -> Option<Kind> {
+pub fn is_commons_root(path: &Path) -> bool {
     if path.file_name().and_then(|n| n.to_str()) != Some("mod.rs") {
-        return None;
+        return false;
     }
-    match path::parent_name(path) {
-        Some("t") => Some(Kind::Types),
-        Some("s") => Some(Kind::Statics),
-        _ => None,
-    }
+    matches!(path::parent_name(path), Some("t" | "s"))
 }
