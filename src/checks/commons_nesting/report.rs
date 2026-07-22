@@ -20,7 +20,9 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
 }
 
 fn _print_failures(violations: Vec<Violation>) {
-    println!("The following commons director(ies) are nested inside one of the same kind:\n");
+    println!(
+        "The following commons director(ies) are nested inside one of the same kind:\n"
+    );
     for violation in &violations {
         println!(
             "  {} (nested inside {})",

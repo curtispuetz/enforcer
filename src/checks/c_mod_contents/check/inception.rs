@@ -9,7 +9,9 @@ pub fn violations(path: &Path, file: &syn::File) -> Vec<String> {
     match _private_mod_c(&file.items) {
         None => issues.push("missing `mod c;` declaration".to_string()),
         Some(m) if !_has_inception_allow(&m.attrs) => {
-            issues.push("`mod c;` missing `#[allow(clippy::module_inception)]`".to_string());
+            issues.push(
+                "`mod c;` missing `#[allow(clippy::module_inception)]`".to_string(),
+            );
         }
         Some(_) => {}
     }

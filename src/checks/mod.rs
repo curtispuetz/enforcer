@@ -1,4 +1,3 @@
-pub mod c;
 pub mod c_mod_contents;
 pub mod call_rules;
 pub mod comment_rules;
@@ -10,5 +9,4 @@ pub mod mod_lib_contents;
 pub mod mod_location;
 pub mod mod_over_file;
 pub mod static_location;
-pub mod t;
 pub mod type_location;

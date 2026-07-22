@@ -1,6 +1,6 @@
 use colored::Colorize;
 
-use crate::{c::report, checks::t::ItemsViolation, s::SUCCESS_TAG};
+use crate::{c::report, s::SUCCESS_TAG, t::ItemsViolation};
 
 pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(

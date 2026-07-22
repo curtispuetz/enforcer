@@ -1,9 +1,6 @@
 use std::{collections::HashSet, path::Path};
 
-use crate::{
-    c::{ast, files},
-    checks::c::use_tree,
-};
+use crate::c::{ast, files};
 
 pub fn missing(outer: &syn::ItemUse, outer_mod: &Path) -> Vec<String> {
     let Some(c_mod) = _sub_c_mod(outer_mod) else {
@@ -63,9 +60,11 @@ fn _inner_public_names(c_mod: &Path) -> Vec<String> {
     let mut names = Vec::new();
     for item in files::parse(c_mod).items {
         match item {
-            syn::Item::Mod(m) if ast::is_public(&m.vis) => names.push(m.ident.to_string()),
+            syn::Item::Mod(m) if ast::is_public(&m.vis) => {
+                names.push(m.ident.to_string())
+            }
             syn::Item::Use(u) if ast::is_public(&u.vis) => {
-                use_tree::exposed_names(&u.tree, &mut names, &mut false);
+                ast::exposed_names(&u.tree, &mut names, &mut false);
             }
             _ => {}
         }

@@ -13,7 +13,10 @@ pub fn violations(file: &syn::File) -> Vec<String> {
     items
 }
 
-fn _item(segments: &[String], imported: &HashMap<String, Vec<String>>) -> Option<String> {
+fn _item(
+    segments: &[String],
+    imported: &HashMap<String, Vec<String>>,
+) -> Option<String> {
     let name = segments.last()?;
     if !words::is_function_like(name) {
         return None;
@@ -28,7 +31,10 @@ fn _item(segments: &[String], imported: &HashMap<String, Vec<String>>) -> Option
     Some(message::repeated_word(segments, &word))
 }
 
-fn _direct_import(name: &str, imported: &HashMap<String, Vec<String>>) -> Option<String> {
+fn _direct_import(
+    name: &str,
+    imported: &HashMap<String, Vec<String>>,
+) -> Option<String> {
     let path = imported.get(name)?;
     if !_is_internal_path(path) {
         return None;
@@ -38,7 +44,9 @@ fn _direct_import(name: &str, imported: &HashMap<String, Vec<String>>) -> Option
 
 fn _is_internal(root: &str, imported: &HashMap<String, Vec<String>>) -> bool {
     matches!(root, "crate" | "super" | "self")
-        || imported.get(root).is_some_and(|path| _is_internal_path(path))
+        || imported
+            .get(root)
+            .is_some_and(|path| _is_internal_path(path))
 }
 
 fn _is_internal_path(path: &[String]) -> bool {

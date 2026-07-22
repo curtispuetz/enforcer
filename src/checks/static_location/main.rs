@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::{
     c::{ast, files, path, scan},
-    checks::t::ItemsViolation,
+    t::ItemsViolation,
 };
 
 use super::report;
