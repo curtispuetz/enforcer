@@ -4,7 +4,7 @@
         number of lines.
     </desc>
     <config>
-        Configurable in rustenforcer.toml under `[file_sizes]`:
+        Configurable in enforcer.toml under `[file_sizes]`:
         <item>max - max number of lines (default 99)</item>
         <item>ignore - list of exempt files from the rule</item>
     </config>

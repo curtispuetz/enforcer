@@ -26,10 +26,10 @@
         <check-impls>
             Asside from the shared-code, each check is implemented in its own folder under `src/checks`. In each folder, there is a description of the check in CLAUDE.md.
         </check-impls>
-        <rustenforcer.toml>
+        <enforcer.toml>
             `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
-            `rustenforcer.toml` from the project root (`ROOT`), allows users to configure the checks.
-        </rustenforcer.toml>
+            `enforcer.toml` from the project root (`ROOT`), allows users to configure the checks.
+        </enforcer.toml>
         <std-out>
             All checks should print good messages to the console about the results using nice color schemes following the pattern already laid out. A message of the "all passed" sort if all pass, and if failures should print details, so the user knowns where the failures happened and can click links, if possible, to go fix. The number of passes and failures should be printed in all cases, like it is for the existing checks.
         </std-out>

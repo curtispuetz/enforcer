@@ -5,7 +5,7 @@ use crate::t::FileConfig;
 use super::main::ROOT;
 
 pub static FILE_CONFIG: LazyLock<FileConfig> = LazyLock::new(|| {
-    let path = ROOT.join("rustenforcer.toml");
+    let path = ROOT.join("enforcer.toml");
     let Ok(contents) = std::fs::read_to_string(&path) else {
         return FileConfig::default();
     };

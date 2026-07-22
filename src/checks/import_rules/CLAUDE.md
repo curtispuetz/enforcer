@@ -28,7 +28,7 @@
         narrowest level that covers everything using it.
     </commons-dirs>
     <config>
-        Configurable in `rustenforcer.toml` under `[import_rules]`:
+        Configurable in `enforcer.toml` under `[import_rules]`:
         <item>
             ignore_export_macros - when true, imports of `#[macro_export]` macros are exempt
             (default false)
@@ -37,7 +37,7 @@
     <code-architecture>
         Flow:
         `main::run` builds a `Config` (from `t/config.rs`; reads `ignore_export_macros` from the
-        `[import_rules]` section of `rustenforcer.toml` in the project root via `read_toml.rs`,
+        `[import_rules]` section of `enforcer.toml` in the project root via `read_toml.rs`,
         defaulting to false if the file or key is absent, and,
         if set, collects `#[macro_export]` names via `macros.rs`), iterates every `.rs` file in
         each existing src dir, and calls `check::file::run` on each, then `report::report`
