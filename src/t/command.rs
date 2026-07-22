@@ -17,6 +17,7 @@ pub enum Command {
     CommonsNesting,
     CommonsExports,
     ModCount,
+    UsePrivacy,
 }
 
 impl Command {

@@ -20,6 +20,7 @@ pub fn check(command: Command) -> bool {
         Command::CommonsNesting => checks::commons_nesting::run(),
         Command::CommonsExports => checks::commons_exports::run(),
         Command::ModCount => checks::mod_count::run(),
+        Command::UsePrivacy => checks::use_privacy::run(),
     };
     println!();
     ret
