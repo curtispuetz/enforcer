@@ -1,3 +1,4 @@
+pub mod call_rules;
 pub mod comment_rules;
 pub mod file_sizes;
 pub mod import_rules;

@@ -11,6 +11,7 @@ pub enum Command {
     CommentRules,
     TypeLocation,
     StaticLocation,
+    CallRules,
 }
 
 impl Command {

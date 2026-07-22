@@ -14,6 +14,7 @@ pub fn check(command: Command) -> bool {
         Command::CommentRules => checks::comment_rules::run(),
         Command::TypeLocation => checks::type_location::run(),
         Command::StaticLocation => checks::static_location::run(),
+        Command::CallRules => checks::call_rules::run(),
     };
     println!();
     ret

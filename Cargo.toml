@@ -8,7 +8,7 @@ name = "cargo-enforcer"
 path = "src/main.rs"
 
 [dependencies]
-syn = { version = "3", features = ["full"] }
+syn = { version = "3", features = ["full", "visit"] }
 glob = "0.3"
 strum = { version = "0.28", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
