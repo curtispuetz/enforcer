@@ -1,7 +1,6 @@
 <file-sizes-check>
     <desc>
-        Checks that no source file is too long. A file fails if it has more than a maximum
-        number of lines.
+        Checks that no source file is too long. A file fails if it has more than a maximum number of lines.
     </desc>
     <config>
         Configurable in enforcer.toml under `[file_sizes]`:
