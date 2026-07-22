@@ -15,6 +15,7 @@ pub enum Command {
     CallRules,
     CModContents,
     CommonsNesting,
+    CommonsExports,
 }
 
 impl Command {

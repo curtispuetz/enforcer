@@ -18,6 +18,7 @@ pub fn check(command: Command) -> bool {
         Command::CallRules => checks::call_rules::run(),
         Command::CModContents => checks::c_mod_contents::run(),
         Command::CommonsNesting => checks::commons_nesting::run(),
+        Command::CommonsExports => checks::commons_exports::run(),
     };
     println!();
     ret
