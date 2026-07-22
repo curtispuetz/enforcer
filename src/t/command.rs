@@ -18,6 +18,7 @@ pub enum Command {
     CommonsExports,
     ModCount,
     UsePrivacy,
+    CognitiveComplexity,
 }
 
 impl Command {

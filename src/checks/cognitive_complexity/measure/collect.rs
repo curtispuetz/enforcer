@@ -1,0 +1,54 @@
+use syn::{Block, ImplItem, Item, TraitItem};
+
+use crate::checks::cognitive_complexity::t::Function;
+
+use super::{name, score};
+
+pub fn functions(file: &syn::File) -> Vec<Function> {
+    let mut found = Vec::new();
+    _items(&file.items, None, &mut found);
+    found
+}
+
+fn _items(items: &[Item], type_name: Option<&str>, found: &mut Vec<Function>) {
+    for item in items {
+        _item(item, type_name, found);
+    }
+}
+
+fn _item(item: &Item, type_name: Option<&str>, found: &mut Vec<Function>) {
+    match item {
+        Item::Fn(f) => _measure(&f.sig, &f.block, type_name, found),
+        Item::Mod(m) => {
+            if let Some((_, items)) = &m.content {
+                _items(items, type_name, found);
+            }
+        }
+        Item::Impl(i) => {
+            let self_name = name::self_type(&i.self_ty);
+            for impl_item in &i.items {
+                if let ImplItem::Fn(m) = impl_item {
+                    _measure(&m.sig, &m.block, self_name.as_deref(), found);
+                }
+            }
+        }
+        Item::Trait(t) => {
+            for trait_item in &t.items {
+                if let TraitItem::Fn(m) = trait_item
+                    && let Some(block) = &m.default
+                {
+                    _measure(&m.sig, block, Some(&t.ident.to_string()), found);
+                }
+            }
+        }
+        _ => {}
+    }
+}
+
+fn _measure(sig: &syn::Signature, block: &Block, type_name: Option<&str>, found: &mut Vec<Function>) {
+    found.push(Function {
+        name: name::of(&sig.ident, type_name),
+        line: sig.ident.span().start().line,
+        score: score::of(block),
+    });
+}

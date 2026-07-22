@@ -17,6 +17,7 @@ version = "0.1.0"
 dependencies = [
  "colored",
  "glob",
+ "proc-macro2",
  "serde",
  "strum",
  "syn 3.0.2",

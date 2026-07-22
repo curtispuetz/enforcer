@@ -1,5 +1,6 @@
 pub mod c_mod_contents;
 pub mod call_rules;
+pub mod cognitive_complexity;
 pub mod comment_rules;
 pub mod commons_exports;
 pub mod commons_nesting;

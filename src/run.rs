@@ -21,6 +21,7 @@ pub fn check(command: Command) -> bool {
         Command::CommonsExports => checks::commons_exports::run(),
         Command::ModCount => checks::mod_count::run(),
         Command::UsePrivacy => checks::use_privacy::run(),
+        Command::CognitiveComplexity => checks::cognitive_complexity::run(),
     };
     println!();
     ret
