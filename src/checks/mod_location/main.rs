@@ -1,6 +1,9 @@
 use std::path::Path;
 
-use crate::c::{files, path, scan};
+use crate::{
+    c::{files, path, scan},
+    t::Outcome,
+};
 
 use super::{report, t::Violation};
 
@@ -9,15 +12,15 @@ pub fn run() -> bool {
     report::print(passed, violations)
 }
 
-fn _check_file(path: &Path) -> Option<Violation> {
+fn _check_file(path: &Path) -> Outcome<Violation> {
     if path::is_mod_or_lib(path) {
-        return None;
+        return Outcome::Skipped;
     }
     let mods = _mod_names(path);
     if mods.is_empty() {
-        None
+        Outcome::Passed
     } else {
-        Some(Violation {
+        Outcome::Failed(Violation {
             path: path::rel(path),
             mods,
         })

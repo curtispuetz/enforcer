@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::{
     c::{files, path, scan},
-    t::ItemsViolation,
+    t::{ItemsViolation, Outcome},
 };
 
 use super::{find, report};
@@ -12,12 +12,12 @@ pub fn run() -> bool {
     report::print(passed, violations)
 }
 
-fn _check_file(path: &Path) -> Option<ItemsViolation> {
+fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     let items = find::violations(&files::parse(path));
     if items.is_empty() {
-        None
+        Outcome::Passed
     } else {
-        Some(ItemsViolation {
+        Outcome::Failed(ItemsViolation {
             path: path::rel(path),
             items,
         })

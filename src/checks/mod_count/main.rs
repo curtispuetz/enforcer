@@ -1,6 +1,9 @@
 use std::path::Path;
 
-use crate::c::{files, path, scan};
+use crate::{
+    c::{files, path, scan},
+    t::Outcome,
+};
 
 use super::{
     report,
@@ -13,19 +16,19 @@ pub fn run() -> bool {
     report::print(config, passed, violations)
 }
 
-fn _check_file(path: &Path, config: &Config) -> Option<Violation> {
+fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     if !path::is_mod_or_lib(path) {
-        return None;
+        return Outcome::Skipped;
     }
     let module = path::rel(path.parent().unwrap_or(path));
     if config.ignore.contains(&module) {
-        return None;
+        return Outcome::Skipped;
     }
     let count = _mod_count(path);
     if count > config.max {
-        Some(Violation { module, count })
+        Outcome::Failed(Violation { module, count })
     } else {
-        None
+        Outcome::Passed
     }
 }
 

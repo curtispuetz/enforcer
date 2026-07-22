@@ -1,6 +1,9 @@
 use std::{fs, path::Path};
 
-use crate::c::{path, scan};
+use crate::{
+    c::{path, scan},
+    t::Outcome,
+};
 
 use super::{
     find, report, rules,
@@ -13,12 +16,12 @@ pub fn run() -> bool {
     report::print(config, passed, violations)
 }
 
-fn _check_file(path: &Path, config: &Config) -> Option<Violation> {
+fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     let bad = _bad_comments(path, config);
     if bad.is_empty() {
-        None
+        Outcome::Passed
     } else {
-        Some(Violation {
+        Outcome::Failed(Violation {
             path: path::rel(path),
             comments: bad,
         })

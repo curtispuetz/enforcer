@@ -1,6 +1,9 @@
 use std::{fs, path::Path};
 
-use crate::c::{path, scan};
+use crate::{
+    c::{path, scan},
+    t::Outcome,
+};
 
 use super::{
     report,
@@ -13,19 +16,19 @@ pub fn run() -> bool {
     report::print(config, passed, violations)
 }
 
-fn _check_file(path: &Path, config: &Config) -> Option<Violation> {
+fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     let relative = path::rel(path);
     if config.ignore.contains(&relative) {
-        return None;
+        return Outcome::Skipped;
     }
     let lines = _line_count(path);
     if lines > config.max_lines {
-        Some(Violation {
+        Outcome::Failed(Violation {
             path: relative,
             lines,
         })
     } else {
-        None
+        Outcome::Passed
     }
 }
 

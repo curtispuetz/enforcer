@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::{
     c::{files, path, scan},
-    t::ItemsViolation,
+    t::{ItemsViolation, Outcome},
 };
 
 use super::report;
@@ -12,15 +12,15 @@ pub fn run() -> bool {
     report::print(passed, violations)
 }
 
-fn _check_file(path: &Path) -> Option<ItemsViolation> {
+fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     if !path::is_mod_or_lib(path) {
-        return None;
+        return Outcome::Skipped;
     }
     let items = _disallowed_items(path);
     if items.is_empty() {
-        None
+        Outcome::Passed
     } else {
-        Some(ItemsViolation {
+        Outcome::Failed(ItemsViolation {
             path: path::rel(path),
             items,
         })

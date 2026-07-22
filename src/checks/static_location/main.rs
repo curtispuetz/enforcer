@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::{
     c::{ast, files, path, scan},
-    t::ItemsViolation,
+    t::{ItemsViolation, Outcome},
 };
 
 use super::report;
@@ -12,15 +12,15 @@ pub fn run() -> bool {
     report::print(passed, violations)
 }
 
-fn _check_file(path: &Path) -> Option<ItemsViolation> {
+fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     if path::under_dir(path, "s") {
-        return None;
+        return Outcome::Skipped;
     }
     let items = _misplaced_statics(path);
     if items.is_empty() {
-        None
+        Outcome::Passed
     } else {
-        Some(ItemsViolation {
+        Outcome::Failed(ItemsViolation {
             path: path::rel(path),
             items,
         })

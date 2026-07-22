@@ -3,18 +3,22 @@ use std::{collections::HashSet, path::Path};
 use crate::{
     c::{files, path},
     checks::import_rules::t::{BadImport, Config, Violation},
+    t::Outcome,
 };
 
 use super::{imports, rules, segments};
 
-pub fn run(path: &Path, config: &Config) -> Option<Violation> {
-    let file_dir = segments::file_dir(path)?;
-    let own_module = segments::own_module(path)?;
+pub fn run(path: &Path, config: &Config) -> Outcome<Violation> {
+    let (Some(file_dir), Some(own_module)) =
+        (segments::file_dir(path), segments::own_module(path))
+    else {
+        return Outcome::Skipped;
+    };
     let imports = _disallowed_imports(path, &file_dir, &own_module, config);
     if imports.is_empty() {
-        None
+        Outcome::Passed
     } else {
-        Some(Violation {
+        Outcome::Failed(Violation {
             path: path::rel(path),
             imports,
         })

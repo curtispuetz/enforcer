@@ -1,6 +1,9 @@
 use std::path::Path;
 
-use crate::c::{path, scan};
+use crate::{
+    c::{path, scan},
+    t::Outcome,
+};
 
 use super::{report, t::Violation};
 
@@ -9,17 +12,17 @@ pub fn run() -> bool {
     report::print(passed, violations)
 }
 
-fn _check_file(path: &Path) -> Option<Violation> {
+fn _check_file(path: &Path) -> Outcome<Violation> {
     if path::is_mod_or_lib(path) {
-        return None;
+        return Outcome::Skipped;
     }
     if _has_sibling_dir(path) {
-        Some(Violation {
+        Outcome::Failed(Violation {
             path: path::rel(path),
             module: _stem(path),
         })
     } else {
-        None
+        Outcome::Passed
     }
 }
 
