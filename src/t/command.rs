@@ -12,6 +12,7 @@ pub enum Command {
     TypeLocation,
     StaticLocation,
     CallRules,
+    CModContents,
 }
 
 impl Command {
