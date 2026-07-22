@@ -1,7 +1,5 @@
-pub mod c;
-pub mod checks;
-
+mod c;
+mod checks;
 pub mod run;
-pub mod s;
-
+mod s;
 pub mod t;
