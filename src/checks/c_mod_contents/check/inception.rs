@@ -6,11 +6,12 @@ use super::reexports;
 
 pub fn violations(path: &Path, file: &syn::File) -> Vec<String> {
     let mut issues = Vec::new();
-    if !_has_inception_allow(&file.attrs) {
-        issues.push("missing `#![allow(clippy::module_inception)]`".to_string());
-    }
-    if !_has_private_mod_c(&file.items) {
-        issues.push("missing `mod c;` declaration".to_string());
+    match _private_mod_c(&file.items) {
+        None => issues.push("missing `mod c;` declaration".to_string()),
+        Some(m) if !_has_inception_allow(&m.attrs) => {
+            issues.push("`mod c;` missing `#[allow(clippy::module_inception)]`".to_string());
+        }
+        Some(_) => {}
     }
     match _single_pub_use_c(&file.items) {
         Some(u) => {
@@ -36,7 +37,7 @@ fn _has_inception_allow(attrs: &[syn::Attribute]) -> bool {
 }
 
 fn _is_inception_allow(attr: &syn::Attribute) -> bool {
-    if !matches!(attr.style, syn::AttrStyle::Inner(_)) {
+    if !matches!(attr.style, syn::AttrStyle::Outer) {
         return false;
     }
     let Ok(list) = attr.meta.require_list() else {
@@ -46,10 +47,14 @@ fn _is_inception_allow(attr: &syn::Attribute) -> bool {
         && list.tokens.to_string().replace(' ', "") == "clippy::module_inception"
 }
 
-fn _has_private_mod_c(items: &[syn::Item]) -> bool {
-    items.iter().any(|item| {
-        matches!(item, syn::Item::Mod(m)
-            if m.ident == "c" && !ast::is_public(&m.vis) && m.content.is_none())
+fn _private_mod_c(items: &[syn::Item]) -> Option<&syn::ItemMod> {
+    items.iter().find_map(|item| match item {
+        syn::Item::Mod(m)
+            if m.ident == "c" && !ast::is_public(&m.vis) && m.content.is_none() =>
+        {
+            Some(m)
+        }
+        _ => None,
     })
 }
 
