@@ -10,7 +10,7 @@
             `#[allow(clippy::module_inception)]`
         </item>
         <item>
-            have a single `pub use c::{...}` statement re-exporting every public name of the nested `c` module.
+            have a single `pub use c::*;` glob statement re-exporting the nested `c` module.
         </item>
     </exception>
 </c-mod-contents-check>

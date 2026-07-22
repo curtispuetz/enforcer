@@ -18,7 +18,7 @@ fn _check_file(path: &Path) -> Option<ItemsViolation> {
     }
     let file = files::parse(path);
     let items = if _has_sub_c(path) {
-        check::inception::violations(path, &file)
+        check::inception::violations(&file)
     } else {
         check::simple::violations(&file)
     };
