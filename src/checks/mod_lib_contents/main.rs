@@ -1,15 +1,18 @@
 use std::path::Path;
 
-use crate::c::{files, path, scan};
+use crate::{
+    c::{files, path, scan},
+    checks::t::ItemsViolation,
+};
 
-use super::{report, t::Violation};
+use super::report;
 
 pub fn run() -> bool {
     let (passed, violations) = scan::src_files(_check_file);
     report::print(passed, violations)
 }
 
-fn _check_file(path: &Path) -> Option<Violation> {
+fn _check_file(path: &Path) -> Option<ItemsViolation> {
     if !path::is_mod_or_lib(path) {
         return None;
     }
@@ -17,7 +20,7 @@ fn _check_file(path: &Path) -> Option<Violation> {
     if items.is_empty() {
         None
     } else {
-        Some(Violation {
+        Some(ItemsViolation {
             path: path::rel(path),
             items,
         })

@@ -1,10 +1,8 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG};
+use crate::{c::report, checks::t::ItemsViolation, s::SUCCESS_TAG};
 
-use super::t::Violation;
-
-pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
+pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "type-location",
         passed,
@@ -19,7 +17,7 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
     )
 }
 
-fn _print_failures(violations: Vec<Violation>) {
+fn _print_failures(violations: Vec<ItemsViolation>) {
     println!("The following file(s) define public types outside a t/ directory:\n");
     for violation in &violations {
         println!(
