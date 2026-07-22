@@ -17,6 +17,10 @@ pub fn bindings(file: &syn::File) -> HashMap<String, Vec<String>> {
 fn _expand(prefix: Vec<String>, tree: &UseTree) -> Vec<(String, Vec<String>)> {
     match tree {
         UseTree::Path(p) => _expand(_pushed(prefix, p.ident.to_string()), &p.tree),
+        UseTree::Name(n) if n.ident == "self" => {
+            let binding = prefix.last().cloned().unwrap_or_default();
+            vec![(binding, prefix)]
+        }
         UseTree::Name(n) => {
             let path = _pushed(prefix, n.ident.to_string());
             let binding = path.last().cloned().unwrap_or_default();

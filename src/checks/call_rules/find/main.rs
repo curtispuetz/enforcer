@@ -21,11 +21,29 @@ fn _item(segments: &[String], imported: &HashMap<String, Vec<String>>) -> Option
     if segments.len() == 1 {
         return _direct_import(name, imported);
     }
+    if !_is_internal(&segments[0], imported) {
+        return None;
+    }
     let word = words::duplicate(segments)?;
     Some(message::repeated_word(segments, &word))
 }
 
 fn _direct_import(name: &str, imported: &HashMap<String, Vec<String>>) -> Option<String> {
     let path = imported.get(name)?;
+    if !_is_internal_path(path) {
+        return None;
+    }
     Some(message::direct_import(name, path))
+}
+
+fn _is_internal(root: &str, imported: &HashMap<String, Vec<String>>) -> bool {
+    matches!(root, "crate" | "super" | "self")
+        || imported.get(root).is_some_and(|path| _is_internal_path(path))
+}
+
+fn _is_internal_path(path: &[String]) -> bool {
+    matches!(
+        path.first().map(String::as_str),
+        Some("crate" | "super" | "self")
+    )
 }

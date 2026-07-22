@@ -12,7 +12,7 @@
             "label": "reinstall",
             "type": "shell",
             "command": "cargo install --force --path .",
-        }
+        },
         {
             "label": "build",
             "type": "shell",
