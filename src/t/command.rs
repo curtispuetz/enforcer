@@ -7,6 +7,7 @@ pub enum Command {
     ImportRules,
     FileSizes,
     ModLocation,
+    ModOverFile,
     ModLibContents,
     CommentRules,
     TypeLocation,

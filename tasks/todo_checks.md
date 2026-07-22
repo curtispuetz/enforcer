@@ -1,5 +1,3 @@
 # TODO checks
 
-- Functions are never imported directly. Instead, at least one of the functions parent modules is imported, and the function is called as parent::fn_name() (or upper_parent::parent::fn_name() (or any number of parents) if importing a higher up parent). And, for these function calls, none of the parents or function may contain the same word (the idea is not to see the same word twice). So, the check could be to gather all the words and ensure there are no duplicates (e.g. app::get_app() would be a violation (we prefer app::get())).
 - For t/ and s/ directories, all public types and statics defined are exported in the root mod.rs file. All modules defined in the root mod.rs file are private.
-- For c/ directories, the root mod.rs file declares all its modules as public, and has not use statements. The exception is if there is a sub c/ directory in the c directory, and in this case the root mod.rs must have a single 'pub use c::{all sub c public things...}' statement along with its other pub mod statements.

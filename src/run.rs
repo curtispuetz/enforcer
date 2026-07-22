@@ -10,6 +10,7 @@ pub fn check(command: Command) -> bool {
         Command::ImportRules => checks::import_rules::run(),
         Command::FileSizes => checks::file_sizes::run(),
         Command::ModLocation => checks::mod_location::run(),
+        Command::ModOverFile => checks::mod_over_file::run(),
         Command::ModLibContents => checks::mod_lib_contents::run(),
         Command::CommentRules => checks::comment_rules::run(),
         Command::TypeLocation => checks::type_location::run(),
