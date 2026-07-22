@@ -4,7 +4,7 @@
         `pub use` (re-export) is only allowed in `mod.rs` and `lib.rs` files.
     </desc>
     <rationale>
-        Want Re-exports in the module-declaring files (`mod.rs`/`lib.rs`), which define each
+        Want re-exports in the module-declaring files (`mod.rs`/`lib.rs`), which define each
         folder's public surface.
     </rationale>
 </use-privacy-check>
