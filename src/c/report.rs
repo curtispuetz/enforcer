@@ -10,7 +10,7 @@ pub fn summary<V>(
     println!("{}", format!("{name} report:").bold().cyan());
     if violations.is_empty() {
         on_pass();
-        return true;
+        return false;
     }
     let failed = violations.len();
     println!(
@@ -19,5 +19,5 @@ pub fn summary<V>(
         format!("{failed} files failed").red().bold()
     );
     on_fail(violations);
-    false
+    true
 }
