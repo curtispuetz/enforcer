@@ -1,6 +1,9 @@
 use std::{collections::HashSet, path::Path};
 
-use crate::c::{ast, files};
+use crate::{
+    c::{ast, files},
+    checks::c::use_tree,
+};
 
 pub fn missing(outer: &syn::ItemUse, outer_mod: &Path) -> Vec<String> {
     let Some(c_mod) = _sub_c_mod(outer_mod) else {
@@ -62,24 +65,10 @@ fn _inner_public_names(c_mod: &Path) -> Vec<String> {
         match item {
             syn::Item::Mod(m) if ast::is_public(&m.vis) => names.push(m.ident.to_string()),
             syn::Item::Use(u) if ast::is_public(&u.vis) => {
-                _collect_exposed_names(&u.tree, &mut names);
+                use_tree::exposed_names(&u.tree, &mut names, &mut false);
             }
             _ => {}
         }
     }
     names
-}
-
-fn _collect_exposed_names(tree: &syn::UseTree, names: &mut Vec<String>) {
-    match tree {
-        syn::UseTree::Name(n) => names.push(n.ident.to_string()),
-        syn::UseTree::Rename(r) => names.push(r.rename.to_string()),
-        syn::UseTree::Path(p) => _collect_exposed_names(&p.tree, names),
-        syn::UseTree::Group(g) => {
-            for item in &g.items {
-                _collect_exposed_names(item, names);
-            }
-        }
-        syn::UseTree::Glob(_) => {}
-    }
 }

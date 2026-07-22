@@ -31,11 +31,7 @@ fn _check_file(path: &Path) -> Option<Violation> {
 
 fn _is_c_mod(path: &Path) -> bool {
     path.file_name().and_then(|n| n.to_str()) == Some("mod.rs")
-        && _parent_name(path) == Some("c")
-}
-
-fn _parent_name(path: &Path) -> Option<&str> {
-    path.parent()?.file_name()?.to_str()
+        && path::parent_name(path) == Some("c")
 }
 
 fn _has_sub_c(path: &Path) -> bool {

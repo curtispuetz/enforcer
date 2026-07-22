@@ -1,3 +1,4 @@
+pub mod c;
 pub mod c_mod_contents;
 pub mod call_rules;
 pub mod comment_rules;
