@@ -5,15 +5,11 @@ use crate::{
     checks::import_rules::t::{BadImport, Config, Violation},
 };
 
-use super::{
-    imports::internal_use_paths,
-    location::{file_dir_segments, own_module_segments},
-    rules::import_violation,
-};
+use super::{imports, rules, segments};
 
 pub fn run(path: &Path, config: &Config) -> Option<Violation> {
-    let file_dir = file_dir_segments(path)?;
-    let own_module = own_module_segments(path)?;
+    let file_dir = segments::file_dir(path)?;
+    let own_module = segments::own_module(path)?;
     let imports = _disallowed_imports(path, &file_dir, &own_module, config);
     if imports.is_empty() {
         None
@@ -32,11 +28,11 @@ fn _disallowed_imports(
     config: &Config,
 ) -> Vec<BadImport> {
     let mut violations = Vec::new();
-    for use_path in internal_use_paths(&files::parse(path)) {
+    for use_path in imports::internal_use_paths(&files::parse(path)) {
         if _is_ignored_macro(&use_path, config) {
             continue;
         }
-        if let Some(reason) = import_violation(&use_path, file_dir, own_module) {
+        if let Some(reason) = rules::import_violation(&use_path, file_dir, own_module) {
             violations.push(BadImport {
                 text: format!("use {};", use_path.join("::")),
                 reason,

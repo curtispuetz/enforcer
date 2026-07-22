@@ -3,4 +3,3 @@ mod report;
 mod t;
 
 pub use main::run;
-use report::report;

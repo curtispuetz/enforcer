@@ -4,7 +4,7 @@ use crate::{c::report, s::SUCCESS_TAG};
 
 use super::t::Violation;
 
-pub fn report(passed: usize, violations: Vec<Violation>) -> bool {
+pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
         "type-location",
         passed,

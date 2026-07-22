@@ -10,7 +10,7 @@ use super::{check, macros, report, t::Config};
 pub fn run() -> bool {
     let config = _init_config();
     let (passed, violations) = scan::src_files(|path| check::file::run(path, &config));
-    report(passed, violations)
+    report::print(passed, violations)
 }
 
 fn _init_config() -> Config {

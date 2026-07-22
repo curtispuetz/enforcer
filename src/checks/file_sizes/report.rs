@@ -4,7 +4,7 @@ use crate::{c::report, s::SUCCESS_TAG};
 
 use super::t::{Config, Violation};
 
-pub fn report(config: Config, passed: usize, violations: Vec<Violation>) -> bool {
+pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
         "file-sizes",
         passed,
