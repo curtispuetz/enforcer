@@ -17,6 +17,7 @@ pub fn check(command: Command) -> bool {
         Command::StaticLocation => checks::static_location::run(),
         Command::CallRules => checks::call_rules::run(),
         Command::CModContents => checks::c_mod_contents::run(),
+        Command::CommonsNesting => checks::commons_nesting::run(),
     };
     println!();
     ret

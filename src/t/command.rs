@@ -14,6 +14,7 @@ pub enum Command {
     StaticLocation,
     CallRules,
     CModContents,
+    CommonsNesting,
 }
 
 impl Command {
