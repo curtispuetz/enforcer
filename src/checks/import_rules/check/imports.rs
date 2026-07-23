@@ -25,13 +25,20 @@ fn _is_internal(path: &[String]) -> bool {
     matches!(path.first().map(String::as_str), Some("crate" | "super"))
 }
 
-fn _expand_use_tree(prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>> {
+fn _expand_use_tree(mut prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>> {
     match tree {
         UseTree::Path(p) => {
-            _expand_use_tree(_pushed(prefix, p.ident.to_string()), &p.tree)
+            prefix.push(p.ident.to_string());
+            _expand_use_tree(prefix, &p.tree)
         }
-        UseTree::Name(n) => vec![_pushed(prefix, n.ident.to_string())],
-        UseTree::Rename(r) => vec![_pushed(prefix, r.ident.to_string())],
+        UseTree::Name(n) => {
+            prefix.push(n.ident.to_string());
+            vec![prefix]
+        }
+        UseTree::Rename(r) => {
+            prefix.push(r.ident.to_string());
+            vec![prefix]
+        }
         UseTree::Glob(_) => vec![prefix],
         UseTree::Group(g) => g
             .items
@@ -39,9 +46,4 @@ fn _expand_use_tree(prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>> {
             .flat_map(|item| _expand_use_tree(prefix.clone(), item))
             .collect(),
     }
-}
-
-fn _pushed(mut prefix: Vec<String>, segment: String) -> Vec<String> {
-    prefix.push(segment);
-    prefix
 }
