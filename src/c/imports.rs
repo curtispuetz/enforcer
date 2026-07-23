@@ -2,9 +2,6 @@ use std::collections::HashMap;
 
 use syn::UseTree;
 
-// not-obvious: Maps each name a `use` brings into scope to the full path it resolves
-// to (e.g. `foo` -> `["crate", "x", "foo"]`), so a call's root segment can be traced
-// back to whether it originates in our crate.
 pub fn bindings(file: &syn::File) -> HashMap<String, Vec<String>> {
     let mut ret = HashMap::new();
     for item in &file.items {

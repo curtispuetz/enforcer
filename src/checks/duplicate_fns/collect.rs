@@ -7,9 +7,6 @@ use crate::{
 
 use super::t::FreeFn;
 
-// Gather every free (module-level) function across the source tree. Methods on
-// impl/trait blocks are intentionally excluded — the check is about free
-// functions only.
 pub fn all() -> Vec<FreeFn> {
     let mut found = Vec::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {

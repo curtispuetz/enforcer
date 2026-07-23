@@ -11,9 +11,6 @@ pub fn is_internal_path(path: &[String]) -> bool {
     )
 }
 
-// not-obvious: Collects the path of every function-call expression (e.g. the
-// `crate::x::foo` of `crate::x::foo(..)`). Method calls (`x.foo()`) are a different
-// syn node and are intentionally ignored — they are not free-function calls.
 pub fn paths(file: &syn::File) -> Vec<Vec<String>> {
     let mut collector = Collector { paths: Vec::new() };
     collector.visit_file(file);

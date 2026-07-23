@@ -45,8 +45,6 @@ fn _is_foreign_free_call(
         return false;
     }
     match segments.len() {
-        // not-obvious: a bare call no `use` imported must be defined in this same
-        // module (or be a std/prelude name) — either way it is exempt.
         1 => imported
             .get(name)
             .is_some_and(|p| calls::is_internal_path(p)),

@@ -35,9 +35,6 @@ pub fn is_mod_or_lib(path: &Path) -> bool {
     )
 }
 
-// not-obvious: The absolute crate module path a file defines (e.g. `crate::a::t`), so
-// two same-named types in different modules can be told apart. `mod.rs`/`lib.rs` are
-// the folder's module, so their stem is dropped.
 pub fn module(path: &Path) -> Option<Vec<String>> {
     let rel = path.strip_prefix(ROOT.as_path()).ok()?;
     let mut segments = vec!["crate".to_string()];

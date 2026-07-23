@@ -16,7 +16,8 @@ pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool 
 
 fn _print_failures(config: &Config, violations: Vec<Violation>) {
     println!(
-        "The following comment(s) are disallowed (allow with a 'not-obvious: ' prefix, or a trailing comment up to {} characters):\n",
+        "The following comment(s) are disallowed (allow with a 'not-obvious: ' \
+        prefix, or a trailing comment up to {} characters):\n",
         config.max_trailing_len
     );
     for violation in &violations {

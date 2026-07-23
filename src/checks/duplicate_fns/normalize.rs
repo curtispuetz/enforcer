@@ -9,13 +9,6 @@ use syn::{
 
 use crate::c::calls;
 
-// Rewrite a free function into a canonical form so that two functions which
-// differ only in the *names* of their bound variables (parameters, generics,
-// lifetimes, `let`/closure/match/`for` bindings) become byte-for-byte equal
-// ASTs. The function's own name, visibility and outer attributes are stripped
-// too, since duplicates naturally differ there. Free names (called functions,
-// foreign types, literals, ...) are left untouched, so only genuinely
-// alpha-equivalent bodies collapse together.
 pub fn canonical(item: &ItemFn) -> ItemFn {
     let mut collector = Collector::default();
     collector.visit_item_fn(item);
@@ -33,9 +26,6 @@ pub fn canonical(item: &ItemFn) -> ItemFn {
     item
 }
 
-// First pass: assign each bound name a placeholder in order of introduction.
-// Because two alpha-equivalent functions introduce their bindings in the same
-// structural order, they get the same placeholders.
 #[derive(Default)]
 struct Collector {
     values: HashMap<String, Ident>,
@@ -85,7 +75,6 @@ impl<'ast> Visit<'ast> for Collector {
     }
 }
 
-// Second pass: replace every occurrence of a bound name with its placeholder.
 struct Renamer {
     values: HashMap<String, Ident>,
     lifetimes: HashMap<String, Ident>,
@@ -117,9 +106,6 @@ impl VisitMut for Renamer {
     }
 }
 
-// Rename a bare single-segment path (`x`, `T`) if it names a bound value. Paths
-// with a leading `::`, extra segments or generic arguments cannot be a plain
-// local binding, so they are left alone.
 fn _rename_single(path: &mut Path, values: &HashMap<String, Ident>) {
     if path.leading_colon.is_some() || path.segments.len() != 1 {
         return;

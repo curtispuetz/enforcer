@@ -2,8 +2,8 @@ use colored::Colorize;
 
 use super::t::Group;
 
-// This check is cross-file (a violation spans several files), so it does not use
-// the shared per-file `report::summary`; it mirrors its colour scheme instead.
+// not-obvious: this check is cross-file, so it does not use the shared
+// `report::summary`
 pub fn print(passed: usize, groups: Vec<Group>) -> bool {
     println!("{}", "duplicate-fns report:".bold().cyan());
     if groups.is_empty() {

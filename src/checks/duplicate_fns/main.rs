@@ -27,9 +27,6 @@ pub fn run() -> bool {
     report::print(total - duplicated, groups)
 }
 
-// Keep only buckets with more than one member (the actual duplicates), dropping
-// any group with an ignored member, and sorting members and groups so the report
-// is deterministic regardless of hash order.
 fn _groups(buckets: HashMap<ItemFn, Vec<Duplicate>>, config: &Config) -> Vec<Group> {
     let mut groups: Vec<Group> = buckets
         .into_values()
@@ -47,8 +44,6 @@ fn _groups(buckets: HashMap<ItemFn, Vec<Duplicate>>, config: &Config) -> Vec<Gro
     groups
 }
 
-// A group is exempt if any one of its members is listed in the ignore config,
-// so the user need only name a single function from the group.
 fn _ignored(members: &[Duplicate], config: &Config) -> bool {
     members
         .iter()
