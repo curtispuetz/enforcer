@@ -45,7 +45,9 @@ fn _groups(buckets: HashMap<ItemFn, Vec<Duplicate>>, config: &Config) -> Vec<Gro
 }
 
 fn _ignored(members: &[Duplicate], config: &Config) -> bool {
-    members
-        .iter()
-        .any(|member| config.ignore.contains(&format!("{}::{}", member.path, member.name)))
+    members.iter().any(|member| {
+        config
+            .ignore
+            .contains(&format!("{}::{}", member.path, member.name))
+    })
 }

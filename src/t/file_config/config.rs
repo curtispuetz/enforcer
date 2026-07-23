@@ -1,6 +1,8 @@
 use serde::Deserialize;
 
-use super::{CognitiveComplexity, CommentRules, DuplicateFns, FileSizes, ImportRules, ModCount};
+use super::{
+    CognitiveComplexity, CommentRules, DuplicateFns, FileSizes, ImportRules, ModCount,
+};
 
 #[derive(Deserialize, Default)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
