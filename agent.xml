@@ -18,6 +18,9 @@
       `cargo clippy` and `cargo run enforcer all` should be run after each change to make sure there are no warnings. However, leave any new enforcer violations introduced from your change alone, so that I can see them.
     </notes>
   </cargo-commands>
+  <code-preferences>
+    Don't re-write logic that is clearly the same. Extract it to a commons location to be used in multiple places.
+  </code-preferences>
   <rust-code-preferences>
     <enforcer-import-rules>
       <general-guide>
