@@ -16,6 +16,39 @@
   <check-impls>
     Aside from the shared-code, each check is implemented in its own folder under `src/checks`. In each folder, there is a description of the check in CLAUDE.md.
   </check-impls>
+  <check-anatomy>
+    The conventional layout of a check folder (see `type_location`, `static_location`
+    for minimal examples):
+    - `mod.rs` — declares the submodules and does `pub use main::run;`.
+    - `main.rs` — `pub fn run() -&gt; bool` is the entrypoint. It typically calls
+      `scan::src_files(_check_file)` and hands the result to `report::print`. `run`
+      returns `true` when the check FAILED (any violations), matching `Command::run`.
+    - `report.rs` — `print(passed, violations) -&gt; bool`, wrapping `c::report::summary`.
+    - Optional `t.rs` (or `t/`) for check-local types; extra files/subfolders for
+      bigger checks (e.g. `import_rules/check/`, `call_rules/find/`).
+    Wiring a new check requires three edits beyond the folder: add `pub mod &lt;name&gt;;`
+    to `src/checks/mod.rs`, a `Command` variant in `src/t/command.rs`, and a match arm
+    in `src/run.rs`. Private fns are prefixed with `_` per the project convention.
+  </check-anatomy>
+  <shared-helpers>
+    Reusable building blocks the checks lean on, so you rarely need bespoke fs/AST code:
+    - `c::scan::src_files(check)` — iterates every `.rs` under the existing src dirs
+      (`s::EXISTING_SRC_DIRS`, i.e. `src` and `tests`), calling `check(&amp;Path) -&gt;
+      Outcome&lt;V&gt;` per file and tallying results into `(passed: usize, Vec&lt;V&gt;)`.
+    - `t::Outcome&lt;V&gt;` — `Skipped | Passed | Failed(V)`; the return type of a per-file
+      check. `t::ItemsViolation { path: String, items: Vec&lt;String&gt; }` is the common
+      violation payload (used by type/static/trait-location, etc.).
+    - `c::files` — `rs(dir_name) -&gt; Vec&lt;PathBuf&gt;` (glob), `parse(path) -&gt; syn::File`.
+    - `c::path` — `rel(path)` (root-relative display string), `under_dir(path, name)`
+      (any path component equals `name`), `commons_file_kind(path)` (`Some("c"|"s"|"t"
+      |"ext_traits")` when the file stem is a commons name), `parent_name`,
+      `is_mod_or_lib`. Commons dirs/files are the four names `c, s, t, ext_traits`.
+    - `c::ast` — `is_public(vis)`, plus `use`-tree helpers (`glob_module`,
+      `exposed_names`). AST work uses the `syn` crate (`syn::Item::*`, etc.).
+    - `c::report::summary(name, passed, success_msg, violations, on_fail)` — prints the
+      cyan header, the green success line or the pass/fail counts, and invokes `on_fail`
+      to render details. Use `colored::Colorize` for coloring (`.bold()`, `.red()`…).
+  </shared-helpers>
   <enforcer.toml>
     `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
     `enforcer.toml` from the project root (`ROOT`), allows users to configure the checks.
