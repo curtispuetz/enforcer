@@ -1,11 +1,11 @@
 use std::{collections::HashMap, path::Path};
 
 use crate::{
-    c::{files, path, scan},
+    c::{calls, files, imports, path, scan},
     t::{ItemsViolation, Outcome},
 };
 
-use super::{calls, imports, report};
+use super::report;
 
 pub fn run() -> bool {
     let (passed, violations) = scan::src_files(_check_file);

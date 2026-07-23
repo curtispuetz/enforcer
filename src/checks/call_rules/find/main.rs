@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 
-use super::{calls, imports, message, words};
+use crate::c::{calls, imports};
+
+use super::{message, words};
 
 pub fn violations(file: &syn::File) -> Vec<String> {
     let imported = imports::bindings(file);
