@@ -21,6 +21,7 @@ pub fn check(command: Command) -> bool {
         Command::CModContents => checks::c_mod_contents::run(),
         Command::CommonsNesting => checks::commons_nesting::run(),
         Command::CommonsExports => checks::commons_exports::run(),
+        Command::CommonsContents => checks::commons_contents::run(),
         Command::ModCount => checks::mod_count::run(),
         Command::UsePrivacy => checks::use_privacy::run(),
         Command::CognitiveComplexity => checks::cognitive_complexity::run(),

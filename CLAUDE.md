@@ -19,6 +19,7 @@
 @src/checks/import_rules/desc.xml
 @src/checks/c_mod_contents/desc.xml
 @src/checks/commons_exports/desc.xml
+@src/checks/commons_contents/desc.xml
 @src/checks/commons_nesting/desc.xml
 @src/checks/static_location/desc.xml
 @src/checks/type_location/desc.xml

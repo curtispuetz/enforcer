@@ -18,6 +18,7 @@ pub enum Command {
     CModContents,
     CommonsNesting,
     CommonsExports,
+    CommonsContents,
     ModCount,
     UsePrivacy,
     CognitiveComplexity,
