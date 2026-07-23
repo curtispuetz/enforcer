@@ -15,7 +15,7 @@
       cargo run enforcer all - To run the enforcer itself on its own code
     </enforcer>
     <notes>
-      clippy should be run after each change to make sure there are no warnings. The cargo run enforcer all doesn't need to be run after each change, but you can use it to test your changes if you want. Do not fix any new enforcer violations introduced with your change (I will do that myself after).
+      clippy should be run after each change to make sure there are no warnings. The cargo run enforcer all should also be run after each change, so you can fix any warnings. However, do not fix any new enforcer violations introduced with your current change (I will do that myself after).
     </notes>
   </cargo-commands>
   <rust-code-preferences>

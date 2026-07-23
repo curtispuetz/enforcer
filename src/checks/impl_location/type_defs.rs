@@ -9,7 +9,7 @@ use super::t::TypeDef;
 
 // not-obvious: We index every type definition in the crate by name so the check can
 // tell whether an impl's self type is local (and where it is defined) or foreign.
-pub fn type_defs() -> HashMap<String, Vec<TypeDef>> {
+pub fn find() -> HashMap<String, Vec<TypeDef>> {
     let mut map: HashMap<String, Vec<TypeDef>> = HashMap::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for path in files::rs(dir_name) {

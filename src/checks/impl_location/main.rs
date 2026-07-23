@@ -5,10 +5,10 @@ use crate::{
     t::{ItemsViolation, Outcome},
 };
 
-use super::{defs, report, t::TypeDef};
+use super::{report, t::TypeDef, type_defs};
 
 pub fn run() -> bool {
-    let type_defs = defs::type_defs();
+    let type_defs = type_defs::find();
     let (passed, violations) = scan::src_files(|path| _check_file(path, &type_defs));
     report::print(passed, violations)
 }
@@ -43,8 +43,6 @@ fn _misplaced_impl(
     let self_name = _self_base_name(&imp.self_ty)?;
     let is_trait = imp.trait_.is_some();
     let valid = match type_defs.get(&self_name) {
-        // No local definition: the self type is foreign. Per the orphan rule this can
-        // only be a trait impl, which must live in an ext_traits module.
         None => !is_trait || _is_ext_traits(path),
         Some(local_defs) => _local_impl_ok(local_defs, path),
     };
@@ -55,13 +53,8 @@ fn _misplaced_impl(
     }
 }
 
-// not-obvious: A private type's impl only needs to sit in the same file as the type
-// (the exemption). Otherwise the impl must be in a t/ commons module and in the same
-// file or a sibling file of the type's definition.
 fn _local_impl_ok(local_defs: &[TypeDef], path: &Path) -> bool {
-    let private_same_file = local_defs
-        .iter()
-        .any(|d| !d.is_public && d.path == path);
+    let private_same_file = local_defs.iter().any(|d| !d.is_public && d.path == path);
     if private_same_file {
         return true;
     }
