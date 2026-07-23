@@ -1,2 +1,8 @@
 [mod-count]
 ignore = ["src/checks"]
+
+[duplicate-fns]
+ignore = [
+    "src/checks/c_mod_contents/main.rs::run",
+    "src/checks/cognitive_complexity/main.rs::run",
+]

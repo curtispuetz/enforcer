@@ -9,10 +9,7 @@ use super::{
 
 pub fn run() -> bool {
     let config = Config::new();
-    let free_fns: Vec<_> = collect::all()
-        .into_iter()
-        .filter(|function| !config.ignore.contains(&format!("{}::{}", function.path, function.name)))
-        .collect();
+    let free_fns = collect::all();
     let total = free_fns.len();
 
     let mut buckets: HashMap<ItemFn, Vec<Duplicate>> = HashMap::new();
@@ -25,17 +22,18 @@ pub fn run() -> bool {
         });
     }
 
-    let groups = _groups(buckets);
+    let groups = _groups(buckets, &config);
     let duplicated: usize = groups.iter().map(|group| group.members.len()).sum();
     report::print(total - duplicated, groups)
 }
 
-// Keep only buckets with more than one member (the actual duplicates), sorting
-// members and groups so the report is deterministic regardless of hash order.
-fn _groups(buckets: HashMap<ItemFn, Vec<Duplicate>>) -> Vec<Group> {
+// Keep only buckets with more than one member (the actual duplicates), dropping
+// any group with an ignored member, and sorting members and groups so the report
+// is deterministic regardless of hash order.
+fn _groups(buckets: HashMap<ItemFn, Vec<Duplicate>>, config: &Config) -> Vec<Group> {
     let mut groups: Vec<Group> = buckets
         .into_values()
-        .filter(|members| members.len() > 1)
+        .filter(|members| members.len() > 1 && !_ignored(members, config))
         .map(|mut members| {
             members.sort_by(|a, b| (&a.path, a.line).cmp(&(&b.path, b.line)));
             Group { members }
@@ -47,4 +45,12 @@ fn _groups(buckets: HashMap<ItemFn, Vec<Duplicate>>) -> Vec<Group> {
         (&first.path, first.line).cmp(&(&second.path, second.line))
     });
     groups
+}
+
+// A group is exempt if any one of its members is listed in the ignore config,
+// so the user need only name a single function from the group.
+fn _ignored(members: &[Duplicate], config: &Config) -> bool {
+    members
+        .iter()
+        .any(|member| config.ignore.contains(&format!("{}::{}", member.path, member.name)))
 }
