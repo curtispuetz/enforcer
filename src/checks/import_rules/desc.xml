@@ -27,7 +27,7 @@
       Need a way to share certain items. So, a shared item lives in a commons module at some level above everything using it.
     </rationale>
   </commons-modules>
-  <config toml_table="import_rules">
+  <config toml_table="import-rules">
     <item>
       ignore_export_macros - when true, imports of `#[macro_export]` macros are exempt (default false)
     </item>

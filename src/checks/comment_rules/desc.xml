@@ -6,7 +6,7 @@
     </condition>
     <condition>Is a short trailing comment, up to a maximum length.</condition>
   </conditions>
-  <config toml_table="comment_rules">
+  <config toml_table="comment-rules">
     <item>max_trailing_comment_len (default 20)</item>
   </config>
 </comment-rules-check>
