@@ -12,6 +12,7 @@ pub enum Command {
     CommentRules,
     TypeLocation,
     ImplLocation,
+    ContainedT,
     StaticLocation,
     CallRules,
     CModContents,
