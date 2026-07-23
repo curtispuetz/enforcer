@@ -2,23 +2,20 @@ use std::collections::HashMap;
 
 use proc_macro2::{Ident, Span};
 use syn::{
-    ExprPath, GenericParam, ItemFn, Lifetime, PatIdent, Path, TypePath, Visibility,
+    GenericParam, ItemFn, PatIdent, Visibility,
     visit::{self, Visit},
-    visit_mut::{self, VisitMut},
 };
 
 use crate::c::calls;
+
+use super::rename;
 
 pub fn canonical(item: &ItemFn) -> ItemFn {
     let mut collector = Collector::default();
     collector.visit_item_fn(item);
 
     let mut item = item.clone();
-    let mut renamer = Renamer {
-        values: collector.values,
-        lifetimes: collector.lifetimes,
-    };
-    renamer.visit_item_fn_mut(&mut item);
+    rename::apply(&mut item, collector.values, collector.lifetimes);
 
     item.attrs.clear();
     item.vis = Visibility::Inherited;
@@ -72,49 +69,5 @@ impl<'ast> Visit<'ast> for Collector {
             self._add_value(&name);
         }
         visit::visit_pat_ident(self, pat);
-    }
-}
-
-struct Renamer {
-    values: HashMap<String, Ident>,
-    lifetimes: HashMap<String, Ident>,
-}
-
-impl VisitMut for Renamer {
-    fn visit_pat_ident_mut(&mut self, pat: &mut PatIdent) {
-        if let Some(placeholder) = self.values.get(&pat.ident.to_string()) {
-            pat.ident = placeholder.clone();
-        }
-        visit_mut::visit_pat_ident_mut(self, pat);
-    }
-
-    fn visit_expr_path_mut(&mut self, expr: &mut ExprPath) {
-        _rename_single(&mut expr.path, &self.values);
-        visit_mut::visit_expr_path_mut(self, expr);
-    }
-
-    fn visit_type_path_mut(&mut self, ty: &mut TypePath) {
-        _rename_single(&mut ty.path, &self.values);
-        visit_mut::visit_type_path_mut(self, ty);
-    }
-
-    fn visit_lifetime_mut(&mut self, lifetime: &mut Lifetime) {
-        if let Some(placeholder) = self.lifetimes.get(&lifetime.ident.to_string()) {
-            lifetime.ident = placeholder.clone();
-        }
-        visit_mut::visit_lifetime_mut(self, lifetime);
-    }
-}
-
-fn _rename_single(path: &mut Path, values: &HashMap<String, Ident>) {
-    if path.leading_colon.is_some() || path.segments.len() != 1 {
-        return;
-    }
-    let segment = &mut path.segments[0];
-    if !matches!(segment.arguments, syn::PathArguments::None) {
-        return;
-    }
-    if let Some(placeholder) = values.get(&segment.ident.to_string()) {
-        segment.ident = placeholder.clone();
     }
 }
