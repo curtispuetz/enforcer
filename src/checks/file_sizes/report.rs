@@ -1,6 +1,6 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG};
+use crate::c::report;
 
 use super::t::{Config, Violation};
 
@@ -8,14 +8,8 @@ pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool 
     report::summary(
         "file-sizes",
         passed,
+        &format!("All files under {} lines ({passed} files checked)", config.max_lines + 1),
         violations,
-        || {
-            println!(
-                "{} All files under {} lines ({passed} files checked)",
-                *SUCCESS_TAG,
-                config.max_lines + 1
-            )
-        },
         |violations| _print_failures(&config, violations),
     )
 }

@@ -1,6 +1,6 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG};
+use crate::c::report;
 
 use super::t::{Config, Violation};
 
@@ -8,13 +8,8 @@ pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool 
     report::summary(
         "comment-rules",
         passed,
+        &format!("No disallowed comments ({passed} files checked)"),
         violations,
-        || {
-            println!(
-                "{} No disallowed comments ({passed} files checked)",
-                *SUCCESS_TAG
-            )
-        },
         |violations| _print_failures(&config, violations),
     )
 }

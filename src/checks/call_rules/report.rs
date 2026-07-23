@@ -1,18 +1,13 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG, t::ItemsViolation};
+use crate::{c::report, t::ItemsViolation};
 
 pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "call-rules",
         passed,
+        &format!("All function calls go through a parent module and never repeat a word ({passed} files checked)"),
         violations,
-        || {
-            println!(
-                "{} All function calls go through a parent module and never repeat a word ({passed} files checked)",
-                *SUCCESS_TAG
-            )
-        },
         _print_failures,
     )
 }

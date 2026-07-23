@@ -1,6 +1,6 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG};
+use crate::c::report;
 
 use super::t::Violation;
 
@@ -8,13 +8,8 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
         "commons-nesting",
         passed,
+        &format!("No t or s commons module is nested inside one of the same kind ({passed} modules checked)"),
         violations,
-        || {
-            println!(
-                "{} No t or s commons module is nested inside one of the same kind ({passed} modules checked)",
-                *SUCCESS_TAG
-            )
-        },
         _print_failures,
     )
 }

@@ -1,6 +1,6 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG};
+use crate::c::report;
 
 use super::t::{Config, Violation};
 
@@ -8,13 +8,8 @@ pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool 
     report::summary(
         "mod-count",
         passed,
+        &format!("All mod.rs and lib.rs files declare at most {} modules ({passed} files checked)", config.max),
         violations,
-        || {
-            println!(
-                "{} All mod.rs and lib.rs files declare at most {} modules ({passed} files checked)",
-                *SUCCESS_TAG, config.max
-            )
-        },
         |violations| _print_failures(&config, violations),
     )
 }

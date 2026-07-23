@@ -1,6 +1,6 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG};
+use crate::c::report;
 
 use super::t::Violation;
 
@@ -8,13 +8,8 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
         "import-rules",
         passed,
+        &format!("All files followed import-rules ({passed} files checked)"),
         violations,
-        || {
-            println!(
-                "{} All files followed import-rules ({passed} files checked)",
-                *SUCCESS_TAG
-            )
-        },
         _print_failures,
     )
 }

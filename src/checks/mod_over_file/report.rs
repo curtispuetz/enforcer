@@ -1,6 +1,6 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG};
+use crate::c::report;
 
 use super::t::Violation;
 
@@ -8,13 +8,8 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
         "mod-over-file",
         passed,
+        &format!("All folder modules use mod.rs ({passed} files checked)"),
         violations,
-        || {
-            println!(
-                "{} All folder modules use mod.rs ({passed} files checked)",
-                *SUCCESS_TAG
-            )
-        },
         _print_failures,
     )
 }

@@ -1,19 +1,13 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG, t::ItemsViolation};
+use crate::{c::report, t::ItemsViolation};
 
 pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "use-privacy",
         passed,
+        &format!("All use statements outside mod.rs and lib.rs are private ({passed} files checked)"),
         violations,
-        || {
-            println!(
-                "{} All use statements outside mod.rs and lib.rs are private \
-                ({passed} files checked)",
-                *SUCCESS_TAG
-            )
-        },
         _print_failures,
     )
 }

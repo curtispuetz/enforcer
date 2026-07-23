@@ -1,18 +1,13 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG, t::ItemsViolation};
+use crate::{c::report, t::ItemsViolation};
 
 pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "c-mod-contents",
         passed,
+        &format!("All c/ mod.rs files follow the c module rules ({passed} files checked)"),
         violations,
-        || {
-            println!(
-                "{} All c/ mod.rs files follow the c module rules ({passed} files checked)",
-                *SUCCESS_TAG
-            )
-        },
         _print_failures,
     )
 }

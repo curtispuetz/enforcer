@@ -1,19 +1,13 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG, t::ItemsViolation};
+use crate::{c::report, t::ItemsViolation};
 
 pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "commons-exports",
         passed,
+        &format!("All t/ and s/ root mod.rs files glob re-export their modules and keep them private ({passed} files checked)"),
         violations,
-        || {
-            println!(
-                "{} All t/ and s/ root mod.rs files glob re-export their modules and \
-                keep them private ({passed} files checked)",
-                *SUCCESS_TAG
-            )
-        },
         _print_failures,
     )
 }

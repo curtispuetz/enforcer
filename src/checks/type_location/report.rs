@@ -1,18 +1,13 @@
 use colored::Colorize;
 
-use crate::{c::report, s::SUCCESS_TAG, t::ItemsViolation};
+use crate::{c::report, t::ItemsViolation};
 
 pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "type-location",
         passed,
+        &format!("All public structs, enums, traits, and type aliases are in t/ directories ({passed} files checked)"),
         violations,
-        || {
-            println!(
-                "{} All public structs, enums, traits, and type aliases are in t/ directories ({passed} files checked)",
-                *SUCCESS_TAG
-            )
-        },
         _print_failures,
     )
 }
