@@ -6,12 +6,10 @@ use crate::{
     t::Outcome,
 };
 
-use super::{imports, rules, segments};
+use super::{imports, rules};
 
 pub fn run(path: &Path, config: &Config) -> Outcome<Violation> {
-    let (Some(file_dir), Some(own_module)) =
-        (segments::file_dir(path), segments::own_module(path))
-    else {
+    let (Some(file_dir), Some(own_module)) = (path::file_dir(path), path::module(path)) else {
         return Outcome::Skipped;
     };
     let imports = _disallowed_imports(path, &file_dir, &own_module, config);

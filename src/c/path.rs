@@ -35,7 +35,7 @@ pub fn is_mod_or_lib(path: &Path) -> bool {
     )
 }
 
-pub fn module(path: &Path) -> Option<Vec<String>> {
+pub fn file_dir(path: &Path) -> Option<Vec<String>> {
     let rel = path.strip_prefix(ROOT.as_path()).ok()?;
     let mut segments = vec!["crate".to_string()];
     // not-obvious: skip(1) drops the top-level src dir (src/ or tests/).
@@ -44,6 +44,11 @@ pub fn module(path: &Path) -> Option<Vec<String>> {
             segments.push(s.to_str()?.to_string());
         }
     }
+    Some(segments)
+}
+
+pub fn module(path: &Path) -> Option<Vec<String>> {
+    let mut segments = file_dir(path)?;
     if !is_mod_or_lib(path) {
         segments.push(path.file_stem()?.to_str()?.to_string());
     }
