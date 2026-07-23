@@ -1,0 +1,18 @@
+<fn-naming-check>
+  <desc>
+    Checks that every private (non-`pub`) top-level function and inherent-impl method
+    has a name starting with `_`, per the project's private-fn convention. Public
+    functions/methods are unaffected.
+  </desc>
+  <exemption>
+    <item>
+      Methods inside `impl Trait for Type` blocks are exempt, since their names are
+      dictated by the trait.
+    </item>
+    <item>
+      Methods inside a `trait` definition are exempt, since trait items carry no
+      visibility modifier of their own.
+    </item>
+    <item>`fn main` is exempt, since the name is fixed by the language.</item>
+  </exemption>
+</fn-naming-check>

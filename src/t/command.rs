@@ -22,6 +22,8 @@ pub enum Command {
     UsePrivacy,
     CognitiveComplexity,
     TraitRules,
+    DuplicateFns,
+    FnNaming,
 }
 
 impl Command {

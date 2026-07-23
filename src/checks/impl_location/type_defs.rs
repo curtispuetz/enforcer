@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::{
-    c::{ast, files},
+    c::{ast, files, path},
     s::EXISTING_SRC_DIRS,
 };
 
@@ -12,11 +12,13 @@ use super::t::TypeDef;
 pub fn find() -> HashMap<String, Vec<TypeDef>> {
     let mut map: HashMap<String, Vec<TypeDef>> = HashMap::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
-        for path in files::rs(dir_name) {
-            for item in files::parse(&path).items {
+        for file_path in files::rs(dir_name) {
+            let module = path::module(&file_path).unwrap_or_default();
+            for item in files::parse(&file_path).items {
                 if let Some((name, is_public)) = _type_def(&item) {
                     map.entry(name).or_default().push(TypeDef {
-                        path: path.clone(),
+                        path: file_path.clone(),
+                        module: module.clone(),
                         is_public,
                     });
                 }

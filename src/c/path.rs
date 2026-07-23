@@ -34,3 +34,21 @@ pub fn is_mod_or_lib(path: &Path) -> bool {
         Some("mod.rs" | "lib.rs")
     )
 }
+
+// not-obvious: The absolute crate module path a file defines (e.g. `crate::a::t`), so
+// two same-named types in different modules can be told apart. `mod.rs`/`lib.rs` are
+// the folder's module, so their stem is dropped.
+pub fn module(path: &Path) -> Option<Vec<String>> {
+    let rel = path.strip_prefix(ROOT.as_path()).ok()?;
+    let mut segments = vec!["crate".to_string()];
+    // not-obvious: skip(1) drops the top-level src dir (src/ or tests/).
+    for component in rel.parent()?.components().skip(1) {
+        if let Component::Normal(s) = component {
+            segments.push(s.to_str()?.to_string());
+        }
+    }
+    if !is_mod_or_lib(path) {
+        segments.push(path.file_stem()?.to_str()?.to_string());
+    }
+    Some(segments)
+}

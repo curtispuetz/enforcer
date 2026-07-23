@@ -1,7 +1,7 @@
 use std::{collections::HashMap, path::Path};
 
 use crate::{
-    c::{files, path, scan},
+    c::{files, imports, path, scan},
     t::{ItemsViolation, Outcome},
 };
 
@@ -17,10 +17,12 @@ fn _check_file(
     path: &Path,
     type_defs: &HashMap<String, Vec<TypeDef>>,
 ) -> Outcome<ItemsViolation> {
+    let file = files::parse(path);
+    let bindings = imports::bindings(&file);
     let mut items = Vec::new();
-    for item in files::parse(path).items {
-        if let syn::Item::Impl(imp) = &item
-            && let Some(desc) = _misplaced_impl(imp, path, type_defs)
+    for item in &file.items {
+        if let syn::Item::Impl(imp) = item
+            && let Some(desc) = _misplaced_impl(imp, path, type_defs, &bindings)
         {
             items.push(desc);
         }
@@ -39,12 +41,25 @@ fn _misplaced_impl(
     imp: &syn::ItemImpl,
     path: &Path,
     type_defs: &HashMap<String, Vec<TypeDef>>,
+    bindings: &HashMap<String, Vec<String>>,
 ) -> Option<String> {
     let self_name = _self_base_name(&imp.self_ty)?;
     let is_trait = imp.trait_.is_some();
-    let valid = match type_defs.get(&self_name) {
-        None => !is_trait || _is_ext_traits(path),
-        Some(local_defs) => _local_impl_ok(local_defs, path),
+    // not-obvious: Resolve the self type to the module its `use` points at, so a
+    // same-named type in an unrelated module cannot make a misplaced impl look valid.
+    // A def matches when it sits at or beneath that module: re-exports flow a definition
+    // upward, so the import names an ancestor of (or exactly) the defining module.
+    let target = _target_module(&self_name, path, bindings);
+    let local_defs: Vec<&TypeDef> = type_defs
+        .get(&self_name)
+        .into_iter()
+        .flatten()
+        .filter(|d| target.as_ref().is_some_and(|t| d.module.starts_with(t)))
+        .collect();
+    let valid = if local_defs.is_empty() {
+        !is_trait || _is_ext_traits(path)
+    } else {
+        _local_impl_ok(&local_defs, path)
     };
     if valid {
         None
@@ -53,7 +68,43 @@ fn _misplaced_impl(
     }
 }
 
-fn _local_impl_ok(local_defs: &[TypeDef], path: &Path) -> bool {
+// not-obvious: The crate module a bare self type name resolves to: its `use` binding
+// when imported, otherwise this file's own module (a same-file/same-module definition).
+// A `None` means the type is foreign (from another crate or the prelude).
+fn _target_module(
+    self_name: &str,
+    path: &Path,
+    bindings: &HashMap<String, Vec<String>>,
+) -> Option<Vec<String>> {
+    match bindings.get(self_name) {
+        Some(use_path) => _absolute_module(use_path, path),
+        None => path::module(path),
+    }
+}
+
+fn _absolute_module(use_path: &[String], path: &Path) -> Option<Vec<String>> {
+    // not-obvious: Drop the trailing type name; what remains is the defining module,
+    // with leading `crate`/`self`/`super` resolved against this file's own module.
+    let module = use_path.get(..use_path.len().checked_sub(1)?)?;
+    let mut acc: Vec<String> = Vec::new();
+    for (i, seg) in module.iter().enumerate() {
+        match seg.as_str() {
+            "crate" if i == 0 => acc = vec!["crate".to_string()],
+            "self" if i == 0 => acc = path::module(path)?,
+            "super" => {
+                if i == 0 {
+                    acc = path::module(path)?;
+                }
+                acc.pop()?;
+            }
+            _ => acc.push(seg.clone()),
+        }
+    }
+    // A path not rooted at `crate` (e.g. `std`, another crate) is foreign.
+    (acc.first().map(String::as_str) == Some("crate")).then_some(acc)
+}
+
+fn _local_impl_ok(local_defs: &[&TypeDef], path: &Path) -> bool {
     let private_same_file = local_defs.iter().any(|d| !d.is_public && d.path == path);
     if private_same_file {
         return true;

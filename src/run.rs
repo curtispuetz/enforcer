@@ -25,6 +25,8 @@ pub fn check(command: Command) -> bool {
         Command::UsePrivacy => checks::use_privacy::run(),
         Command::CognitiveComplexity => checks::cognitive_complexity::run(),
         Command::TraitRules => checks::trait_rules::run(),
+        Command::DuplicateFns => checks::duplicate_fns::run(),
+        Command::FnNaming => checks::fn_naming::run(),
     };
     println!();
     ret

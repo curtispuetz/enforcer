@@ -3,9 +3,9 @@ use syn::UseTree;
 pub fn internal_use_paths(file: &syn::File) -> Vec<Vec<String>> {
     let mut ret = Vec::new();
     for item in &file.items {
-        if let Some(tree) = use_tree(item) {
-            for path in expand_use_tree(vec![], tree) {
-                if is_internal(&path) {
+        if let Some(tree) = _use_tree(item) {
+            for path in _expand_use_tree(vec![], tree) {
+                if _is_internal(&path) {
                     ret.push(path);
                 }
             }
@@ -14,34 +14,34 @@ pub fn internal_use_paths(file: &syn::File) -> Vec<Vec<String>> {
     ret
 }
 
-fn use_tree(item: &syn::Item) -> Option<&UseTree> {
+fn _use_tree(item: &syn::Item) -> Option<&UseTree> {
     match item {
         syn::Item::Use(u) => Some(&u.tree),
         _ => None,
     }
 }
 
-fn is_internal(path: &[String]) -> bool {
+fn _is_internal(path: &[String]) -> bool {
     matches!(path.first().map(String::as_str), Some("crate" | "super"))
 }
 
-fn expand_use_tree(prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>> {
+fn _expand_use_tree(prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>> {
     match tree {
         UseTree::Path(p) => {
-            expand_use_tree(pushed(prefix, p.ident.to_string()), &p.tree)
+            _expand_use_tree(_pushed(prefix, p.ident.to_string()), &p.tree)
         }
-        UseTree::Name(n) => vec![pushed(prefix, n.ident.to_string())],
-        UseTree::Rename(r) => vec![pushed(prefix, r.ident.to_string())],
+        UseTree::Name(n) => vec![_pushed(prefix, n.ident.to_string())],
+        UseTree::Rename(r) => vec![_pushed(prefix, r.ident.to_string())],
         UseTree::Glob(_) => vec![prefix],
         UseTree::Group(g) => g
             .items
             .iter()
-            .flat_map(|item| expand_use_tree(prefix.clone(), item))
+            .flat_map(|item| _expand_use_tree(prefix.clone(), item))
             .collect(),
     }
 }
 
-fn pushed(mut prefix: Vec<String>, segment: String) -> Vec<String> {
+fn _pushed(mut prefix: Vec<String>, segment: String) -> Vec<String> {
     prefix.push(segment);
     prefix
 }
