@@ -1,7 +1,10 @@
-<claude-onboarding>
+# Claude Onboarding
+
 @agent.xml
 @architecture.xml
-<enforcer-checks>
+
+## Enforcer Checks
+
 @src/checks/file_sizes/desc.xml
 @src/checks/mod_count/desc.xml
 @src/checks/mod_over_file/desc.xml
@@ -22,5 +25,3 @@
 @src/checks/impl_location/desc.xml
 @src/checks/contained_t/desc.xml
 @src/checks/trait_rules/desc.xml
-</enforcer-checks>
-</claude-onboarding>
