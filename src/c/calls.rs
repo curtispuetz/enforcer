@@ -1,5 +1,16 @@
 use syn::visit::{self, Visit};
 
+pub fn is_function_like(name: &str) -> bool {
+    matches!(name.chars().next(), Some(c) if c == '_' || c.is_ascii_lowercase())
+}
+
+pub fn is_internal_path(path: &[String]) -> bool {
+    matches!(
+        path.first().map(String::as_str),
+        Some("crate" | "super" | "self")
+    )
+}
+
 // not-obvious: Collects the path of every function-call expression (e.g. the
 // `crate::x::foo` of `crate::x::foo(..)`). Method calls (`x.foo()`) are a different
 // syn node and are intentionally ignored — they are not free-function calls.

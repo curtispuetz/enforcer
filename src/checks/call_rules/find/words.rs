@@ -1,9 +1,5 @@
 use std::collections::HashSet;
 
-pub fn is_function_like(name: &str) -> bool {
-    matches!(name.chars().next(), Some(c) if c == '_' || c.is_ascii_lowercase())
-}
-
 pub fn duplicate(segments: &[String]) -> Option<String> {
     let mut seen = HashSet::new();
     _words(segments)

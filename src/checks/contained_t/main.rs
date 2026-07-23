@@ -41,13 +41,15 @@ fn _is_foreign_free_call(
     let Some(name) = segments.last() else {
         return false;
     };
-    if !_is_function_like(name) {
+    if !calls::is_function_like(name) {
         return false;
     }
     match segments.len() {
         // not-obvious: a bare call no `use` imported must be defined in this same
         // module (or be a std/prelude name) — either way it is exempt.
-        1 => imported.get(name).is_some_and(|p| _is_internal_path(p)),
+        1 => imported
+            .get(name)
+            .is_some_and(|p| calls::is_internal_path(p)),
         _ => {
             let parent = &segments[segments.len() - 2];
             let root = &segments[0];
@@ -60,18 +62,7 @@ fn _is_internal(root: &str, imported: &HashMap<String, Vec<String>>) -> bool {
     matches!(root, "crate" | "super")
         || imported
             .get(root)
-            .is_some_and(|path| _is_internal_path(path))
-}
-
-fn _is_internal_path(path: &[String]) -> bool {
-    matches!(
-        path.first().map(String::as_str),
-        Some("crate" | "super" | "self")
-    )
-}
-
-fn _is_function_like(name: &str) -> bool {
-    matches!(name.chars().next(), Some(c) if c == '_' || c.is_ascii_lowercase())
+            .is_some_and(|path| calls::is_internal_path(path))
 }
 
 fn _is_type_segment(segment: &str) -> bool {

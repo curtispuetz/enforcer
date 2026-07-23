@@ -20,7 +20,7 @@ fn _item(
     imported: &HashMap<String, Vec<String>>,
 ) -> Option<String> {
     let name = segments.last()?;
-    if !words::is_function_like(name) {
+    if !calls::is_function_like(name) {
         return None;
     }
     if segments.len() == 1 {
@@ -38,7 +38,7 @@ fn _direct_import(
     imported: &HashMap<String, Vec<String>>,
 ) -> Option<String> {
     let path = imported.get(name)?;
-    if !_is_internal_path(path) {
+    if !calls::is_internal_path(path) {
         return None;
     }
     Some(message::direct_import(name, path))
@@ -48,12 +48,5 @@ fn _is_internal(root: &str, imported: &HashMap<String, Vec<String>>) -> bool {
     matches!(root, "crate" | "super" | "self")
         || imported
             .get(root)
-            .is_some_and(|path| _is_internal_path(path))
-}
-
-fn _is_internal_path(path: &[String]) -> bool {
-    matches!(
-        path.first().map(String::as_str),
-        Some("crate" | "super" | "self")
-    )
+            .is_some_and(|path| calls::is_internal_path(path))
 }
