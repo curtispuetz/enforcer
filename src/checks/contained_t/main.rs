@@ -34,9 +34,6 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     }
 }
 
-// A call violates the rule when it targets a free function that lives in our crate but
-// in a different module than this t module. Associated functions (`Type::f()`), calls
-// into dependencies/std, and calls to functions defined in this same module are fine.
 fn _is_foreign_free_call(
     segments: &[String],
     imported: &HashMap<String, Vec<String>>,
@@ -48,24 +45,22 @@ fn _is_foreign_free_call(
         return false;
     }
     match segments.len() {
-        // A bare `foo()` is only a violation when a `use` pulled it in from elsewhere in
-        // our crate; otherwise it is defined in this same module or comes from std.
+        // not-obvious: a bare call no `use` imported must be defined in this same
+        // module (or be a std/prelude name) — either way it is exempt.
         1 => imported.get(name).is_some_and(|p| _is_internal_path(p)),
         _ => {
-            // `Type::f()` is an associated function, not a free function.
-            if _is_type_segment(&segments[segments.len() - 2]) {
-                return false;
-            }
-            // `self::f()` stays inside this module (the same-module exception).
+            let parent = &segments[segments.len() - 2];
             let root = &segments[0];
-            root != "self" && _is_internal(root, imported)
+            !_is_type_segment(parent) && root != "self" && _is_internal(root, imported)
         }
     }
 }
 
 fn _is_internal(root: &str, imported: &HashMap<String, Vec<String>>) -> bool {
     matches!(root, "crate" | "super")
-        || imported.get(root).is_some_and(|path| _is_internal_path(path))
+        || imported
+            .get(root)
+            .is_some_and(|path| _is_internal_path(path))
 }
 
 fn _is_internal_path(path: &[String]) -> bool {
