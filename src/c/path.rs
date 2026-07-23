@@ -1,6 +1,16 @@
 use crate::s::ROOT;
 use std::path::{Component, Path};
 
+static COMMONS: [&str; 4] = ["c", "s", "t", "ext_traits"];
+
+pub fn commons_file_kind(path: &Path) -> Option<&'static str> {
+    if path.extension().and_then(|e| e.to_str()) != Some("rs") {
+        return None;
+    }
+    let stem = path.file_stem()?.to_str()?;
+    COMMONS.into_iter().find(|c| *c == stem)
+}
+
 pub fn rel(path: &Path) -> String {
     path.strip_prefix(ROOT.as_path())
         .unwrap_or(path)

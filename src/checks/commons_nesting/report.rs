@@ -11,7 +11,7 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
         violations,
         || {
             println!(
-                "{} No t/ or s/ directory is nested inside one of the same kind ({passed} directories checked)",
+                "{} No t or s commons module is nested inside one of the same kind ({passed} modules checked)",
                 *SUCCESS_TAG
             )
         },
@@ -21,7 +21,7 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
 
 fn _print_failures(violations: Vec<Violation>) {
     println!(
-        "The following commons director(ies) are nested inside one of the same kind:\n"
+        "The following commons module(s) are nested inside one of the same kind:\n"
     );
     for violation in &violations {
         println!(

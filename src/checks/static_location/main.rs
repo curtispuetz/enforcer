@@ -13,7 +13,7 @@ pub fn run() -> bool {
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    if path::under_dir(path, "s") {
+    if path::under_dir(path, "s") || path::commons_file_kind(path) == Some("s") {
         return Outcome::Skipped;
     }
     let items = _misplaced_statics(path);

@@ -10,9 +10,12 @@
             </rule>
         </rules>
     </desc>
-    <commons-dirs>
-        c/, t/, s/, ext_traits/ — shared-code commons folders (general shared logic, types, static data, and extension traits respectively). All four behave the same way: a commons folder is reachable by everything at or below its parent (e.g. `crate::c` is the whole-crate commons, reachable everywhere; `crate::app::t` is app-local, reachable only from files at or below `crate::app`), and inside a commons folder the default rule starts over as if that folder were the crate root. So a shared item must live in the commons folder at the narrowest level that covers everything using it.
-    </commons-dirs>
+    <commons-modules>
+        c, t, s, ext_traits — shared-code (general shared logic, types, static data, and extension traits, respectively). Each may be a folder (`t/`) with a mod.rss or, a single-file module (`t.rs`). All four behave the same way: a commons module is reachable by everything at or below its parent (e.g. `crate::c` is the whole-crate commons shared logic, reachable everywhere; `crate::app::c` is app-local, reachable only from files at or below `crate::app`). Additionally, inside a commons folder, the import-rules apply as if that folder were the crate root.
+        <rationale>
+            A shared item lives in a commons module at some level above everything using it.
+        </rationale>
+    </commons-modules>
     <config>
         Configurable in `enforcer.toml` under `[import_rules]`:
         <item>

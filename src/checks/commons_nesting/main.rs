@@ -20,7 +20,7 @@ pub fn run() -> bool {
 }
 
 fn _nested_ancestor(dir: &Path) -> Option<String> {
-    let name = dir.file_name().and_then(|n| n.to_str())?;
+    let name = dir.file_stem().and_then(|n| n.to_str())?;
     let mut parent = dir.parent();
     while let Some(p) = parent {
         if p == ROOT.as_path() {

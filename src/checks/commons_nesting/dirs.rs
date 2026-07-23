@@ -3,7 +3,10 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::s::{EXISTING_SRC_DIRS, ROOT};
+use crate::{
+    c::path,
+    s::{EXISTING_SRC_DIRS, ROOT},
+};
 
 pub fn commons() -> Vec<PathBuf> {
     let mut dirs = Vec::new();
@@ -19,16 +22,19 @@ fn _collect(dir: &Path, out: &mut Vec<PathBuf>) {
     };
     for entry in entries.flatten() {
         let path = entry.path();
-        if !path.is_dir() {
-            continue;
-        }
-        if _is_commons(&path) {
+        if _is_commons_module(&path) {
             out.push(path.clone());
         }
-        _collect(&path, out);
+        if path.is_dir() {
+            _collect(&path, out);
+        }
     }
 }
 
-fn _is_commons(dir: &Path) -> bool {
-    matches!(dir.file_name().and_then(|n| n.to_str()), Some("t" | "s"))
+fn _is_commons_module(path: &Path) -> bool {
+    if path.is_dir() {
+        matches!(path.file_name().and_then(|n| n.to_str()), Some("t" | "s"))
+    } else {
+        matches!(path::commons_file_kind(path), Some("t" | "s"))
+    }
 }

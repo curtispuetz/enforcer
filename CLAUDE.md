@@ -131,9 +131,15 @@
                 app-local commons (only files under `crate::app` may import it). Inside a commons
                 folder the default rule starts over, as if that folder were the crate root — so a
                 commons folder nested in another scopes its own commons the same way.
+                <single-file>
+                    When a commons' contents are small, it may be a single-file module (`t.rs`)
+                    instead of a folder (`t/mod.rs`); both resolve to the same module path and
+                    behave identically for import purposes. Use the file form to avoid a folder
+                    holding one tiny type or static.
+                </single-file>
                 <note>
-                    So a shared item goes in the folder for its kind — `c/` for logic, `t/` for
-                    types, `s/` for static data, `ext_traits/` for extension traits — at the
+                    So a shared item goes in the commons for its kind — `c` for logic, `t` for
+                    types, `s` for static data, `ext_traits` for extension traits — at the
                     narrowest level that covers every file needing it.
                 </note>
             </commons-folders>

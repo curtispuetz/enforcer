@@ -13,7 +13,7 @@ pub fn run() -> bool {
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    if path::under_dir(path, "t") {
+    if path::under_dir(path, "t") || path::commons_file_kind(path) == Some("t") {
         return Outcome::Skipped;
     }
     let items = _misplaced_types(path);
