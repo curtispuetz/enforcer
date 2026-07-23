@@ -6,9 +6,14 @@
         and penalizes deep nesting, so it tracks how hard code is for a human to follow rather than
         the number of independent paths (cyclomatic complexity).
     </desc>
+    <config>
+        Configurable in `enforcer.toml` under `[cognitive-complexity]`:
+        <item>max - maximum cognitive complexity allowed per function (default 15).</item>
+        <item>
+            ignore - list of file paths to skip, relative to the project root (e.g. `src/main.rs`).
+        </item>
+    </config>
     <scoring>
-        The scorer lives in `measure/score.rs` and walks each function body with a `syn::visit::Visit`
-        implementation, carrying a `nesting` depth.
         <structural>
             +1 (plus the current nesting depth) for each `if`, `match`, `for`, `while`, and `loop`.
             The nesting depth increases inside their bodies, so the same construct costs more the
@@ -29,11 +34,7 @@
             The `?` operator, unlabeled `break`/`continue`, and recursion are not counted.
         </not-counted>
     </scoring>
-    <config>
-        Configurable in `enforcer.toml` under `[cognitive-complexity]`:
-        <item>max - maximum cognitive complexity allowed per function (default 15).</item>
-        <item>
-            ignore - list of file paths to skip, relative to the project root (e.g. `src/main.rs`).
-        </item>
-    </config>
+    <architecture>
+        The scorer lives in `measure/score.rs` and walks each function body with a `syn::visit::Visit` implementation, carrying a `nesting` depth.
+    </architecture>
 </cognitive-complexity-check>
