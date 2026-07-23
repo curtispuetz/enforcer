@@ -1,7 +1,8 @@
 <mod-count-check>
   <desc>
-    Limits how many modules live at each level. `mod.rs` and `lib.rs` files that declare more than the maximum number of modules (i.e. `mod` declarations) are violations.
+    Verifies that no `mod.rs` or `lib.rs` file declares more than a specified maximum number of modules (i.e. `mod` declarations).
   </desc>
+  <rationale>To encourage a more nested and less flat codebase.</rationale>
   <config toml_table="mod-count">
     <item>max - maximum `mod` declarations allowed per file (default 10).</item>
     <item>

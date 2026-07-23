@@ -1,7 +1,8 @@
 <cognitive-complexity-check>
   <desc>
-    Measures the cognitive complexity of every function (free functions, inherent and trait impl methods, and trait default methods) following SonarQube's cognitive complexity rules, and any function whose score exceeds a maximum is a violation. Cognitive complexity rewards linear code and penalizes deep nesting, so it tracks how hard code is for a human to follow rather than the number of independent paths (cyclomatic complexity).
+    Verifies that every function has a SonarQube cognitive complexity score below a maximum.
   </desc>
+  <rationale>Keep functions more human understandable</rationale>
   <config toml_table="cognitive-complexity">
     <item>max - maximum cognitive complexity allowed per function (default 15).</item>
     <item>

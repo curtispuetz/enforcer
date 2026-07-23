@@ -1,7 +1,12 @@
 <c-mod-contents-check>
   <desc>
-    Verifies the root `mod.rs` of every `c/` directory (see import-rules check) declares all of its modules as public (`pub mod ...`) and contains no `use` statements.
+    Verifies the root `mod.rs` of every `c/` directory (see import-rules check):
+    - Declares all of its modules as public (`pub mod ...`); and
+    - Contains no `use` statements.
   </desc>
+  <rationale>
+    So users can import the submodules and call the functions (e.g. submodule::fn_name())
+  </rationale>
   <exception>
     <desc>
       If the `c/` directory contains a nested `c/` sub-directory, the root `mod.rs` must instead:

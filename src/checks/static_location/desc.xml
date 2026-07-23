@@ -1,6 +1,7 @@
 <static-location-check>
   <desc>
-    Verifies that every top-level public `static` is defined in an `s` commons module (see import rules check). A public static defined anywhere else is a violation.
+    Verifies that no top-level public `static` is defined outside an `s` commons module (see import rules check).
   </desc>
-  <note>Private (non-`pub`) statics are allowed anywhere</note>
+  <rationale>We want consistent locations for all user defined statics.</rationale>
+  <note>Private statics are allowed anywhere</note>
 </static-location-check>

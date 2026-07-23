@@ -7,24 +7,25 @@
     - Up to a parent module, unless to a commons module (see commons-modules below); or
     - Across into a different branch of the tree.
   </desc>
-  <specific-rules>
-    <rule>
-      <desc>Sideways/deeper imports must be written with `super::` (never `crate::`).</desc>
-      <rationale>
-        A single `super` resolves to the containing module and appending segments only goes deeper. So, a `super::`-rooted path can only ever point sideways or deeper.
-      </rationale>
-    </rule>
-    <rule>
-      <desc>Imports to a commons parent module must be written with `crate::` (never `super::super..`).</desc>
-      <rationale>To distinguish them from sideways/deeper imports</rationale>
-    </rule>
-  </specific-rules>
+  <rationale>
+    To keep a predictable module tree structure, where we know everything in a module's submodules are supporting logic for the module to call, and not the other way around (i.e. where submodules call up to their parent modules for supporting logic).
+  </rationale>
+  <more-details>
+    <detail>Sideways/deeper imports must be written with `super::...` (i.e. never `crate::...`).</detail>
+    <detail>Imports to a commons parent module must be written with `crate::...` (i.e. never `super::super...`).</detail>
+    <rationale>
+      To make the code more readable by distinguishing between a sideways/deeper import and an import up to a commons parent.
+    </rationale>
+  </more-details>
   <commons-modules>
     <desc>
-      c, t, s, ext_traits — shared-code (general shared logic, types, static data, and extension traits, respectively). Each may be a folder (`t/`) with a mod.rs file, or a single-file module (`t.rs`). All four behave the same way (e.g. `crate::c` is the whole-crate commons shared logic, reachable everywhere; `crate::app::c` is app-local, reachable only from files at or below `crate::app`). Additionally, inside a commons folder, the import-rules apply as if that folder were the crate root.
+      `c`, `t`, `s`, `ext_traits` — shared-code (general shared logic, types, static data, and extension traits, respectively). Each may be a folder (e.g. `t/`) with a mod.rs file, or a single-file module (e.g. `t.rs`). All four behave the same way (e.g. `crate::c` is the whole-crate shared logic, reachable everywhere; `crate::app::c` is app-local, reachable only from files at or below `crate::app`).
     </desc>
+    <note>
+      Inside a commons folder, the same import-rules apply as if that folder were the crate root.
+    </note>
     <rationale>
-      Need a way to share certain items. So, a shared item lives in a commons module at some level above everything using it.
+      There must be a way to share certain items between separate modules that have different submodules, because otherwise it would be impossible to write DRY code. In fact, this might be exaggerating, but it would maybe even be impossible to write code at all. So, if we didn't have these commons modules, our rules would be too strict to work.
     </rationale>
   </commons-modules>
   <config toml_table="import-rules">

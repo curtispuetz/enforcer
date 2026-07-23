@@ -1,14 +1,15 @@
 <call-rules-check>
-  <desc>Limits how functions are called.</desc>
-  <rules>
-    <rule>
-      If a function is imported directly and called bare, it's a violation; instead one of the function's parent modules should be imported, and the function called through it as `parent::fn_name()` (or `...::parent::fn_name()` for higher parent imports).
-    </rule>
-    <rule>
-      Across a qualified call's path segments no word may appear twice. All the words in the segments are gathered and checked for duplicates, e.g. `app::get_app()` is a violation (prefer `app::get()`).
-    </rule>
-    <note>
-      These rules only apply for functions that we own (not for external crates).
-    </note>
-  </rules>
+  <desc>
+    Verifies that functions are not called:
+    - Bare (i.e. imported and called directly); or
+    - With a qualified path that repeats any word in its segments.
+    So, to clarify, that means one of the function's parent modules are imported the function is called with segments that do not repeat any word.
+  </desc>
+  <rationale>
+    We want function names to be short and their functionality to be clear from their parent module names as well as its own name. We also don't want repeating words in these qualified paths so that we save characters.
+  </rationale>
+  <exceptions>
+    <exception>Private functions</exception>
+    <exception>Any functions we don't own (i.e. from external crates or std)</exception>
+  </exceptions>
 </call-rules-check>

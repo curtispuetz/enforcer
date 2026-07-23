@@ -1,8 +1,15 @@
 <commons-exports-check>
   <desc>
-    Checks the root `mod.rs` of every `t/` and `s/` commons directory. Every module declared in the root `mod.rs` must be private (i.e. `mod x;`, never `pub mod x;`) and must be glob re-exported by a `pub use x::*;` in that same `mod.rs`, or else it is a violation. The glob re-export is not required when the module exposes no public items to re-export (e.g. a module containing only `impl` blocks). TODO: I think this has to be every `mod.rs` file in the directories, not just the root.
+    Verifies that every module declared in the root `mod.rs` of every `t/` and `s/` commons directory (see import-rules check) is:
+    - private (i.e. `mod x;`, never `pub mod x;`); and
+    - is glob re-exported (i.e. `pub use x::*;`).
+
+    TODO: I think this has to be every `mod.rs` file in the directories, not just the root.
   </desc>
   <rationale>
-    Users import flat: `use ...::t::TypeName`, never `use ...::t::submodule::TypeName`.
+    So that users can import `use ...::t::TypeName` (i.e. not `use ...::t::submodule::TypeName`), saving character.
   </rationale>
+  <exception>
+    The glob re-export is not required when the module exposes no public items to re-export (e.g. a module containing only `impl` blocks).
+  </exception>
 </commons-exports-check>

@@ -1,14 +1,18 @@
 <impl-location-check>
-  <desc>Limits where impls are located</desc>
-  <rules>
-    <rule>
-      A trait impl for a foreign type (i.e. not defined in our crate; like: `impl SomeTrait for Vec&lt;T&gt;`), must live in an `ext_traits` commons module (see import-rules check).
-    </rule>
-    <rule>
-      All other impls must live in a 't' commons module (see import-rules check), and must be in the same file or a sibling file of the type's definition.
-    </rule>
-  </rules>
-  <exemption>
-    For private types, an impl lives in the same file as the type definition, which can be anywhere in the codebase.
-  </exemption>
+  <desc>
+    Verifies that all impls:
+    - Live in a `t` commons module (see import-rules check); and
+    - Are in the same file or a sibling file of the type's definition.
+  </desc>
+  <rationale>
+    This is one check in part of an effort to keep impls small and prefer functions (which would live outside of `t` commons modules) over methods.
+  </rationale>
+  <exceptions>
+    <exception>
+      For foreign types (i.e. not defined in our crate; like: `impl SomeTrait for Vec&lt;T&gt;`), the impl must live in an `ext_traits` commons module (see import-rules check).
+    </exception>
+    <exception>
+      For private types, an impl lives in the same file as the type definition, which can be anywhere in the codebase.
+    </exception>
+  </exceptions>
 </impl-location-check>
