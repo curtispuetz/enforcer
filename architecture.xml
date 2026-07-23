@@ -1,0 +1,26 @@
+<code-architecture>
+  <entrypoints>
+    The crate builds a `cargo-enforcer` binary (see Cargo.toml `[[bin]]`). `src/main.rs`
+    is the thin CLI shell: it reads the subcommand argument (skipping the leading
+    `enforcer` arg that cargo injects for `cargo enforcer &lt;check&gt;`), parses it into a
+    `Command`, and calls `command.run()`.
+  </entrypoints>
+  <commands-dispatch>
+    `src/t/command.rs` defines the `Command` enum. `Command::run` dispatches to
+    each check's module (e.g. `import_rules::run()`). Adding a check = new enum variant +
+    new check module.
+  </commands-dispatch>
+  <shared-code>
+    `src/s/` holds static data. `src/c/` is shared logic. `src/t/` is shared types.
+  </shared-code>
+  <check-impls>
+    Asside from the shared-code, each check is implemented in its own folder under `src/checks`. In each folder, there is a description of the check in CLAUDE.md.
+  </check-impls>
+  <enforcer.toml>
+    `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
+    `enforcer.toml` from the project root (`ROOT`), allows users to configure the checks.
+  </enforcer.toml>
+  <std-out>
+    All checks should print good messages to the console about the results using nice color schemes following the pattern already laid out. A message of the "all passed" sort if all pass, and if failures should print details, so the user knowns where the failures happened and can click links, if possible, to go fix. The number of passes and failures should be printed in all cases, like it is for the existing checks.
+  </std-out>
+</code-architecture>
