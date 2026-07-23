@@ -1,5 +1,5 @@
 <comment-rules-check>
-  <desc>Checks that comments are justified. A comment is allowed only if one of the conditions is met:</desc>
+  <desc>Verifies that comments are justified. A comment is allowed only if one of the conditions is met:</desc>
   <conditions>
     <condition>
       starts with `not-obvious: ` — idea is to use this for something genuinely obscure that the code cannot make clear on its own

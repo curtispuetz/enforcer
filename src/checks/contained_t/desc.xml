@@ -1,6 +1,6 @@
 <contained-t-check>
   <desc>
-    Nothing inside a `t` module may call a free function from our crate.
+    Verifies nothing inside a `t` module calls a free function from our crate.
   </desc>
   <exceptions>
     <exception>The free function is in the same `t` module</exception>

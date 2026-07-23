@@ -1,6 +1,6 @@
 <c-mod-contents-check>
   <desc>
-    Checks the root `mod.rs` of every `c/` directory (see import-rules check) declares all of its modules as public (`pub mod ...`) and contains no `use` statements.
+    Verifies the root `mod.rs` of every `c/` directory (see import-rules check) declares all of its modules as public (`pub mod ...`) and contains no `use` statements.
   </desc>
   <exception>
     <desc>

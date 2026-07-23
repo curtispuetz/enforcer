@@ -1,5 +1,5 @@
 <impl-location-check>
-  <desc>Rules about where impls must be located</desc>
+  <desc>Limits where impls are located</desc>
   <rules>
     <rule>
       A trait impl for a foreign type (i.e. not defined in our crate; like: `impl SomeTrait for Vec&lt;T&gt;`), must live in an `ext_traits` commons module (see import-rules check).

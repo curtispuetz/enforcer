@@ -45,9 +45,6 @@ fn _public_type(item: &syn::Item) -> Option<String> {
         syn::Item::Enum(i) if ast::is_public(&i.vis) => {
             Some(format!("enum {}", i.ident))
         }
-        syn::Item::Trait(i) if ast::is_public(&i.vis) => {
-            Some(format!("trait {}", i.ident))
-        }
         syn::Item::Type(i) if ast::is_public(&i.vis) => {
             Some(format!("type {}", i.ident))
         }

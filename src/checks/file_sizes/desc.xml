@@ -1,6 +1,6 @@
 <file-sizes-check>
   <desc>
-    Checks that no source file is too long. A file fails if it has more than a maximum number of lines.
+    Verifies that no source file is too long. A file is a violation if it has more than a maximum number of lines.
   </desc>
   <config toml_table="file-sizes">
     <item>max - max number of lines (default 99)</item>

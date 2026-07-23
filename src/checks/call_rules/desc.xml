@@ -1,5 +1,5 @@
 <call-rules-check>
-  <desc>Checks how functions are called.</desc>
+  <desc>Limits how functions are called.</desc>
   <rules>
     <rule>
       If a function is imported directly and called bare, it's a violation; instead one of the function's parent modules should be imported, and the function called through it as `parent::fn_name()` (or `...::parent::fn_name()` for higher parent imports).

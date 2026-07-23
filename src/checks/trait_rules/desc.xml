@@ -1,8 +1,8 @@
 <trait-rules-check>
   <desc>
-    Checks that no trait is defined outside an `ext_traits` commons module (see import-rules check)
+    Verifies that no trait is defined outside an `ext_traits` commons module (see import-rules check)
   </desc>
   <rationale>
-    Preference is enums with dispatch functions (i.e. functions that match the enum variants to a function call) instead of traits.
+    The preference is enums with dispatch functions (i.e. functions that match the enum variants to a function call) instead of traits.
   </rationale>
 </trait-rules-check>

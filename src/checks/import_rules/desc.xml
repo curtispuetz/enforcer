@@ -1,6 +1,6 @@
 <import-rules-check>
   <desc>
-    Checks that a file's imports only point:
+    Verifies that a file's imports only point:
     - Sideways (to siblings in its own module); or
     - Deeper (into nested modules)
     And that they never point (violations):

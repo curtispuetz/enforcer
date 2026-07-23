@@ -1,6 +1,6 @@
 <fn-naming-check>
   <desc>
-    Checks that every private function/method has a name starting with `_`.
+    Verifies that every private function/method has a name starting with `_`.
   </desc>
   <exemption>
     <item>
