@@ -1,0 +1,27 @@
+<impl-rules-check>
+  <desc>Three rules that keep impls small and co-located with their types.</desc>
+  <rules>
+    <rule>
+      Every impl (inherent, or a trait impl for one of our own types such as `impl Default for Foo`)
+      whose self type is a `pub` crate type must live in the same module (file) as that type's
+      definition. Private types are exempt (their impls may live anywhere). `ext_traits` modules are
+      exempt entirely.
+    </rule>
+    <rule>
+      Nothing inside a `t` module may call a crate free function, i.e. any call whose path is rooted at
+      `crate::` (or a bare call to a function imported from a `crate::` path). Calls rooted at `self::`
+      or `super::` (which stay within the local type cluster), bare same-file calls, and calls into
+      external crates are allowed. Associated functions are NOT exempt: `SomeType::new()` reached via a
+      `crate::` import is a violation. Enum-variant and tuple-struct construction (`Outcome::Failed(x)`)
+      is not flagged, since the final segment is a type, not a function.
+    </rule>
+    <rule>
+      A trait impl for a foreign type (`impl SomeTrait for Vec&lt;T&gt;`, where the self type is not
+      defined in our crate) must live in an `ext_traits` module.
+    </rule>
+  </rules>
+  <rationale>
+    Keep impls scoped to easy helper functions. Preference is free functions over OOP, so an impl
+    method should not reach out into crate logic, and `t` modules should stay self-contained.
+  </rationale>
+</impl-rules-check>
