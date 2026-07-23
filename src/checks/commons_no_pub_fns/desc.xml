@@ -1,8 +1,0 @@
-<commons-no-pub-fns>
-  <desc>
-    Verifies no public functions are in `t` and `s` commons modules (see import-rules check). TODO: the problem with this is that it might make a lot of sense to have a large implementation to initialize a static. For `t` its totally fine, but for `s` there is the problem.
-  </desc>
-  <rationale>
-    Limiting `t` and `s` modules to only have private functions will make it so that you can't define a big function somewhere in the `t` directory that can make a lot of functionality end up in a Types method.
-  </rationale>
-</commons-no-pub-fns>
