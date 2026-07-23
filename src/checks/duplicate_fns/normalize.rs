@@ -2,10 +2,12 @@ use std::collections::HashMap;
 
 use proc_macro2::{Ident, Span};
 use syn::{
+    ExprPath, GenericParam, ItemFn, Lifetime, PatIdent, Path, TypePath, Visibility,
     visit::{self, Visit},
     visit_mut::{self, VisitMut},
-    ExprPath, GenericParam, ItemFn, Lifetime, Path, PatIdent, TypePath, Visibility,
 };
+
+use crate::c::calls;
 
 // Rewrite a free function into a canonical form so that two functions which
 // differ only in the *names* of their bound variables (parameters, generics,
@@ -43,14 +45,16 @@ struct Collector {
 impl Collector {
     fn _add_value(&mut self, name: &str) {
         if !self.values.contains_key(name) {
-            let placeholder = Ident::new(&format!("__v{}", self.values.len()), Span::call_site());
+            let placeholder =
+                Ident::new(&format!("__v{}", self.values.len()), Span::call_site());
             self.values.insert(name.to_string(), placeholder);
         }
     }
 
     fn _add_lifetime(&mut self, name: &str) {
         if !self.lifetimes.contains_key(name) {
-            let placeholder = Ident::new(&format!("__l{}", self.lifetimes.len()), Span::call_site());
+            let placeholder =
+                Ident::new(&format!("__l{}", self.lifetimes.len()), Span::call_site());
             self.lifetimes.insert(name.to_string(), placeholder);
         }
     }
@@ -59,8 +63,12 @@ impl Collector {
 impl<'ast> Visit<'ast> for Collector {
     fn visit_generic_param(&mut self, param: &'ast GenericParam) {
         match param {
-            GenericParam::Type(type_param) => self._add_value(&type_param.ident.to_string()),
-            GenericParam::Const(const_param) => self._add_value(&const_param.ident.to_string()),
+            GenericParam::Type(type_param) => {
+                self._add_value(&type_param.ident.to_string())
+            }
+            GenericParam::Const(const_param) => {
+                self._add_value(&const_param.ident.to_string())
+            }
             GenericParam::Lifetime(lifetime) => {
                 self._add_lifetime(&lifetime.lifetime.ident.to_string())
             }
@@ -70,7 +78,7 @@ impl<'ast> Visit<'ast> for Collector {
 
     fn visit_pat_ident(&mut self, pat: &'ast PatIdent) {
         let name = pat.ident.to_string();
-        if _is_binding(&name) {
+        if calls::is_function_like(&name) {
             self._add_value(&name);
         }
         visit::visit_pat_ident(self, pat);
@@ -123,11 +131,4 @@ fn _rename_single(path: &mut Path, values: &HashMap<String, Ident>) {
     if let Some(placeholder) = values.get(&segment.ident.to_string()) {
         segment.ident = placeholder.clone();
     }
-}
-
-// A pattern ident is a fresh binding when it is lower-case or `_`-prefixed;
-// upper-case idents in patterns denote unit structs/enum variants/consts, which
-// are free names, not bindings.
-fn _is_binding(name: &str) -> bool {
-    matches!(name.chars().next(), Some(c) if c == '_' || c.is_ascii_lowercase())
 }
