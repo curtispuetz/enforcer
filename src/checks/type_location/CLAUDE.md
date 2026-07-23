@@ -1,5 +1,3 @@
-<type-location-check>
-    <desc>
-        Checks that every top-level public `struct`, `enum`, `trait`, and `type` alias is defined in a `t` commons module (see import-rules check). A public type defined anywhere else is a violation. Private (non-`pub`) types are allowed anywhere.
-    </desc>
-</type-location-check>
+<check-onboarding>
+@desc.xml
+</check-onboarding>

@@ -1,0 +1,35 @@
+<import-rules-check>
+  <desc>
+    Checks that a file's imports only point:
+    - Sideways (to siblings in its own module); or
+    - Deeper (into nested modules)
+    And that they never point (violations):
+    - Up to a parent module, unless to a commons module (see commons-modules below); or
+    - Across into a different branch of the tree.
+  </desc>
+  <specific-rules>
+    <rule>
+      <desc>Sideways/deeper imports must be written with `super::` (never `crate::`).</desc>
+      <rationale>
+        A single `super` resolves to the containing module and appending segments only goes deeper. So, a `super::`-rooted path can only ever point sideways or deeper.
+      </rationale>
+    </rule>
+    <rule>
+      <desc>Imports to a commons parent module must be written with `crate::` (never `super::super..`).</desc>
+      <rationale>To distinguish them from sideways/deeper imports</rationale>
+    </rule>
+  </specific-rules>
+  <commons-modules>
+    <desc>
+      c, t, s, ext_traits — shared-code (general shared logic, types, static data, and extension traits, respectively). Each may be a folder (`t/`) with a mod.rs file, or a single-file module (`t.rs`). All four behave the same way (e.g. `crate::c` is the whole-crate commons shared logic, reachable everywhere; `crate::app::c` is app-local, reachable only from files at or below `crate::app`). Additionally, inside a commons folder, the import-rules apply as if that folder were the crate root.
+    </desc>
+    <rationale>
+      Need a way to share certain items. So, a shared item lives in a commons module at some level above everything using it.
+    </rationale>
+  </commons-modules>
+  <config toml_table="import_rules">
+    <item>
+      ignore_export_macros - when true, imports of `#[macro_export]` macros are exempt (default false)
+    </item>
+  </config>
+</import-rules-check>

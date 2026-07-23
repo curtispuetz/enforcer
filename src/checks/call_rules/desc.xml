@@ -1,0 +1,14 @@
+<call-rules-check>
+  <desc>Checks how functions are called.</desc>
+  <rules>
+    <rule>
+      If a function is imported directly and called bare, it's a violation; instead one of the function's parent modules should be imported, and the function called through it as `parent::fn_name()` (or `...::parent::fn_name()` for higher parent imports).
+    </rule>
+    <rule>
+      Across a qualified call's path segments no word may appear twice. All the words in the segments are gathered and checked for duplicates, e.g. `app::get_app()` is a violation (prefer `app::get()`).
+    </rule>
+    <note>
+      These rules only apply for functions that we own (not for external crates).
+    </note>
+  </rules>
+</call-rules-check>

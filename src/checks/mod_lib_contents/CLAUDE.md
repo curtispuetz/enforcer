@@ -1,5 +1,3 @@
-<mod-lib-contents-check>
-    <desc>
-        Checks that every `mod.rs` and `lib.rs` file contains only `mod` and `use` statements. Any other item in one of these files is a violation.
-    </desc>
-</mod-lib-contents-check>
+<check-onboarding>
+@desc.xml
+</check-onboarding>

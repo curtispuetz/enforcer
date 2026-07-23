@@ -1,0 +1,9 @@
+<code-architecture>
+  `main::run` scans every `.rs` file in each existing src dir; `_check_file` parses the file
+  and calls `find::violations`, collecting a `Violation` per file with a list of offending
+  calls. Inside `find/`: `imports.rs` maps each `use` binding name to its full path;
+  `calls.rs` walks the syn AST (via `syn::visit`) collecting the path segments of every
+  `Expr::Call` with a plain path callee; `words.rs` decides whether a name looks like a
+  function and finds a duplicate word among segments; `message.rs` formats the two violation
+  kinds; `main.rs` orchestrates. `report::report` prints the pass/fail summary.
+</code-architecture>

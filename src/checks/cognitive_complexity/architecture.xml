@@ -1,0 +1,3 @@
+<code-architecture>
+    The scorer lives in `measure/score.rs` and walks each function body with a `syn::visit::Visit` implementation, carrying a `nesting` depth.
+</code-architecture>
