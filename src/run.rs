@@ -23,7 +23,6 @@ pub fn check(command: Command) -> bool {
         Command::UsePrivacy => checks::use_privacy::run(),
         Command::CognitiveComplexity => checks::cognitive_complexity::run(),
         Command::TraitRules => checks::trait_rules::run(),
-        Command::ImplRules => checks::impl_rules::run(),
     };
     println!();
     ret

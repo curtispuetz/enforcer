@@ -20,7 +20,6 @@ pub enum Command {
     UsePrivacy,
     CognitiveComplexity,
     TraitRules,
-    ImplRules,
 }
 
 impl Command {

@@ -1,0 +1,12 @@
+<contained-t-check>
+  <desc>
+    Nothing inside a `t` module may call a free function from our crate.
+  </desc>
+  <exceptions>
+    <exception>The free function is in the same `t` module</exception>
+    <exception>We don't own the free function (e.g. it's from a dependency or std)</exception>
+  </exceptions>
+  <rationale>
+    Since impls must be in a `t` module, it keeps methods scoped to easy helper functions. The preference is for larger functionality to be in free functions elsewhere in the codebase.
+  </rationale>
+</contained-t-check>
