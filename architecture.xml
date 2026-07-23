@@ -30,6 +30,18 @@
     to `src/checks/mod.rs`, a `Command` variant in `src/t/command.rs`, and a match arm
     in `src/run.rs`. Private fns are prefixed with `_` per the project convention.
   </check-anatomy>
+  <check-docs>
+    Every check folder carries two docs alongside the code:
+    - `desc.xml` — the human spec of the check: a `&lt;desc&gt;` summary plus the
+      `&lt;rules&gt;` (and any `&lt;exemption&gt;`) it enforces. READ THIS FIRST when
+      implementing or changing a check — it is the source of truth for behavior.
+    - `CLAUDE.md` — a tiny `&lt;check-onboarding&gt;` wrapper that just `@`-includes
+      `desc.xml` (so opening the folder pulls the spec into context). Copy this
+      verbatim for a new check.
+    Project-wide docs work the same way: the root `CLAUDE.md` `@`-includes `agent.xml`
+    (repo/build/style conventions) and this `architecture.xml`, so both are always in
+    context — update this file when the shared plumbing or conventions change.
+  </check-docs>
   <shared-helpers>
     Reusable building blocks the checks lean on, so you rarely need bespoke fs/AST code:
     - `c::scan::src_files(check)` — iterates every `.rs` under the existing src dirs
