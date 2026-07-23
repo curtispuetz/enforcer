@@ -18,7 +18,7 @@ pub fn disallowed(path: &Path, commons: &str) -> Vec<String> {
 
 fn _allowed(commons: &str, kind: &str) -> bool {
     match commons {
-        "t" => matches!(kind, "struct" | "enum" | "union" | "type"),
+        "t" => matches!(kind, "struct" | "enum" | "type"),
         "s" => kind == "static",
         "cnst" => kind == "const",
         "ext_traits" => kind == "trait",
