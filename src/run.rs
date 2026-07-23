@@ -22,6 +22,7 @@ pub fn check(command: Command) -> bool {
         Command::ModCount => checks::mod_count::run(),
         Command::UsePrivacy => checks::use_privacy::run(),
         Command::CognitiveComplexity => checks::cognitive_complexity::run(),
+        Command::TraitRules => checks::trait_rules::run(),
     };
     println!();
     ret

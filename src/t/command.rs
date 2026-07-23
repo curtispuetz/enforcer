@@ -19,6 +19,7 @@ pub enum Command {
     ModCount,
     UsePrivacy,
     CognitiveComplexity,
+    TraitRules,
 }
 
 impl Command {

@@ -11,5 +11,6 @@ pub mod mod_lib_contents;
 pub mod mod_location;
 pub mod mod_over_file;
 pub mod static_location;
+pub mod trait_rules;
 pub mod type_location;
 pub mod use_privacy;
