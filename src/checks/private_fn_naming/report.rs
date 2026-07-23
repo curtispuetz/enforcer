@@ -6,7 +6,9 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "fn-naming",
         passed,
-        &format!("All private functions/methods start with `_` ({passed} files checked)"),
+        &format!(
+            "All private functions/methods start with `_` ({passed} files checked)"
+        ),
         violations,
         _print_failures,
     )
@@ -14,7 +16,8 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
 
 fn _print_failures(violations: Vec<ItemsViolation>) {
     println!(
-        "The following file(s) define private functions/methods without a leading underscore:\n"
+        "The following file(s) define private functions/methods without a leading \
+        underscore:\n"
     );
     for violation in &violations {
         println!(

@@ -27,7 +27,7 @@ fn _print_failures(config: &Config, violations: Vec<Violation>) {
             println!(
                 "  {}  {}  {}",
                 format!("{}:{}", violation.path, function.line).bold(),
-                function.name.red(),
+                format!("{}::{}", violation.path, function.name).red(),
                 format!("[complexity {}]", function.score).dimmed()
             );
         }

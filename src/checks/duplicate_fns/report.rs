@@ -8,16 +8,21 @@ pub fn print(passed: usize, groups: Vec<Group>) -> bool {
     println!("{}", "duplicate-fns report:".bold().cyan());
     if groups.is_empty() {
         let success = "[success]".green().bold();
-        println!("{success} No alpha-equivalent free functions found ({passed} functions checked)");
+        println!(
+            "{success} No alpha-equivalent free functions found ({passed} functions checked)"
+        );
         return false;
     }
     let duplicated: usize = groups.iter().map(|group| group.members.len()).sum();
     println!(
         "\n{}, {}\n",
         format!("{passed} functions passed").green(),
-        format!("{duplicated} duplicate functions in {} group(s)", groups.len())
-            .red()
-            .bold()
+        format!(
+            "{duplicated} duplicate functions in {} group(s)",
+            groups.len()
+        )
+        .red()
+        .bold()
     );
     _print_groups(groups);
     true

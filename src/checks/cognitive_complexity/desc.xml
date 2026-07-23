@@ -5,7 +5,7 @@
   <config toml_table="cognitive_complexity">
     <item>max - maximum cognitive complexity allowed per function (default 15).</item>
     <item>
-      ignore - list of file paths to skip, relative to the project root (e.g. `src/main.rs`).
+      ignore - list of functions to skip. A file path followed by `::` and the function or `Type::method` (e.g. `src/main.rs::run`, `src/main.rs::Config::new`)
     </item>
   </config>
   <scoring>
