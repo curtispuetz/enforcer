@@ -8,7 +8,9 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
         "mod-location",
         passed,
-        &format!("All mod statements are in mod.rs or lib.rs files ({passed} files checked)"),
+        &format!(
+            "All mod statements are in mod.rs or lib.rs files ({passed} files checked)"
+        ),
         violations,
         _print_failures,
     )

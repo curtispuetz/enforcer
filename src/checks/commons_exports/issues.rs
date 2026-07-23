@@ -13,7 +13,7 @@ pub fn of(mod_rs: &Path) -> Vec<String> {
             if ast::is_public(&m.vis) {
                 issues.push(format!("module `{name}` is not private"));
             }
-            if !globs.contains(&name) {
+            if !globs.contains(&name) && exported::has_public_items(mod_rs, &name) {
                 issues.push(format!(
                     "module `{name}` is missing its glob re-export (`pub use {name}::*;`)"
                 ));

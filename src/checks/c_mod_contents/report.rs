@@ -6,7 +6,9 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "c-mod-contents",
         passed,
-        &format!("All c/ mod.rs files follow the c module rules ({passed} files checked)"),
+        &format!(
+            "All c/ mod.rs files follow the c module rules ({passed} files checked)"
+        ),
         violations,
         _print_failures,
     )

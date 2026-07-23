@@ -8,7 +8,10 @@ pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool 
     report::summary(
         "file-sizes",
         passed,
-        &format!("All files under {} lines ({passed} files checked)", config.max_lines + 1),
+        &format!(
+            "All files under {} lines ({passed} files checked)",
+            config.max_lines + 1
+        ),
         violations,
         |violations| _print_failures(&config, violations),
     )

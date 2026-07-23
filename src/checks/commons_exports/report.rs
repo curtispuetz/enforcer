@@ -6,7 +6,9 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "commons-exports",
         passed,
-        &format!("All t/ and s/ root mod.rs files glob re-export their modules and keep them private ({passed} files checked)"),
+        &format!(
+            "All t/ and s/ root mod.rs files glob re-export their modules and keep them private ({passed} files checked)"
+        ),
         violations,
         _print_failures,
     )

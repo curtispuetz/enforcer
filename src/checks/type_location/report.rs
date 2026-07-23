@@ -6,7 +6,9 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "type-location",
         passed,
-        &format!("All public structs, enums, traits, and type aliases are in t/ directories ({passed} files checked)"),
+        &format!(
+            "All public structs, enums, traits, and type aliases are in t/ directories ({passed} files checked)"
+        ),
         violations,
         _print_failures,
     )

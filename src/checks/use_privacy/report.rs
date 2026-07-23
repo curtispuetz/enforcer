@@ -6,7 +6,9 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "use-privacy",
         passed,
-        &format!("All use statements outside mod.rs and lib.rs are private ({passed} files checked)"),
+        &format!(
+            "All use statements outside mod.rs and lib.rs are private ({passed} files checked)"
+        ),
         violations,
         _print_failures,
     )

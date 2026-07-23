@@ -8,7 +8,9 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
     report::summary(
         "commons-nesting",
         passed,
-        &format!("No t or s commons module is nested inside one of the same kind ({passed} modules checked)"),
+        &format!(
+            "No t or s commons module is nested inside one of the same kind ({passed} modules checked)"
+        ),
         violations,
         _print_failures,
     )

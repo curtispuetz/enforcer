@@ -8,7 +8,10 @@ pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool 
     report::summary(
         "mod-count",
         passed,
-        &format!("All mod.rs and lib.rs files declare at most {} modules ({passed} files checked)", config.max),
+        &format!(
+            "All mod.rs and lib.rs files declare at most {} modules ({passed} files checked)",
+            config.max
+        ),
         violations,
         |violations| _print_failures(&config, violations),
     )

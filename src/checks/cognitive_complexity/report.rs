@@ -8,7 +8,10 @@ pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool 
     report::summary(
         "cognitive-complexity",
         passed,
-        &format!("All functions have cognitive complexity at most {} ({passed} files checked)", config.max),
+        &format!(
+            "All functions have cognitive complexity at most {} ({passed} files checked)",
+            config.max
+        ),
         violations,
         |violations| _print_failures(&config, violations),
     )

@@ -45,7 +45,12 @@ fn _item(item: &Item, type_name: Option<&str>, found: &mut Vec<Function>) {
     }
 }
 
-fn _measure(sig: &syn::Signature, block: &Block, type_name: Option<&str>, found: &mut Vec<Function>) {
+fn _measure(
+    sig: &syn::Signature,
+    block: &Block,
+    type_name: Option<&str>,
+    found: &mut Vec<Function>,
+) {
     found.push(Function {
         name: name::of(&sig.ident, type_name),
         line: sig.ident.span().start().line,

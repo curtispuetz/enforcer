@@ -6,7 +6,9 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "mod-lib-contents",
         passed,
-        &format!("All mod.rs and lib.rs files contain only mod and use statements ({passed} files checked)"),
+        &format!(
+            "All mod.rs and lib.rs files contain only mod and use statements ({passed} files checked)"
+        ),
         violations,
         _print_failures,
     )

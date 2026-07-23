@@ -6,7 +6,9 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
         "trait-rules",
         passed,
-        &format!("All traits are extension traits in ext_traits modules ({passed} files checked)"),
+        &format!(
+            "All traits are extension traits in ext_traits modules ({passed} files checked)"
+        ),
         violations,
         _print_failures,
     )
