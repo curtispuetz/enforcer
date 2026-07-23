@@ -1,3 +1,8 @@
 <duplicate-fns-check>
   <desc>There may be no alpha-equivalent free-functions.</desc>
+  <config toml_table="duplicate-fns">
+    <item>
+      ignore - list of functions to skip. A file path followed by `::` and the function or `Type::method` (e.g. `src/main.rs::run`, `src/main.rs::Config::new`)
+    </item>
+  </config>
 </duplicate-fns-check>

@@ -33,7 +33,8 @@ fn _print_groups(groups: Vec<Group>) {
     for group in &groups {
         for member in &group.members {
             let location = format!("{}:{}", member.path, member.line);
-            println!("  {} {}", location.bold(), member.name.red());
+            let key = format!("{}::{}", member.path, member.name);
+            println!("  {} {}", location.bold(), key.red());
         }
         println!();
     }

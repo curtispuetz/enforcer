@@ -4,11 +4,15 @@ use syn::ItemFn;
 
 use super::{
     collect, normalize, report,
-    t::{Duplicate, Group},
+    t::{Config, Duplicate, Group},
 };
 
 pub fn run() -> bool {
-    let free_fns = collect::all();
+    let config = Config::new();
+    let free_fns: Vec<_> = collect::all()
+        .into_iter()
+        .filter(|function| !config.ignore.contains(&format!("{}::{}", function.path, function.name)))
+        .collect();
     let total = free_fns.len();
 
     let mut buckets: HashMap<ItemFn, Vec<Duplicate>> = HashMap::new();
