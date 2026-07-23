@@ -52,3 +52,7 @@ pub fn module(path: &Path) -> Option<Vec<String>> {
     }
     Some(segments)
 }
+
+pub fn is_t_commons(path: &Path) -> bool {
+    under_dir(path, "t") || commons_file_kind(path) == Some("t")
+}

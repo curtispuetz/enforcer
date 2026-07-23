@@ -13,7 +13,7 @@ pub fn run() -> bool {
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    if !_is_t_commons(path) {
+    if !path::is_t_commons(path) {
         return Outcome::Skipped;
     }
     let file = files::parse(path);
@@ -76,8 +76,4 @@ fn _is_function_like(name: &str) -> bool {
 
 fn _is_type_segment(segment: &str) -> bool {
     matches!(segment.chars().next(), Some(c) if c.is_ascii_uppercase())
-}
-
-fn _is_t_commons(path: &Path) -> bool {
-    path::under_dir(path, "t") || path::commons_file_kind(path) == Some("t")
 }
