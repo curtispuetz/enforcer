@@ -23,7 +23,7 @@ pub enum Command {
     CognitiveComplexity,
     TraitRules,
     DuplicateFns,
-    FnNaming,
+    PrivateFnNaming,
 }
 
 impl Command {

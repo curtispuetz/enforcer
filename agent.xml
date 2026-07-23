@@ -19,9 +19,6 @@
     </notes>
   </cargo-commands>
   <rust-code-preferences>
-    <private-fns>
-      Whenever defining private functions/methods (i.e. without 'pub'), start the function/method name with an underscore.
-    </private-fns>
     <enforcer-import-rules>
       <general-guide>
         The idea is to put all static data in 's' dirs and public types in 't' dirs. There can also be some basic impl's for simple methods in the 't' directories alongside the types. 'ext_traits' are for extension traits (adding traits to types we don't own). Principle: minimize c (ideally nothing in it), instead placing code as deep as possible, right where it's used. However, a balancing principle: extract duplicated logic to 'c' dirs. Principle: put all types used multiple places in 't' directories.
