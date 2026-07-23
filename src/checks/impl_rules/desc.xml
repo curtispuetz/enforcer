@@ -3,9 +3,12 @@
   <rules>
     <rule>
       Every impl (inherent, or a trait impl for one of our own types such as `impl Default for Foo`)
-      whose self type is a `pub` crate type must live in the same module (file) as that type's
-      definition. Private types are exempt (their impls may live anywhere). `ext_traits` modules are
-      exempt entirely.
+      whose self type is a `pub` crate type must live in the same `t` commons module as that type's
+      definition. When the type lives in a `t/` directory, the impl may be any file under that
+      directory, so a large implementation can spread across sibling files while staying next to the
+      type. When the type lives in a single-file `t.rs` commons module, the impl must be in that same
+      file: the module is only that one file, so sibling files in its directory do not count. Private
+      types are exempt (their impls may live anywhere). `ext_traits` modules are exempt entirely.
     </rule>
     <rule>
       Nothing inside a `t` module may call a crate free function, i.e. any call whose path is rooted at

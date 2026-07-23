@@ -1,5 +1,11 @@
 pub fn misplaced_impl(name: &str) -> String {
-    format!("impl {name} is not in the same module as the public {name} type definition")
+    format!(
+        "impl {name} is not in the same module or sibling module as the {name} type definition"
+    )
+}
+
+pub fn not_in_t_module(name: &str) -> String {
+    format!("impl {name} is not in a t module")
 }
 
 pub fn foreign_trait_impl(name: &str) -> String {
