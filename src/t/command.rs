@@ -11,6 +11,7 @@ pub enum Command {
     ModLibContents,
     CommentRules,
     TypeLocation,
+    ImplLocation,
     StaticLocation,
     CallRules,
     CModContents,
