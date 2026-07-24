@@ -5,15 +5,14 @@ use crate::{
     t::{ItemsViolation, Outcome},
 };
 
-use super::{classify, issues, report};
+use super::issues;
 
-pub fn run() -> bool {
-    let (passed, violations) = scan::src_files(_check_file);
-    report::print(passed, violations)
+pub fn check() -> (usize, Vec<ItemsViolation>) {
+    scan::src_files(_check_file)
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    if !classify::is_commons_root(path) {
+    if !_is_commons_mod(path) {
         return Outcome::Skipped;
     }
     let items = issues::of(path);
@@ -25,4 +24,13 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
             items,
         })
     }
+}
+
+fn _is_commons_mod(path: &Path) -> bool {
+    if path.file_name().and_then(|n| n.to_str()) != Some("mod.rs") {
+        return false;
+    }
+    ["t", "s", "cnst", "ext_traits"]
+        .iter()
+        .any(|name| path::under_dir(path, name))
 }

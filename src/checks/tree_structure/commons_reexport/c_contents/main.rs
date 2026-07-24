@@ -5,11 +5,10 @@ use crate::{
     t::{ItemsViolation, Outcome},
 };
 
-use super::{check, report};
+use super::{inception, simple};
 
-pub fn run() -> bool {
-    let (passed, violations) = scan::src_files(_check_file);
-    report::print(passed, violations)
+pub fn check() -> (usize, Vec<ItemsViolation>) {
+    scan::src_files(_check_file)
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
@@ -18,9 +17,9 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     }
     let file = files::ast_parse(path);
     let items = if _has_sub_c(path) {
-        check::inception::violations(&file)
+        inception::violations(&file, _needs_allow(path))
     } else {
-        check::simple::violations(&file)
+        simple::violations(&file)
     };
     if items.is_empty() {
         Outcome::Passed
@@ -34,9 +33,13 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
 
 fn _is_c_mod(path: &Path) -> bool {
     path.file_name().and_then(|n| n.to_str()) == Some("mod.rs")
-        && path::parent_name(path) == Some("c")
+        && path::under_dir(path, "c")
 }
 
 fn _has_sub_c(path: &Path) -> bool {
     path.parent().map(|p| p.join("c").is_dir()).unwrap_or(false)
+}
+
+fn _needs_allow(path: &Path) -> bool {
+    path::parent_name(path) == Some("c")
 }

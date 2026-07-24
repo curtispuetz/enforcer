@@ -1,10 +1,10 @@
 use crate::c::ast;
 
-pub fn violations(file: &syn::File) -> Vec<String> {
+pub fn violations(file: &syn::File, needs_allow: bool) -> Vec<String> {
     let mut issues = Vec::new();
     match _private_mod_c(&file.items) {
         None => issues.push("missing `mod c;` declaration".to_string()),
-        Some(m) if !_has_inception_allow(&m.attrs) => {
+        Some(m) if needs_allow && !_has_inception_allow(&m.attrs) => {
             issues.push(
                 "`mod c;` missing `#[allow(clippy::module_inception)]`".to_string(),
             );

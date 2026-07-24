@@ -17,9 +17,7 @@
 @src/checks/comment_rules/desc.xml
 @src/checks/call_rules/desc.xml
 @src/checks/tree_structure/import_rules/desc.xml
-@src/checks/tree_structure/c_mod_contents/desc.xml
-@src/checks/tree_structure/commons_exports/desc.xml
 @src/checks/tree_structure/commons_items/desc.xml
-@src/checks/tree_structure/commons_nesting/desc.xml
+@src/checks/tree_structure/commons_reexport/desc.xml
 @src/checks/tree_structure/impl_location/desc.xml
 @src/checks/tree_structure/contained_t/desc.xml

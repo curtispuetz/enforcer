@@ -1,0 +1,75 @@
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
+
+use crate::{
+    c::path,
+    s::{EXISTING_SRC_DIRS, ROOT},
+    t::ItemsViolation,
+};
+
+pub fn check() -> (usize, Vec<ItemsViolation>) {
+    let mut passed = 0;
+    let mut violations = Vec::new();
+    for module in _commons() {
+        match _bad_ancestor(&module) {
+            Some(ancestor) => violations.push(ItemsViolation {
+                path: path::rel(&module),
+                items: vec![format!(
+                    "nested inside commons module `{}`",
+                    path::rel(&ancestor)
+                )],
+            }),
+            None => passed += 1,
+        }
+    }
+    (passed, violations)
+}
+
+fn _commons() -> Vec<PathBuf> {
+    let mut dirs = Vec::new();
+    for dir_name in EXISTING_SRC_DIRS.iter() {
+        _collect(&ROOT.join(dir_name), &mut dirs);
+    }
+    dirs
+}
+
+fn _collect(dir: &Path, out: &mut Vec<PathBuf>) {
+    let Ok(entries) = fs::read_dir(dir) else {
+        return;
+    };
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path::commons_kind(&path).is_some() {
+            out.push(path.clone());
+        }
+        if path.is_dir() {
+            _collect(&path, out);
+        }
+    }
+}
+
+fn _bad_ancestor(module: &Path) -> Option<PathBuf> {
+    let kind = path::commons_kind(module)?;
+    let (ancestor, ancestor_kind) = _nearest_commons_ancestor(module)?;
+    // not-obvious: c-in-c is the only nesting allowed, so it's the one pairing we skip.
+    if kind == "c" && ancestor_kind == "c" {
+        return None;
+    }
+    Some(ancestor)
+}
+
+fn _nearest_commons_ancestor(module: &Path) -> Option<(PathBuf, &'static str)> {
+    let mut parent = module.parent();
+    while let Some(p) = parent {
+        if p == ROOT.as_path() {
+            break;
+        }
+        if let Some(kind) = path::commons_kind(p) {
+            return Some((p.to_path_buf(), kind));
+        }
+        parent = p.parent();
+    }
+    None
+}
