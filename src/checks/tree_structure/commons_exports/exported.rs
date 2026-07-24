@@ -4,7 +4,7 @@ use crate::c::{ast, files};
 
 pub fn glob_modules(mod_rs: &Path) -> HashSet<String> {
     let mut modules = HashSet::new();
-    for item in files::parse(mod_rs).items {
+    for item in files::ast_parse(mod_rs).items {
         if let syn::Item::Use(u) = &item
             && ast::is_public(&u.vis)
             && let Some(module) = ast::glob_module(&u.tree)
@@ -19,7 +19,7 @@ pub fn has_public_items(mod_rs: &Path, module: &str) -> bool {
     let Some(file) = _module_file(mod_rs, module) else {
         return true;
     };
-    files::parse(&file).items.iter().any(_is_public_item)
+    files::ast_parse(&file).items.iter().any(_is_public_item)
 }
 
 fn _module_file(mod_rs: &Path, module: &str) -> Option<std::path::PathBuf> {

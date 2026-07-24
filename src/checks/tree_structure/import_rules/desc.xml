@@ -5,7 +5,7 @@
     - Deeper (into nested modules)
     And that they never point (violations):
     - Up to a parent module, unless to a commons module (see commons-modules below); or
-    - Across into a different branch of the tree.
+    - Across into a different branch of the tree
   </desc>
   <rationale>
     To keep a predictable module tree structure, where we know everything in a module's submodules are supporting logic for the module to call, and not the other way around (i.e. where submodules call up to their parent modules for supporting logic).

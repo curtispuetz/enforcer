@@ -6,7 +6,7 @@ use crate::c::files;
 
 pub fn disallowed(path: &Path, commons: &str) -> Vec<String> {
     let mut ret = Vec::new();
-    for item in files::parse(path).items {
+    for item in files::ast_parse(path).items {
         if let Some((kind, name)) = _exported(&item)
             && !_allowed(commons, kind)
         {

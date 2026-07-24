@@ -29,7 +29,7 @@ fn _check_file(path: &Path) -> Outcome<Violation> {
 
 fn _mod_names(path: &Path) -> Vec<String> {
     let mut names = Vec::new();
-    for item in files::parse(path).items {
+    for item in files::ast_parse(path).items {
         if let syn::Item::Mod(m) = item {
             names.push(m.ident.to_string());
         }

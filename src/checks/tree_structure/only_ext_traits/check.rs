@@ -4,7 +4,7 @@ use crate::c::{ast, files, path};
 
 pub fn violations(path: &Path, crate_types: &HashSet<String>) -> Vec<String> {
     let mut ret = Vec::new();
-    for item in files::parse(path).items {
+    for item in files::ast_parse(path).items {
         match item {
             syn::Item::Trait(t) if !path::in_commons(path, "ext_traits") => {
                 ret.push(format!("trait {} defined outside ext_traits", t.ident));
@@ -20,7 +20,10 @@ pub fn violations(path: &Path, crate_types: &HashSet<String>) -> Vec<String> {
     ret
 }
 
-fn _crate_type_impl(imp: &syn::ItemImpl, crate_types: &HashSet<String>) -> Option<String> {
+fn _crate_type_impl(
+    imp: &syn::ItemImpl,
+    crate_types: &HashSet<String>,
+) -> Option<String> {
     let (trait_path, _) = imp.trait_.as_ref()?;
     let self_name = ast::self_base_name(&imp.self_ty)?;
     if !crate_types.contains(&self_name) {

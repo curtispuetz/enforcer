@@ -10,7 +10,7 @@ pub fn collect_exported(dir_name: &str) -> HashSet<String> {
 }
 
 fn _exported_macros_in_file(path: &Path) -> Vec<String> {
-    files::parse(path)
+    files::ast_parse(path)
         .items
         .iter()
         .filter_map(_exported_macro_name)

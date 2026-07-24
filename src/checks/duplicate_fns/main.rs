@@ -9,7 +9,7 @@ use super::{
 
 pub fn run() -> bool {
     let config = Config::new();
-    let free_fns = collect::all();
+    let free_fns = collect::all_codebase_free_fns();
     let total = free_fns.len();
 
     let mut buckets: HashMap<ItemFn, Vec<Duplicate>> = HashMap::new();

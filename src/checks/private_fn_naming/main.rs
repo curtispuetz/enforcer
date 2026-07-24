@@ -26,7 +26,7 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
 
 fn _misnamed_fns(path: &Path) -> Vec<String> {
     let mut items = Vec::new();
-    for item in &files::parse(path).items {
+    for item in &files::ast_parse(path).items {
         match item {
             syn::Item::Fn(f) => _check_fn(&f.vis, &f.sig.ident, &mut items),
             syn::Item::Impl(imp) if imp.trait_.is_none() => {

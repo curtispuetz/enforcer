@@ -26,7 +26,7 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
 
 fn _misplaced(path: &Path) -> Vec<String> {
     let mut ret = Vec::new();
-    for item in files::parse(path).items {
+    for item in files::ast_parse(path).items {
         if let Some((commons, desc)) = home::of(&item)
             && !path::in_commons(path, commons)
         {

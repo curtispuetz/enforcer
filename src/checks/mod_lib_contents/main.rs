@@ -29,7 +29,7 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
 
 fn _disallowed_items(path: &Path) -> Vec<String> {
     let mut items = Vec::new();
-    for item in files::parse(path).items {
+    for item in files::ast_parse(path).items {
         if !matches!(item, syn::Item::Mod(_) | syn::Item::Use(_)) {
             items.push(_item_kind(&item));
         }

@@ -16,7 +16,7 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     if !path::is_t_commons(path) {
         return Outcome::Skipped;
     }
-    let file = files::parse(path);
+    let file = files::ast_parse(path);
     let imported = imports::bindings(&file);
     let mut items = Vec::new();
     for segments in calls::paths(&file) {

@@ -7,11 +7,11 @@ use crate::{
 
 use super::t::FreeFn;
 
-pub fn all() -> Vec<FreeFn> {
+pub fn all_codebase_free_fns() -> Vec<FreeFn> {
     let mut found = Vec::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for file_path in files::rs(dir_name) {
-            let file = files::parse(&file_path);
+            let file = files::ast_parse(&file_path);
             let relative = path::rel(&file_path);
             _items(&file.items, &relative, &mut found);
         }

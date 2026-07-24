@@ -34,7 +34,7 @@ fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
 
 fn _mod_count(path: &Path) -> usize {
     let mut count = 0;
-    for item in files::parse(path).items {
+    for item in files::ast_parse(path).items {
         if matches!(item, syn::Item::Mod(_)) {
             count += 1;
         }

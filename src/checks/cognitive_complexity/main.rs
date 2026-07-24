@@ -19,7 +19,7 @@ pub fn run() -> bool {
 fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     let relative = path::rel(path);
     let mut over = Vec::new();
-    for function in measure::functions(&files::parse(path)) {
+    for function in measure::functions(&files::ast_parse(path)) {
         let qualified = format!("{relative}::{}", function.name);
         if function.score > config.max && !config.ignore.contains(&qualified) {
             over.push(function);

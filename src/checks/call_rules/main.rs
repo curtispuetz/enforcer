@@ -13,7 +13,7 @@ pub fn run() -> bool {
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    let items = find::violations(&files::parse(path));
+    let items = find::violations(&files::ast_parse(path));
     if items.is_empty() {
         Outcome::Passed
     } else {

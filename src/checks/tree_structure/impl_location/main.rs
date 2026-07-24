@@ -17,7 +17,7 @@ fn _check_file(
     path: &Path,
     type_defs: &HashMap<String, Vec<TypeDef>>,
 ) -> Outcome<ItemsViolation> {
-    let file = files::parse(path);
+    let file = files::ast_parse(path);
     let bindings = imports::bindings(&file);
     let mut items = Vec::new();
     for item in &file.items {

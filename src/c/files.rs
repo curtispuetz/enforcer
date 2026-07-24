@@ -13,7 +13,7 @@ pub fn rs(dir_name: &str) -> Vec<PathBuf> {
         .collect()
 }
 
-pub fn parse(path: &Path) -> syn::File {
+pub fn ast_parse(path: &Path) -> syn::File {
     let source = fs::read_to_string(path).expect("failed to read file");
     syn::parse_file(&source).expect("failed to parse file")
 }

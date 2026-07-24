@@ -4,7 +4,7 @@ use crate::c::{ast, files};
 
 pub fn of(path: &Path) -> Vec<String> {
     let mut issues = Vec::new();
-    for item in files::parse(path).items {
+    for item in files::ast_parse(path).items {
         if let syn::Item::Use(u) = &item
             && ast::is_public(&u.vis)
         {

@@ -31,7 +31,7 @@ fn _disallowed_imports(
     config: &Config,
 ) -> Vec<BadImport> {
     let mut violations = Vec::new();
-    for use_path in imports::internal_use_paths(&files::parse(path)) {
+    for use_path in imports::internal_use_paths(&files::ast_parse(path)) {
         if _is_ignored_macro(&use_path, config) {
             continue;
         }

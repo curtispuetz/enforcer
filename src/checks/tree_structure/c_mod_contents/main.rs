@@ -16,7 +16,7 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     if !_is_c_mod(path) {
         return Outcome::Skipped;
     }
-    let file = files::parse(path);
+    let file = files::ast_parse(path);
     let items = if _has_sub_c(path) {
         check::inception::violations(&file)
     } else {

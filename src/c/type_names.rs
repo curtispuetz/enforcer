@@ -8,7 +8,7 @@ pub fn defined() -> HashSet<String> {
     let mut ret = HashSet::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for file_path in files::rs(dir_name) {
-            for item in files::parse(&file_path).items {
+            for item in files::ast_parse(&file_path).items {
                 if let Some(name) = _type_name(&item) {
                     ret.insert(name);
                 }

@@ -12,7 +12,7 @@ pub fn find() -> HashMap<String, Vec<TypeDef>> {
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for file_path in files::rs(dir_name) {
             let module = path::module(&file_path).unwrap_or_default();
-            for item in files::parse(&file_path).items {
+            for item in files::ast_parse(&file_path).items {
                 if let Some((name, is_public)) = _type_def(&item) {
                     map.entry(name).or_default().push(TypeDef {
                         path: file_path.clone(),
