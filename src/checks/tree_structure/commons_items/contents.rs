@@ -1,13 +1,16 @@
 use std::path::Path;
 
-use syn::{Ident, Item, Visibility};
+use syn::{File, Ident, Item, Visibility};
 
-use crate::c::files;
+use super::kind;
 
-pub fn disallowed(path: &Path, commons: &str) -> Vec<String> {
+pub fn disallowed(path: &Path, file: &File) -> Vec<String> {
+    let Some(commons) = kind::of(path) else {
+        return Vec::new();
+    };
     let mut ret = Vec::new();
-    for item in files::ast_parse(path).items {
-        if let Some((kind, name)) = _exported(&item)
+    for item in &file.items {
+        if let Some((kind, name)) = _exported(item)
             && !_allowed(commons, kind)
         {
             ret.push(format!("{kind} {name}"));

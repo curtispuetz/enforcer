@@ -5,7 +5,7 @@ use crate::{
     t::{ItemsViolation, Outcome},
 };
 
-use super::{home, report};
+use super::{contents, home, report};
 
 pub fn run() -> bool {
     let (passed, violations) = scan::src_files(_check_file);
@@ -13,7 +13,9 @@ pub fn run() -> bool {
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    let items = _misplaced(path);
+    let file = files::ast_parse(path);
+    let mut items = home::misplaced(path, &file);
+    items.extend(contents::disallowed(path, &file));
     if items.is_empty() {
         Outcome::Passed
     } else {
@@ -22,16 +24,4 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
             items,
         })
     }
-}
-
-fn _misplaced(path: &Path) -> Vec<String> {
-    let mut ret = Vec::new();
-    for item in files::ast_parse(path).items {
-        if let Some((commons, desc)) = home::of(&item)
-            && !commons.iter().any(|c| path::in_commons(path, c))
-        {
-            ret.push(format!("{desc} -> {}", commons.join(" or ")));
-        }
-    }
-    ret
 }

@@ -1,8 +1,22 @@
-use syn::{Ident, Item, Visibility};
+use std::path::Path;
 
-use crate::c::ast;
+use syn::{File, Ident, Item, Visibility};
 
-pub fn of(item: &Item) -> Option<(&'static [&'static str], String)> {
+use crate::c::{ast, path};
+
+pub fn misplaced(path: &Path, file: &File) -> Vec<String> {
+    let mut ret = Vec::new();
+    for item in &file.items {
+        if let Some((commons, desc)) = _home(item)
+            && !commons.iter().any(|c| path::in_commons(path, c))
+        {
+            ret.push(format!("{desc} -> {}", commons.join(" or ")));
+        }
+    }
+    ret
+}
+
+fn _home(item: &Item) -> Option<(&'static [&'static str], String)> {
     match item {
         Item::Struct(i) => _public(&["t"], "struct", &i.vis, &i.ident),
         Item::Enum(i) => _public(&["t"], "enum", &i.vis, &i.ident),

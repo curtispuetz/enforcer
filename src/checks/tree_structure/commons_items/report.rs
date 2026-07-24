@@ -5,9 +5,9 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
         "commons-items",
         passed,
         &format!(
-            "All public types, statics, consts, and traits are in their commons modules ({passed} files checked)"
+            "All public items are defined in their commons module, and every commons module holds only its own kind ({passed} files checked)"
         ),
-        "The following file(s) define items outside the commons module that holds them:",
+        "The following file(s) define items outside their commons module, or expose items their commons module does not hold:",
         violations,
     )
 }

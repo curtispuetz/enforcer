@@ -19,7 +19,6 @@ pub fn check(command: Command) -> bool {
         Command::CModContents => checks::tree_structure::c_mod_contents::run(),
         Command::CommonsNesting => checks::tree_structure::commons_nesting::run(),
         Command::CommonsExports => checks::tree_structure::commons_exports::run(),
-        Command::CommonsContents => checks::tree_structure::commons_contents::run(),
         Command::CommonsItems => checks::tree_structure::commons_items::run(),
         Command::ModCount => checks::mod_count::run(),
         Command::UsePrivacy => checks::use_privacy::run(),

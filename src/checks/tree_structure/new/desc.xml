@@ -1,4 +1,4 @@
-<commons-items-check>
+<new-check>
   <part1>
     <desc>
       Verifies that the following top-level items can only be defined as public in the following commons modules (see import-rules check):
@@ -25,4 +25,4 @@
   <rationale>
     We want consistent locations for all user defined items, and a consistent public surface coming from these locations.
   </rationale>
-</commons-items-check>
+</new-check>
