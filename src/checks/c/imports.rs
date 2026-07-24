@@ -20,12 +20,10 @@ fn _expand(mut prefix: Vec<String>, tree: &UseTree) -> Vec<(String, Vec<String>)
             prefix.push(p.ident.to_string());
             _expand(prefix, &p.tree)
         }
-        UseTree::Name(n) if n.ident == "self" => {
-            let binding = prefix.last().cloned().unwrap_or_default();
-            vec![(binding, prefix)]
-        }
         UseTree::Name(n) => {
-            prefix.push(n.ident.to_string());
+            if n.ident != "self" {
+                prefix.push(n.ident.to_string());
+            }
             let binding = prefix.last().cloned().unwrap_or_default();
             vec![(binding, prefix)]
         }
