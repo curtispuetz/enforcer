@@ -8,13 +8,16 @@ use crate::{
     s::EXISTING_SRC_DIRS,
 };
 
-use super::{resolve, t::CfKey, visit};
+use super::{reexports, resolve, t::CfKey, visit};
 
-pub fn collect(defs: &HashSet<CfKey>) -> HashMap<CfKey, Vec<Vec<String>>> {
+pub fn collect(
+    defs: &HashSet<CfKey>,
+    aliases: &HashSet<Vec<String>>,
+) -> HashMap<CfKey, Vec<Vec<String>>> {
     let mut ret: HashMap<CfKey, Vec<Vec<String>>> = HashMap::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for file in files::rs(dir_name) {
-            _scan(&file, defs, &mut ret);
+            _scan(&file, defs, aliases, &mut ret);
         }
     }
     ret
@@ -23,17 +26,20 @@ pub fn collect(defs: &HashSet<CfKey>) -> HashMap<CfKey, Vec<Vec<String>>> {
 fn _scan(
     file: &Path,
     defs: &HashSet<CfKey>,
+    aliases: &HashSet<Vec<String>>,
     ret: &mut HashMap<CfKey, Vec<Vec<String>>>,
 ) {
     let ast = files::ast_parse(file);
     let bindings = imports::bindings(&ast);
-    let Some(caller) = path::module(file) else {
+    let Some(raw_caller) = path::module(file) else {
         return;
     };
+    let caller = reexports::canonical(&raw_caller, aliases);
     for (scope, segments) in visit::scoped(&ast) {
-        let Some(key) = resolve::call_target(&segments, &bindings, file) else {
+        let Some((raw_module, name)) = resolve::call_target(&segments, &bindings, file) else {
             continue;
         };
+        let key = (reexports::canonical(&raw_module, aliases), name);
         if _recursive(&scope, &key, &caller) {
             continue;
         }

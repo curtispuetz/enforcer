@@ -1,29 +1,30 @@
-use std::path::Path;
+use std::{collections::HashSet, path::Path};
 
 use crate::{
     c::{ast, files, path},
     s::EXISTING_SRC_DIRS,
 };
 
-use super::t::CFn;
+use super::{reexports, t::CFn};
 
-pub fn find() -> Vec<CFn> {
+pub fn find(aliases: &HashSet<Vec<String>>) -> Vec<CFn> {
     let mut ret = Vec::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for file in files::rs(dir_name) {
-            _collect(&file, &mut ret);
+            _collect(&file, aliases, &mut ret);
         }
     }
     ret
 }
 
-fn _collect(file: &Path, ret: &mut Vec<CFn>) {
+fn _collect(file: &Path, aliases: &HashSet<Vec<String>>, ret: &mut Vec<CFn>) {
     if !path::in_common(file, "c") {
         return;
     }
-    let Some(module) = path::module(file) else {
+    let Some(raw) = path::module(file) else {
         return;
     };
+    let module = reexports::canonical(&raw, aliases);
     let Some(parent) = _parent(&module) else {
         return;
     };

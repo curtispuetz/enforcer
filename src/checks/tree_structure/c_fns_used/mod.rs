@@ -2,6 +2,7 @@ mod defs;
 mod judge;
 mod main;
 mod nca;
+mod reexports;
 mod resolve;
 mod t;
 mod usage;

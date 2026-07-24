@@ -6,18 +6,19 @@ use crate::{
 };
 
 use super::{
-    defs, judge,
+    defs, judge, reexports,
     t::{CFn, CfKey},
     usage,
 };
 
 pub fn part() -> PartReport {
-    let cfns = defs::find();
+    let aliases = reexports::aliases();
+    let cfns = defs::find(&aliases);
     let keys: HashSet<CfKey> = cfns
         .iter()
         .map(|f| (f.module.clone(), f.name.clone()))
         .collect();
-    let callers = usage::collect(&keys);
+    let callers = usage::collect(&keys, &aliases);
     _report(cfns, &callers)
 }
 
