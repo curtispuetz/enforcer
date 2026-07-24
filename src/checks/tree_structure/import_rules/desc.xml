@@ -19,7 +19,7 @@
   </more-details>
   <commons-modules>
     <desc>
-      `c`, `t`, `s`, `ext_traits` — shared-code (general shared logic, types, static data, and extension traits, respectively). Each may be a folder (e.g. `t/`) with a mod.rs file, or a single-file module (e.g. `t.rs`). All four behave the same way (e.g. `crate::c` is the whole-crate shared logic, reachable everywhere; `crate::app::c` is app-local, reachable only from files at or below `crate::app`).
+      `c`, `t`, `s`, `cnst`, `ext_traits` — shared-code (general shared logic, types, static data, constants, and extension traits, respectively). Each may be a folder (e.g. `t/`) with a mod.rs file, or a single-file module (e.g. `t.rs`). All five behave the same way (e.g. `crate::c` is the whole-crate shared logic, reachable everywhere; `crate::app::c` is app-local, reachable only from files at or below `crate::app`).
     </desc>
     <note>
       Inside a commons folder, the same import-rules apply as if that folder were the crate root.

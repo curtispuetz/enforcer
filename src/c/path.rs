@@ -3,6 +3,10 @@ use std::path::{Component, Path};
 
 static COMMONS: [&str; 5] = ["c", "cnst", "ext_traits", "s", "t"];
 
+pub fn is_commons(name: &str) -> bool {
+    COMMONS.contains(&name)
+}
+
 pub fn commons_file_kind(path: &Path) -> Option<&'static str> {
     if path.extension().and_then(|e| e.to_str()) != Some("rs") {
         return None;
