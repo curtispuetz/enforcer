@@ -1,0 +1,42 @@
+<commons-reexport-check>
+  <part1>
+    <desc>
+      Verifies that no commons modules (see import-rules check) are nested in other commons modules.
+    </desc>
+    <rationale>Make reasoning about commons modules easier</rationale>
+    <exception>
+      <desc>
+        `c` modules may be nested inside`c` modules (e.g. `/c/foo/c/bar`). There may be as much nesting of these as desired.
+      </desc>
+      <rationale>It's commonly necessary to nest `c` commons modules to share code within a `c` module.</rationale>
+    </exception>
+  </part1>
+  <part2>
+    <desc>
+      For `t`, `s`, `cnst`, and `ext_traits` commons modules, verifies that every module declaration in all mod.rs file is:
+      - private (i.e. `mod x;`, never `pub mod x;`); and
+      - glob re-exported (i.e. `pub use x::*;`).
+    </desc>
+    <rationale>
+      So that users can import `use ...::t::TypeName` (i.e. not `use ...::t::submodule::TypeName`), saving characters.
+    </rationale>
+    <exception>
+      The glob re-export is not required when the module exposes no public items to re-export (e.g. a module containing only `impl` blocks).
+    </exception>
+  </part2>
+  <part3>
+    <desc>
+      Verifies that all `mod.rs` files in a `c` commons module:
+      - Declares all of its modules as public (i.e. `pub mod ...`); and
+      - Contains no `use` statements.
+    </desc>
+    <rationale>
+      So callers of the `c` module can import the submodules and call the functions (e.g. submodule::fn_name())
+    </rationale>
+    <exception>
+      If the module contains a nested `c` module, the `mod.rs` must instead:
+      - Declare the nested module privately as `mod c;` (annotated with the outer attribute `#[allow(clippy::module_inception)]` if needed); and
+      - Have a single `pub use c::*;` glob statement re-exporting the nested `c` module.
+    </exception>
+  </part3>
+</commons-reexport-check>
