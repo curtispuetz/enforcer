@@ -35,7 +35,7 @@
     </rationale>
     <exception>
       If the module contains a nested `c` module, the `mod.rs` must instead:
-      - Declare the nested module privately as `mod c;` (annotated with the outer attribute `#[allow(clippy::module_inception)]` if needed); and
+      - Declare the nested module privately as `mod c;` (annotated with the outer attribute `#[allow(clippy::module_inception)]` if a `c` module is the direct parent); and
       - Have a single `pub use c::*;` glob statement re-exporting the nested `c` module.
     </exception>
   </part3>
