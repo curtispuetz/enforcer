@@ -3,7 +3,7 @@
     This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
   </preamble>
   <what-this-is>
-    This is a crate called 'enforcer' that does various checks on a Rust codebase. Each check is a set of rules. The enforcer runs that check telling you if your codebase has any violations.
+    This is a crate called 'enforcer' that does various checks on a Rust codebase. Each check is a set of rules. The enforcer runs that check telling you if your codebase has any violations. We are running it on this codebase itself, but also of course intend to use it on other codebases.
   </what-this-is>
   <cargo-commands>
     <build>cargo build</build>

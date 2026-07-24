@@ -1,6 +1,12 @@
 <commons-nesting-check>
   <desc>
-    Verifies that `t` and `s` commons modules (see import-rules check) are not nested (i.e. a `t` module having a `t` ancestor (e.g. `t/t`, `t/foo/t`, or `t/foo/t.rs`) is a violation, and likewise for `s`).
+    Verifies that no commons modules (see import-rules check) are nested (i.e. a `t` module having a `t`, `c`, `s`, `cnst` or `ext_traits` submodule like, for example, `/t/foo/c`).
   </desc>
-  <rationale>A simplification because it seems nesting these wouldn't be very common or useful</rationale>
+  <rationale>Make reasoning about commons modules easier</rationale>
+  <exception>
+    <desc>
+      `c` commons modules may live inside parent `c` commons modules (e.g. `/c/foo/c/bar`). There may be as much nesting of these as desired.
+    </desc>
+    <rationale>It's commonly necessary to nest `c` commons modules to share code within a `c` module.</rationale>
+  </exception>
 </commons-nesting-check>
