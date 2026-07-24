@@ -68,6 +68,5 @@ pub fn describe(imp: &syn::ItemImpl, self_name: &str) -> String {
 }
 
 pub fn is_ext_traits(path: &Path) -> bool {
-    path::under_dir(path, "ext_traits")
-        || path::commons_file_kind(path) == Some("ext_traits")
+    path::in_commons(path, "ext_traits")
 }

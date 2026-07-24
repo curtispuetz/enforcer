@@ -20,9 +20,7 @@
 @src/checks/c_mod_contents/desc.xml
 @src/checks/commons_exports/desc.xml
 @src/checks/commons_contents/desc.xml
+@src/checks/commons_items/desc.xml
 @src/checks/commons_nesting/desc.xml
-@src/checks/static_location/desc.xml
-@src/checks/type_location/desc.xml
 @src/checks/impl_location/desc.xml
 @src/checks/contained_t/desc.xml
-@src/checks/trait_rules/desc.xml

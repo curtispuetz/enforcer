@@ -1,7 +1,7 @@
 use crate::s::ROOT;
 use std::path::{Component, Path};
 
-static COMMONS: [&str; 4] = ["c", "s", "t", "ext_traits"];
+static COMMONS: [&str; 5] = ["c", "cnst", "ext_traits", "s", "t"];
 
 pub fn commons_file_kind(path: &Path) -> Option<&'static str> {
     if path.extension().and_then(|e| e.to_str()) != Some("rs") {
@@ -55,6 +55,10 @@ pub fn module(path: &Path) -> Option<Vec<String>> {
     Some(segments)
 }
 
+pub fn in_commons(path: &Path, name: &str) -> bool {
+    under_dir(path, name) || commons_file_kind(path) == Some(name)
+}
+
 pub fn is_t_commons(path: &Path) -> bool {
-    under_dir(path, "t") || commons_file_kind(path) == Some("t")
+    in_commons(path, "t")
 }

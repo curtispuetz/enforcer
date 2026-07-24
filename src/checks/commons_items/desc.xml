@@ -1,0 +1,25 @@
+<commons-items-check>
+  <desc>
+    Verifies that the files in each commons module (see import-rules check) are the only place where the following top-level items can be defined as public (i.e. top-level items defined anywhere else are a violation):
+    - `t` - `struct`, `enum`, and `type` alias
+    - `s` - `static`
+    - `cnst` - `const`
+    - `ext_traits` - `trait`
+    - `c` - `fn`
+  </desc>
+  <rationale>
+    We want consistent locations for all user defined items.
+  </rationale>
+  <traits-rationale>
+    For traits, the preference is enums with dispatch functions (i.e. functions that match the
+    enum variants to a function call) instead of traits, so the only traits we want are the
+    extension traits in `ext_traits`.
+  </traits-rationale>
+  <note>
+    This is the converse of the commons-contents check, which verifies the other direction:
+    that a commons module holds nothing but its own kind of public item.
+  </note>
+  <exemption>
+    Private items are allowed anywhere. Traits are not exempted by privacy, since we want no traits of our own at all.
+  </exemption>
+</commons-items-check>

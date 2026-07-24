@@ -1,11 +1,11 @@
 use std::path::Path;
 
 use crate::{
-    c::{ast, files, path, scan},
+    c::{files, path, scan},
     t::{ItemsViolation, Outcome},
 };
 
-use super::report;
+use super::{home, report};
 
 pub fn run() -> bool {
     let (passed, violations) = scan::src_files(_check_file);
@@ -13,10 +13,7 @@ pub fn run() -> bool {
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    if path::under_dir(path, "s") || path::commons_file_kind(path) == Some("s") {
-        return Outcome::Skipped;
-    }
-    let items = _misplaced_statics(path);
+    let items = _misplaced(path);
     if items.is_empty() {
         Outcome::Passed
     } else {
@@ -27,14 +24,14 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     }
 }
 
-fn _misplaced_statics(path: &Path) -> Vec<String> {
-    let mut items = Vec::new();
+fn _misplaced(path: &Path) -> Vec<String> {
+    let mut ret = Vec::new();
     for item in files::parse(path).items {
-        if let syn::Item::Static(i) = &item
-            && ast::is_public(&i.vis)
+        if let Some((commons, desc)) = home::of(&item)
+            && !path::in_commons(path, commons)
         {
-            items.push(format!("static {}", i.ident));
+            ret.push(format!("{desc} -> {commons}"));
         }
     }
-    items
+    ret
 }

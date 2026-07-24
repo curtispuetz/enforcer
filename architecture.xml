@@ -17,7 +17,7 @@
     Aside from the shared-code, each check is implemented in its own folder under `src/checks`. In each folder, there is a description of the check in CLAUDE.md.
   </check-impls>
   <check-anatomy>
-    The conventional layout of a check folder (see `type_location`, `static_location`
+    The conventional layout of a check folder (see `commons_items`, `commons_contents`
     for minimal examples):
     - `mod.rs` — declares the submodules and does `pub use main::run;`.
     - `main.rs` — `pub fn run() -&gt; bool` is the entrypoint. It typically calls

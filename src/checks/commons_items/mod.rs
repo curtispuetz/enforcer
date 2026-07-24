@@ -1,3 +1,4 @@
+mod home;
 mod main;
 mod report;
 

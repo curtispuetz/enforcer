@@ -6,8 +6,11 @@
 - Verify the traits defined in an ext_traits module are only implemented:
   - Inside the ext_traits
   - For types that are external (not owned by our code)
+  - note: remove the traits validation in common_items, and handle it separately.
 - Disallow std certain macros. (Just a preference, I think some of these match code less readable) The list right now:
   - matches
   - assert_matches
 
 ## Other
+
+- Rename common_contents to common_exports and common_exports to common_reexports.

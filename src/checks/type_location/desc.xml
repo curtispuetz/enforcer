@@ -1,7 +1,0 @@
-<type-location-check>
-  <desc>
-    Verifies that no top-level public `struct`, `enum`, or `type` alias is defined outside a `t` commons module (see import rules check).
-  </desc>
-  <rationale>We want consistent locations for all user defined types.</rationale>
-  <note>Private `struct`, `enum`, and `type` aliases are allowed anywhere</note>
-</type-location-check>
