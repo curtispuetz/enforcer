@@ -129,6 +129,14 @@
       To encourage small impls, preferring free-functions over methods. Commonly used Rust new methods and small things like that are still available.
     </rationale>
   </part8-t-no-free-functions>
+  <part9-c-fns-used>
+    <desc>
+      Verify that all public functions in a `c` common module are called in more than one module
+    </desc>
+    <rationale>
+      A function in a `c` module is there because it's needed in multiple modules. If a function is only used in one module, it can be moved to that module or one of its submodules.
+    </rationale>
+  </part9-c-fns-used>
   <config toml_table="tree-structure.import-rules">
     <item>
       ignore_export_macros - when true, imports of macros that use `#[macro_export]` are exempt (default false)
