@@ -131,10 +131,10 @@
   </part8-t-no-free-functions>
   <part9-c-fns-used>
     <desc>
-      Verify that all public functions in a `c` common module are called in more than one module
+      Verify that all public functions in a `c` common module are called in 2 or more distinct child branches of the directory that the `c` module is in.
     </desc>
     <rationale>
-      A function in a `c` module is there because it's needed in multiple modules. If a function is only used in one module, it can be moved to that module or one of its submodules.
+      A function in a `c` module is there because it's needed in multiple child branches. If a function is only used in one branch, it can be moved to that branch.
     </rationale>
   </part9-c-fns-used>
   <config toml_table="tree-structure.import-rules">
