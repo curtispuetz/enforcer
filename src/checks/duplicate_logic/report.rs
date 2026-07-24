@@ -4,19 +4,19 @@ use super::t::Group;
 
 // not-obvious: this check is cross-file, so it does not use the shared
 // `report::summary`
-pub fn print(fns: usize, groups: Vec<Group>) -> bool {
+pub fn print(scanned: usize, groups: Vec<Group>) -> bool {
     println!("{}", "duplicate-logic report:".bold().cyan());
     if groups.is_empty() {
         let success = "[success]".green().bold();
         println!(
-            "{success} No duplicated logic fragments found ({fns} functions scanned)"
+            "{success} No duplicated logic fragments found ({scanned} fragments scanned)"
         );
         return false;
     }
     let occurrences: usize = groups.iter().map(|group| group.occurrences.len()).sum();
     println!(
         "\n{}, {}\n",
-        format!("{fns} functions scanned").green(),
+        format!("{scanned} fragments scanned").green(),
         format!(
             "{occurrences} duplicated fragments in {} group(s)",
             groups.len()

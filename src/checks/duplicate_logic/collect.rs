@@ -12,12 +12,11 @@ use crate::{
 
 use super::t::{Candidate, Occurrence};
 
-pub fn all_fragments(min_stmts: usize) -> (Vec<Candidate>, usize) {
+pub fn all_fragments(min_stmts: usize) -> Vec<Candidate> {
     let mut walk = Walk {
         path: String::new(),
         min_stmts,
         candidates: Vec::new(),
-        fns: 0,
     };
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for file_path in files::rs(dir_name) {
@@ -26,14 +25,13 @@ pub fn all_fragments(min_stmts: usize) -> (Vec<Candidate>, usize) {
             walk.visit_file(&file);
         }
     }
-    (walk.candidates, walk.fns)
+    walk.candidates
 }
 
 struct Walk {
     path: String,
     min_stmts: usize,
     candidates: Vec<Candidate>,
-    fns: usize,
 }
 
 impl Walk {
@@ -60,16 +58,6 @@ impl<'ast> Visit<'ast> for Walk {
     fn visit_block(&mut self, block: &'ast Block) {
         self._enumerate(block);
         visit::visit_block(self, block);
-    }
-
-    fn visit_item_fn(&mut self, item: &'ast syn::ItemFn) {
-        self.fns += 1;
-        visit::visit_item_fn(self, item);
-    }
-
-    fn visit_impl_item_fn(&mut self, item: &'ast syn::ImplItemFn) {
-        self.fns += 1;
-        visit::visit_impl_item_fn(self, item);
     }
 }
 

@@ -4,19 +4,19 @@ use super::t::Group;
 
 // not-obvious: this check is cross-file, so it does not use the shared
 // `report::summary`
-pub fn print(passed: usize, groups: Vec<Group>) -> bool {
+pub fn print(checked: usize, groups: Vec<Group>) -> bool {
     println!("{}", "duplicate-fns report:".bold().cyan());
     if groups.is_empty() {
         let success = "[success]".green().bold();
         println!(
-            "{success} No alpha-equivalent functions found ({passed} functions checked)"
+            "{success} No alpha-equivalent functions found ({checked} functions checked)"
         );
         return false;
     }
     let duplicated: usize = groups.iter().map(|group| group.members.len()).sum();
     println!(
         "\n{}, {}\n",
-        format!("{passed} functions passed").green(),
+        format!("{checked} functions checked").green(),
         format!(
             "{duplicated} duplicate functions in {} group(s)",
             groups.len()

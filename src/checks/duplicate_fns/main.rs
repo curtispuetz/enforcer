@@ -25,9 +25,7 @@ pub fn run() -> bool {
         });
     }
 
-    let groups = _groups(buckets, &config);
-    let duplicated: usize = groups.iter().map(|group| group.members.len()).sum();
-    report::print(total - duplicated, groups)
+    report::print(total, _groups(buckets, &config))
 }
 
 fn _groups(buckets: HashMap<ItemFn, Vec<Duplicate>>, config: &Config) -> Vec<Group> {
