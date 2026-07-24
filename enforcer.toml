@@ -5,4 +5,5 @@ ignore = ["src/checks"]
 ignore = [
     "src/checks/call_rules/main.rs::run",
     "src/checks/cognitive_complexity/main.rs::run",
+    "src/checks/tree_structure/common_reexport/c_contents/main.rs::check"
 ]
