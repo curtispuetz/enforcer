@@ -7,8 +7,7 @@ fn main() {
     if names.is_empty() {
         eprintln!("enforcer: no check specified");
         eprintln!("usage: cargo enforcer <check> [<check>...]");
-        eprintln!("available checks: {}", Command::available());
-        process::exit(2);
+        _exit_unusable();
     }
     let mut commands = Vec::new();
     for name in &names {
@@ -16,8 +15,7 @@ fn main() {
             Ok(command) => commands.push(command),
             Err(_) => {
                 eprintln!("enforcer: unknown check '{name}'");
-                eprintln!("available checks: {}", Command::available());
-                process::exit(2);
+                _exit_unusable();
             }
         }
     }
@@ -30,6 +28,11 @@ fn main() {
     if !all_passed {
         process::exit(1);
     }
+}
+
+fn _exit_unusable() -> ! {
+    eprintln!("available checks: {}", Command::available());
+    process::exit(2)
 }
 
 // not-obvious: When invoked as `cargo enforcer <check>`, cargo injects a leading
