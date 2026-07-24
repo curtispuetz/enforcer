@@ -22,19 +22,11 @@ fn _collect(dir: &Path, out: &mut Vec<PathBuf>) {
     };
     for entry in entries.flatten() {
         let path = entry.path();
-        if _is_commons_module(&path) {
+        if path::commons_kind(&path).is_some() {
             out.push(path.clone());
         }
         if path.is_dir() {
             _collect(&path, out);
         }
-    }
-}
-
-fn _is_commons_module(path: &Path) -> bool {
-    if path.is_dir() {
-        matches!(path.file_name().and_then(|n| n.to_str()), Some("t" | "s"))
-    } else {
-        matches!(path::commons_file_kind(path), Some("t" | "s"))
     }
 }

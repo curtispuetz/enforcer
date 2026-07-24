@@ -5,7 +5,7 @@
   <rationale>Make reasoning about commons modules easier</rationale>
   <exception>
     <desc>
-      `c` commons modules may live inside parent `c` commons modules (e.g. `/c/foo/c/bar`). There may be as much nesting of these as desired.
+      `c` modules may be nested inside`c` modules (e.g. `/c/foo/c/bar`). There may be as much nesting of these as desired.
     </desc>
     <rationale>It's commonly necessary to nest `c` commons modules to share code within a `c` module.</rationale>
   </exception>

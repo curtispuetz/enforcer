@@ -11,6 +11,15 @@ pub fn commons_file_kind(path: &Path) -> Option<&'static str> {
     COMMONS.into_iter().find(|c| *c == stem)
 }
 
+pub fn commons_kind(path: &Path) -> Option<&'static str> {
+    if path.is_dir() {
+        let name = path.file_name()?.to_str()?;
+        COMMONS.into_iter().find(|c| *c == name)
+    } else {
+        commons_file_kind(path)
+    }
+}
+
 pub fn rel(path: &Path) -> String {
     path.strip_prefix(ROOT.as_path())
         .unwrap_or(path)

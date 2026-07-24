@@ -9,7 +9,7 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
         "commons-nesting",
         passed,
         &format!(
-            "No t or s commons module is nested inside one of the same kind ({passed} modules checked)"
+            "No commons module is nested inside another, except c inside c ({passed} modules checked)"
         ),
         violations,
         _print_failures,
@@ -18,7 +18,7 @@ pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
 
 fn _print_failures(violations: Vec<Violation>) {
     println!(
-        "The following commons module(s) are nested inside one of the same kind:\n"
+        "The following commons module(s) are nested inside another commons module:\n"
     );
     for violation in &violations {
         println!(
