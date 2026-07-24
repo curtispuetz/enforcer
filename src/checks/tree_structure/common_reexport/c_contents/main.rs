@@ -40,7 +40,9 @@ fn _is_c_mod(path: &Path) -> bool {
 }
 
 fn _has_sub_c(path: &Path) -> bool {
-    path.parent().map(|p| p.join("c").is_dir()).unwrap_or(false)
+    path.parent()
+        .map(|p| p.join("c").is_dir() || p.join("c.rs").is_file())
+        .unwrap_or(false)
 }
 
 fn _needs_allow(path: &Path) -> bool {
