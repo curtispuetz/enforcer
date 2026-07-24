@@ -121,17 +121,7 @@
       To have an expected location for impls. Also, part of the effort to encourage small impls, preferring free-functions over methods.
     </rationale>
   </part7-impl-locations>
-  <part8-t-no-free-functions>
-    <desc>Verifies that nothing inside a `t` common module calls a free-function from our crate.</desc>
-    <exceptions>
-      - The free function is in the same `t` module
-      - We don't own the free function (e.g. it's from a dependency or std)
-    </exceptions>
-    <rationale>
-      To encourage small impls, preferring free-functions over methods. Commonly used Rust new methods and small things like that are still available.
-    </rationale>
-  </part8-t-no-free-functions>
-  <part9-c-fns-used>
+  <part8-c-fns-used>
     <desc>
       Verify that all public functions in a `c` common module are called in 2 or more distinct child branches of the directory that the `c` module is in.
     </desc>
@@ -152,9 +142,8 @@
         The rationale above ("it can be moved to that branch") is false when the
         function is a thin wrapper over private helpers that another branch also
         depends on: moving it would either duplicate those helpers or force them
-        public, which in turn forces their types into a `t` module where
-        part8 forbids the crate free-functions they call. Without this, such code
-        has nowhere legal to live.
+        public, which in turn forces their types into a `t` module. Without this,
+        such code has nowhere natural to live.
       </rationale>
       <note>
         Reachability is a name-based heuristic: an item references a private name
@@ -167,7 +156,7 @@
         is not rescued by its cluster-mates.
       </unaffected>
     </shared-privates>
-  </part9-c-fns-used>
+  </part8-c-fns-used>
   <config toml_table="tree-structure.import-rules">
     <item>
       ignore_export_macros - when true, imports of macros that use `#[macro_export]` are exempt (default false)

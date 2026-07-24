@@ -8,7 +8,7 @@ use crate::{
     t::{ItemsViolation, Outcome},
 };
 
-use super::{free_calls, impls, t::TypeDef, type_defs};
+use super::{impls, t::TypeDef, type_defs};
 
 pub fn part() -> PartReport {
     let type_defs = type_defs::find();
@@ -26,8 +26,7 @@ fn _check_file(
     type_defs: &HashMap<String, Vec<TypeDef>>,
 ) -> Outcome<ItemsViolation> {
     let file = files::ast_parse(path);
-    let mut items = impls::misplaced(&file, path, type_defs);
-    items.extend(free_calls::foreign(&file, path));
+    let items = impls::misplaced(&file, path, type_defs);
     if items.is_empty() {
         Outcome::Passed
     } else {
