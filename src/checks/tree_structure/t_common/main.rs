@@ -2,7 +2,7 @@ use std::{collections::HashMap, path::Path};
 
 use crate::{
     c::{files, path, scan},
-    checks::tree_structure::{c, t::PartReport},
+    checks::tree_structure::t::{FileViolation, PartReport},
     t::{ItemsViolation, Outcome},
 };
 
@@ -15,7 +15,7 @@ pub fn part() -> PartReport {
         name: "t-common",
         unit: "files",
         passed,
-        violations: violations.into_iter().map(c::file_violation).collect(),
+        violations: violations.into_iter().map(FileViolation::new).collect(),
     }
 }
 

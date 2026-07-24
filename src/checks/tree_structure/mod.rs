@@ -1,4 +1,3 @@
-mod c;
 mod common_items;
 mod common_reexport;
 mod import_rules;

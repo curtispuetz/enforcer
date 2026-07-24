@@ -125,7 +125,9 @@
       - The free function is in the same `t` module
       - We don't own the free function (e.g. it's from a dependency or std)
     </exceptions>
-    <rationale>To encourage small impls, preferring free-functions over methods</rationale>
+    <rationale>
+      To encourage small impls, preferring free-functions over methods. Commonly used Rust new methods and small things like that are still available.
+    </rationale>
   </part8-t-no-free-functions>
   <config toml_table="tree-structure.import-rules">
     <item>
