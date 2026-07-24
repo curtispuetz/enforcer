@@ -39,11 +39,6 @@
         There must be a way to share certain items between separate modules that have different submodules, because otherwise it would be impossible to write DRY code. In fact, this might be exaggerating it, but it would maybe even be impossible to write code at all. So, if we didn't have these common modules, the import rules would be too strict to work.
       </rationale>
     </common-modules>
-    <config toml_table="import-rules">
-      <item>
-        ignore_export_macros - when true, imports of `#[macro_export]` macros are exempt (default false)
-      </item>
-    </config>
   </part1-import-rules>
   <part2-item-homes>
     <desc>
@@ -132,4 +127,9 @@
     </exceptions>
     <rationale>To encourage small impls, preferring free-functions over methods</rationale>
   </part8-t-no-free-functions>
+  <config toml_table="tree-structure.import-rules">
+    <item>
+      ignore_export_macros - when true, imports of macros that use `#[macro_export]` are exempt (default false)
+    </item>
+  </config>
 </tree-structure-check>
