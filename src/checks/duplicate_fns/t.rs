@@ -18,7 +18,7 @@ impl Config {
     }
 }
 
-pub struct FreeFn {
+pub struct CollectedFn {
     pub path: String,
     pub name: String,
     pub line: usize,

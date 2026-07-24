@@ -12,11 +12,11 @@ use super::{
 
 pub fn run() -> bool {
     let config = Config::new();
-    let free_fns = collect::all_codebase_free_fns();
-    let total = free_fns.len();
+    let fns = collect::all_codebase_fns();
+    let total = fns.len();
 
     let mut buckets: HashMap<ItemFn, Vec<Duplicate>> = HashMap::new();
-    for function in free_fns {
+    for function in fns {
         let key = _canonicalize_item_fn(&function.item);
         buckets.entry(key).or_default().push(Duplicate {
             path: function.path,

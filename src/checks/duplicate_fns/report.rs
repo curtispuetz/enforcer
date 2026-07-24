@@ -9,7 +9,7 @@ pub fn print(passed: usize, groups: Vec<Group>) -> bool {
     if groups.is_empty() {
         let success = "[success]".green().bold();
         println!(
-            "{success} No alpha-equivalent free functions found ({passed} functions checked)"
+            "{success} No alpha-equivalent functions found ({passed} functions checked)"
         );
         return false;
     }
@@ -29,7 +29,7 @@ pub fn print(passed: usize, groups: Vec<Group>) -> bool {
 }
 
 fn _print_groups(groups: Vec<Group>) {
-    println!("The following free functions are alpha-equivalent duplicates:\n");
+    println!("The following functions are alpha-equivalent duplicates:\n");
     for group in &groups {
         for member in &group.members {
             let location = format!("{}:{}", member.path, member.line);

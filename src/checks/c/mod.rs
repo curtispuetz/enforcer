@@ -2,6 +2,7 @@ pub mod alpha;
 pub mod ast;
 pub mod calls;
 pub mod files;
+pub mod fn_name;
 pub mod imports;
 pub mod path;
 pub mod report;

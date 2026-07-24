@@ -1,8 +1,8 @@
 use syn::{Block, ImplItem, Item, TraitItem};
 
-use crate::checks::cognitive_complexity::t::Function;
+use crate::checks::{c::fn_name, cognitive_complexity::t::Function};
 
-use super::{name, score};
+use super::score;
 
 pub fn functions(file: &syn::File) -> Vec<Function> {
     let mut found = Vec::new();
@@ -25,7 +25,7 @@ fn _item(item: &Item, type_name: Option<&str>, found: &mut Vec<Function>) {
             }
         }
         Item::Impl(i) => {
-            let self_name = name::self_type(&i.self_ty);
+            let self_name = fn_name::self_type(&i.self_ty);
             for impl_item in &i.items {
                 if let ImplItem::Fn(m) = impl_item {
                     _measure(&m.sig, &m.block, self_name.as_deref(), found);
@@ -52,7 +52,7 @@ fn _measure(
     found: &mut Vec<Function>,
 ) {
     found.push(Function {
-        name: name::of(&sig.ident, type_name),
+        name: fn_name::of(&sig.ident, type_name),
         line: sig.ident.span().start().line,
         score: score::of(block),
     });
