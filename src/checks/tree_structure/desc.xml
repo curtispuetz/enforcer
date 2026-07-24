@@ -5,17 +5,20 @@
       - Sideways (to siblings in its own module); or
       - Deeper (into nested modules)
       And that they never point (violations):
-      - Up to a parent module, unless to a common module (see common-modules section below); or
+      - Up to a parent module; or
       - Across into a different branch of the tree
     </desc>
+    <exception>
+      Imports to a common module (see below section). If a common module is at `crate::app::[common]`, any files at or below `crate::app` may import it.
+    </exception>
     <rationale>
       To keep a predictable module tree structure, where we know everything in a module's submodules are supporting logic for the module to call, and not the other way around (i.e. where submodules call up to their parent modules for supporting logic).
     </rationale>
     <more-details>
       <detail>Sideways/deeper imports must be written with `super::...` (i.e. never `crate::...`).</detail>
-      <detail>Imports to a common parent module must be written with `crate::...` (i.e. never `super::super...`).</detail>
+      <detail>Imports to a common module (which isn't a sibling) must be written with `crate::...` (i.e. never `super::super...`).</detail>
       <rationale>
-        To make the code more readable by distinguishing between a sideways/deeper import and an import up to a common parent.
+        To make the code more readable by distinguishing between a sideways/deeper import and an import up and 1 over to a common module.
       </rationale>
     </more-details>
     <common-modules>
@@ -28,10 +31,9 @@
         - ext_traits: extension trait definition and implementations
         Each may be a folder (e.g. `t/`) with a mod.rs file, or a single-file module (e.g. `t.rs`)
       </desc>
-      <examples>
+      <example>
         - `crate::c` is the whole-crate shared free-functions, reachable everywhere
-        - `crate::app::s` is app-local `static` items, reachable only from files at or below `crate::app`
-      </examples>
+      </example>
       <note>
         Inside a common folder, the imports must still be sideways or deeper (i.e. `c/foo/bar.rs` cannot import `c/util.rs`, which sits above it, just because they are both in `c/`). A common folder re-roots the tree: inside it, the same up/across prohibitions apply, but measured from the common folder rather than the crate.
       </note>

@@ -49,7 +49,7 @@ fn _within_or_common(use_path: &[String], file_dir: &[String]) -> bool {
 
 fn _allowed_through_common_dir(use_path: &[String], file_dir: &[String]) -> bool {
     for (i, seg) in use_path.iter().enumerate() {
-        if _is_common(seg) || !file_dir.starts_with(&use_path[..i]) {
+        if !_is_common(seg) || !file_dir.starts_with(&use_path[..i]) {
             continue;
         }
         if file_dir.get(i) == Some(seg) {
