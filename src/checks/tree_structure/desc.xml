@@ -118,7 +118,7 @@
       - For private types, impls in the same file as the type definition are allowed.
     </exceptions>
     <rationale>
-      To have an expected location for impls. Also, part of the effort to encourage small impls, preferring free-functions over methods.
+      To have an expected location for impls. Also to gently encourage small impls, preferring free-functions over methods.
     </rationale>
   </part7-impl-locations>
   <part8-c-fns-used>
