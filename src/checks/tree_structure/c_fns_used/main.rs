@@ -1,8 +1,8 @@
 use std::collections::{HashMap, HashSet};
 
-use crate::{
+use crate::checks::{
     c::path,
-    checks::tree_structure::t::{FileViolation, PartReport},
+    tree_structure::t::{FileViolation, PartReport},
 };
 
 use super::{

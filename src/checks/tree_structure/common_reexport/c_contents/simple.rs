@@ -1,4 +1,4 @@
-use crate::c::ast;
+use crate::checks::c::ast;
 
 pub fn violations(file: &syn::File) -> Vec<String> {
     let mut issues = Vec::new();

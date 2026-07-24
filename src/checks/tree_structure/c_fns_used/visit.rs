@@ -1,6 +1,6 @@
 use syn::visit::{self, Visit};
 
-use crate::c::calls;
+use crate::checks::c::calls;
 
 pub fn scoped(file: &syn::File) -> Vec<(Option<String>, Vec<String>)> {
     let mut collector = Collector {

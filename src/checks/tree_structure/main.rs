@@ -1,4 +1,6 @@
-use super::{c_fns_used, common_items, common_reexport, import_rules, report, t_common};
+use super::{
+    c_fns_used, common_items, common_reexport, import_rules, report, t_common,
+};
 
 pub fn run() -> bool {
     let parts = vec![

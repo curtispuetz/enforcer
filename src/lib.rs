@@ -1,4 +1,3 @@
-mod c;
 mod checks;
 pub mod run;
 mod s;

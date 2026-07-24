@@ -1,7 +1,8 @@
 use std::path::Path;
 
+use crate::checks::tree_structure::c::path as path2;
 use crate::{
-    c::{path, scan},
+    checks::c::{path, scan},
     t::{ItemsViolation, Outcome},
 };
 
@@ -32,5 +33,5 @@ fn _is_common_mod(path: &Path) -> bool {
     }
     ["t", "s", "cnst", "ext_traits"]
         .iter()
-        .any(|name| path::under_dir(path, name))
+        .any(|name| path2::under_dir(path, name))
 }

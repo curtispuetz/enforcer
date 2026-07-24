@@ -1,7 +1,7 @@
 use syn::Item;
 
 use crate::{
-    c::{files, path},
+    checks::c::{files, path},
     s::EXISTING_SRC_DIRS,
 };
 

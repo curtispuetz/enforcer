@@ -3,8 +3,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use crate::checks::s::COMMON;
 use crate::{
-    c::path,
+    checks::c::path,
     s::{EXISTING_SRC_DIRS, ROOT},
     t::ItemsViolation,
 };
@@ -41,7 +42,7 @@ fn _collect(dir: &Path, out: &mut Vec<PathBuf>) {
     };
     for entry in entries.flatten() {
         let path = entry.path();
-        if path::common_kind(&path).is_some() {
+        if _common_kind(&path).is_some() {
             out.push(path.clone());
         }
         if path.is_dir() {
@@ -51,7 +52,7 @@ fn _collect(dir: &Path, out: &mut Vec<PathBuf>) {
 }
 
 fn _bad_ancestor(module: &Path) -> Option<PathBuf> {
-    let kind = path::common_kind(module)?;
+    let kind = _common_kind(module)?;
     let (ancestor, ancestor_kind) = _nearest_common_ancestor(module)?;
     // not-obvious: c-in-c is the only nesting allowed, so it's the one pairing we skip.
     if kind == "c" && ancestor_kind == "c" {
@@ -66,10 +67,27 @@ fn _nearest_common_ancestor(module: &Path) -> Option<(PathBuf, &'static str)> {
         if p == ROOT.as_path() {
             break;
         }
-        if let Some(kind) = path::common_kind(p) {
+        if let Some(kind) = _common_kind(p) {
             return Some((p.to_path_buf(), kind));
         }
         parent = p.parent();
     }
     None
+}
+
+fn _common_kind(path: &Path) -> Option<&'static str> {
+    if path.is_dir() {
+        let name = path.file_name()?.to_str()?;
+        COMMON.into_iter().find(|c| *c == name)
+    } else {
+        _common_file_kind(path)
+    }
+}
+
+fn _common_file_kind(path: &Path) -> Option<&'static str> {
+    if path.extension().and_then(|e| e.to_str()) != Some("rs") {
+        return None;
+    }
+    let stem = path.file_stem()?.to_str()?;
+    COMMON.into_iter().find(|c| *c == stem)
 }

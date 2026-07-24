@@ -14,18 +14,6 @@ pub fn items(
     })
 }
 
-pub fn listed(
-    name: &str,
-    passed: usize,
-    success_msg: &str,
-    header: &'static str,
-    violations: Vec<ItemsViolation>,
-) -> bool {
-    summary(name, passed, success_msg, violations, |v| {
-        _print_listed(header, v)
-    })
-}
-
 fn _print_items(header: &str, violations: Vec<ItemsViolation>) {
     println!("{header}\n");
     for violation in &violations {
@@ -34,16 +22,6 @@ fn _print_items(header: &str, violations: Vec<ItemsViolation>) {
             violation.path.bold(),
             violation.items.join(", ").red()
         );
-    }
-}
-
-fn _print_listed(header: &str, violations: Vec<ItemsViolation>) {
-    println!("{header}\n");
-    for violation in &violations {
-        println!("  {}", violation.path.bold());
-        for item in &violation.items {
-            println!("    {}", item.red());
-        }
     }
 }
 

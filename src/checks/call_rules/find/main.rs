@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::c::{calls, imports};
+use crate::checks::c::{calls, imports};
 
 use super::{message, words};
 

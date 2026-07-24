@@ -1,7 +1,12 @@
 use std::{collections::HashSet, path::Path};
 
+use crate::checks::c::path;
+use crate::checks::tree_structure::c::path as path2;
 use crate::{
-    c::{ast, files, path},
+    checks::{
+        c::{ast, files},
+        tree_structure::c::ast as ast2,
+    },
     s::EXISTING_SRC_DIRS,
 };
 
@@ -33,7 +38,7 @@ fn _raw() -> Vec<Vec<String>> {
             if !_reexports_c(&file) {
                 continue;
             }
-            let Some(module) = path::module(&file) else {
+            let Some(module) = path2::module(&file) else {
                 continue;
             };
             ret.push(module);
@@ -43,7 +48,7 @@ fn _raw() -> Vec<Vec<String>> {
 }
 
 fn _reexports_c(file: &Path) -> bool {
-    if !path::is_mod_or_lib(file) || !path::under_dir(file, "c") {
+    if !path::is_mod_or_lib(file) || !path2::under_dir(file, "c") {
         return false;
     }
     files::ast_parse(file).items.iter().any(_is_c_glob)
@@ -53,5 +58,5 @@ fn _is_c_glob(item: &syn::Item) -> bool {
     let syn::Item::Use(u) = item else {
         return false;
     };
-    ast::is_public(&u.vis) && ast::glob_module(&u.tree) == Some("c".to_string())
+    ast::is_public(&u.vis) && ast2::glob_module(&u.tree) == Some("c".to_string())
 }

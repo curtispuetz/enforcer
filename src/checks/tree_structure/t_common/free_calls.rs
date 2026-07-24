@@ -1,6 +1,7 @@
 use std::{collections::HashMap, path::Path};
 
-use crate::c::{calls, imports, path};
+use crate::checks::c::{calls, imports};
+use crate::checks::tree_structure::c::path;
 
 pub fn foreign(file: &syn::File, path: &Path) -> Vec<String> {
     if !path::is_t_common(path) {

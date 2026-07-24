@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::c::{ast, files};
+use crate::checks::c::{ast, files};
 
 use super::exported;
 

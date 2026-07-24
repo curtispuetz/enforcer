@@ -1,7 +1,8 @@
 use std::collections::HashMap;
 
+use crate::checks::tree_structure::c::path;
 use crate::{
-    c::{ast, files, path},
+    checks::c::{ast, files},
     s::EXISTING_SRC_DIRS,
 };
 

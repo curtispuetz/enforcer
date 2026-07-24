@@ -1,13 +1,16 @@
 use std::{collections::HashSet, path::Path};
 
-use crate::c::{ast, files};
+use crate::checks::{
+    c::{ast, files},
+    tree_structure::c::ast as ast2,
+};
 
 pub fn glob_modules(mod_rs: &Path) -> HashSet<String> {
     let mut modules = HashSet::new();
     for item in files::ast_parse(mod_rs).items {
         if let syn::Item::Use(u) = &item
             && ast::is_public(&u.vis)
-            && let Some(module) = ast::glob_module(&u.tree)
+            && let Some(module) = ast2::glob_module(&u.tree)
         {
             modules.insert(module);
         }

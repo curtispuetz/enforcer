@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::c::path;
+use crate::checks::tree_structure::c::path;
 
 static COMMON: [&str; 5] = ["c", "cnst", "ext_traits", "s", "t"];
 

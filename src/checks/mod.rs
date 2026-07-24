@@ -1,3 +1,4 @@
+pub mod c;
 pub mod call_rules;
 pub mod cognitive_complexity;
 pub mod comment_rules;
@@ -8,5 +9,6 @@ pub mod mod_lib_contents;
 pub mod mod_location;
 pub mod mod_over_file;
 pub mod private_fn_naming;
+mod s;
 pub mod tree_structure;
 pub mod use_privacy;

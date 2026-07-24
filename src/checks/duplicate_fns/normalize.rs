@@ -6,7 +6,7 @@ use syn::{
     visit::{self, Visit},
 };
 
-use crate::c::calls;
+use crate::checks::c::calls;
 
 use super::rename;
 

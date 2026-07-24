@@ -28,8 +28,9 @@ fn _status_line(part: &PartReport) {
     } else {
         let mark = "\u{2718}".red().bold();
         let total = part.passed + failed;
-        let msg =
-            format!("{failed} of {total} {} failed", part.unit).red().bold();
+        let msg = format!("{failed} of {total} {} failed", part.unit)
+            .red()
+            .bold();
         println!("  {mark} {} {msg}", label.bold());
     }
 }

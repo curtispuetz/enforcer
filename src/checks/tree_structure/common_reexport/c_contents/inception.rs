@@ -1,4 +1,4 @@
-use crate::c::ast;
+use crate::checks::{c::ast, tree_structure::c::ast as ast2};
 
 pub fn violations(file: &syn::File, needs_allow: bool) -> Vec<String> {
     let mut issues = Vec::new();
@@ -60,5 +60,5 @@ fn _has_single_glob_use_c(items: &[syn::Item]) -> bool {
 }
 
 fn _is_glob_use_c(u: &syn::ItemUse) -> bool {
-    ast::is_public(&u.vis) && ast::glob_module(&u.tree).as_deref() == Some("c")
+    ast::is_public(&u.vis) && ast2::glob_module(&u.tree).as_deref() == Some("c")
 }

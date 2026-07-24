@@ -1,8 +1,10 @@
 use std::{collections::HashMap, path::Path};
 
 use crate::{
-    c::{files, path, scan},
-    checks::tree_structure::t::{FileViolation, PartReport},
+    checks::{
+        c::{files, path, scan},
+        tree_structure::t::{FileViolation, PartReport},
+    },
     t::{ItemsViolation, Outcome},
 };
 

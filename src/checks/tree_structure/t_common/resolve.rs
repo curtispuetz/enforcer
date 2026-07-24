@@ -1,6 +1,6 @@
 use std::{collections::HashMap, path::Path};
 
-use crate::c::path;
+use crate::checks::tree_structure::c::path;
 
 use super::t::TypeDef;
 

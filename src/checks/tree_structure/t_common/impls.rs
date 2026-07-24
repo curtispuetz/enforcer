@@ -1,6 +1,6 @@
 use std::{collections::HashMap, path::Path};
 
-use crate::c::{ast, imports};
+use crate::checks::c::imports;
 
 use super::{resolve, t::TypeDef};
 
@@ -27,7 +27,7 @@ fn _misplaced_impl(
     type_defs: &HashMap<String, Vec<TypeDef>>,
     bindings: &HashMap<String, Vec<String>>,
 ) -> Option<String> {
-    let self_name = ast::self_base_name(&imp.self_ty)?;
+    let self_name = _self_base_name(&imp.self_ty)?;
     let is_trait = imp.trait_.is_some();
     let target = resolve::target_module(&self_name, path, bindings);
     let local_defs: Vec<&TypeDef> = type_defs
@@ -45,5 +45,13 @@ fn _misplaced_impl(
         None
     } else {
         Some(resolve::describe(imp, &self_name))
+    }
+}
+
+pub fn _self_base_name(ty: &syn::Type) -> Option<String> {
+    match ty {
+        syn::Type::Path(p) => p.path.segments.last().map(|s| s.ident.to_string()),
+        syn::Type::Reference(r) => _self_base_name(&r.elem),
+        _ => None,
     }
 }

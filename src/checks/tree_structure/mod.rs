@@ -1,3 +1,4 @@
+pub mod c;
 mod c_fns_used;
 mod common_items;
 mod common_reexport;

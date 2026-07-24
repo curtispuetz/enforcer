@@ -1,15 +1,19 @@
+use crate::checks::tree_structure::c::path as path2;
 use std::{collections::HashSet, path::Path};
 
 use crate::{
-    c::{files, path},
-    checks::tree_structure::import_rules::t::{BadImport, Config, Violation},
+    checks::{
+        c::{files, path},
+        tree_structure::import_rules::t::{BadImport, Config, Violation},
+    },
     t::Outcome,
 };
 
 use super::{imports, rules};
 
 pub fn run(path: &Path, config: &Config) -> Outcome<Violation> {
-    let (Some(file_dir), Some(own_module)) = (path::file_dir(path), path::module(path))
+    let (Some(file_dir), Some(own_module)) =
+        (path2::file_dir(path), path2::module(path))
     else {
         return Outcome::Skipped;
     };

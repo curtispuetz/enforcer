@@ -3,8 +3,10 @@ use std::collections::HashSet;
 use colored::Colorize;
 
 use crate::{
-    c::scan,
-    checks::tree_structure::t::{FileViolation, PartReport},
+    checks::{
+        c::scan,
+        tree_structure::t::{FileViolation, PartReport},
+    },
     s::{EXISTING_SRC_DIRS, FILE_CONFIG},
 };
 
@@ -37,7 +39,8 @@ fn _render(violation: Violation) -> FileViolation {
 }
 
 fn _init_config() -> Config {
-    let ignore_exported_macros = FILE_CONFIG.tree_structure.import_rules.ignore_export_macros;
+    let ignore_exported_macros =
+        FILE_CONFIG.tree_structure.import_rules.ignore_export_macros;
     let mut exported_macros = HashSet::new();
     if ignore_exported_macros {
         for dir_name in EXISTING_SRC_DIRS.iter() {

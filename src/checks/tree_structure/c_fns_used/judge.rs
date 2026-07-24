@@ -14,7 +14,13 @@ pub fn reason(cfn: &CFn, callers: &[Vec<String>]) -> Option<String> {
 fn _message(cfn: &CFn, ancestor: &[String]) -> String {
     let branch = ancestor.join("::");
     if ancestor.get(cfn.parent.len()).map(String::as_str) == Some("c") {
-        return format!("{}() is only used inside its own `c` module ({branch})", cfn.name);
+        return format!(
+            "{}() is only used inside its own `c` module ({branch})",
+            cfn.name
+        );
     }
-    format!("{}() is only reached under {branch}; move it there", cfn.name)
+    format!(
+        "{}() is only reached under {branch}; move it there",
+        cfn.name
+    )
 }

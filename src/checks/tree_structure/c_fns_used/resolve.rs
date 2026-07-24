@@ -1,6 +1,7 @@
 use std::{collections::HashMap, path::Path};
 
-use crate::c::{calls, path};
+use crate::checks::c::calls;
+use crate::checks::tree_structure::c::path;
 
 use super::t::CfKey;
 

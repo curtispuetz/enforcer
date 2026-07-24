@@ -1,7 +1,8 @@
 use std::path::Path;
 
+use crate::checks::tree_structure::c::path as path2;
 use crate::{
-    c::{files, path, scan},
+    checks::c::{files, path, scan},
     t::{ItemsViolation, Outcome},
 };
 
@@ -33,7 +34,7 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
 
 fn _is_c_mod(path: &Path) -> bool {
     path.file_name().and_then(|n| n.to_str()) == Some("mod.rs")
-        && path::under_dir(path, "c")
+        && path2::under_dir(path, "c")
 }
 
 fn _has_sub_c(path: &Path) -> bool {
@@ -41,5 +42,9 @@ fn _has_sub_c(path: &Path) -> bool {
 }
 
 fn _needs_allow(path: &Path) -> bool {
-    path::parent_name(path) == Some("c")
+    _parent_name(path) == Some("c")
+}
+
+fn _parent_name(path: &Path) -> Option<&str> {
+    path.parent()?.file_name()?.to_str()
 }

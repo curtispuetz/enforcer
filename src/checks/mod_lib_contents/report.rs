@@ -1,4 +1,4 @@
-use crate::{c::report, t::ItemsViolation};
+use crate::{checks::c::report, t::ItemsViolation};
 
 pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::items(

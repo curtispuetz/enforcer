@@ -1,7 +1,7 @@
 use std::path::Path;
 
 use crate::{
-    c::{ast, files, path, scan},
+    checks::c::{ast, files, path, scan},
     t::{ItemsViolation, Outcome},
 };
 

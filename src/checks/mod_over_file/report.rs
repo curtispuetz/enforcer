@@ -1,6 +1,6 @@
 use colored::Colorize;
 
-use crate::c::report;
+use crate::checks::c::report;
 
 use super::t::Violation;
 
