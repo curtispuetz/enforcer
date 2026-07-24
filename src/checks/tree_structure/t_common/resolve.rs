@@ -1,5 +1,6 @@
 use std::{collections::HashMap, path::Path};
 
+use super::util;
 use crate::checks::tree_structure::c::path;
 
 use super::t::TypeDef;
@@ -39,7 +40,7 @@ pub fn local_impl_ok(local_defs: &[&TypeDef], path: &Path) -> bool {
     if private_same_file {
         return true;
     }
-    path::is_t_common(path)
+    util::is_t_common(path)
         && local_defs
             .iter()
             .any(|d| d.path == path || d.path.parent() == path.parent())

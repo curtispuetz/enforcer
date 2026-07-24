@@ -40,7 +40,3 @@ pub fn under_dir(path: &Path, dir: &str) -> bool {
 pub fn in_common(path: &Path, name: &str) -> bool {
     under_dir(path, name) || common_file_kind(path) == Some(name)
 }
-
-pub fn is_t_common(path: &Path) -> bool {
-    in_common(path, "t")
-}
