@@ -6,4 +6,3 @@ pub mod commons_nesting;
 pub mod contained_t;
 pub mod impl_location;
 pub mod import_rules;
-pub mod only_ext_traits;

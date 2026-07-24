@@ -1,7 +1,7 @@
 <commons-contents-check>
   <desc>
     Verifies that the files in each commons module (see import-rules check) only specify the following top-level items as public (i.e. any other top-level public items are a violation):
-    - `t` - `struct`, `enum`, and `type` alias
+    - `t` - `struct`, `enum`, `type` alias, and `trait`
     - `s` - `static`
     - `cnst` - `const`
     - `ext_traits` - `trait`

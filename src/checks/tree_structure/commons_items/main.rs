@@ -28,9 +28,9 @@ fn _misplaced(path: &Path) -> Vec<String> {
     let mut ret = Vec::new();
     for item in files::ast_parse(path).items {
         if let Some((commons, desc)) = home::of(&item)
-            && !path::in_commons(path, commons)
+            && !commons.iter().any(|c| path::in_commons(path, c))
         {
-            ret.push(format!("{desc} -> {commons}"));
+            ret.push(format!("{desc} -> {}", commons.join(" or ")));
         }
     }
     ret

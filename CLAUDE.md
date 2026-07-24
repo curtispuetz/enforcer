@@ -21,7 +21,6 @@
 @src/checks/tree_structure/commons_exports/desc.xml
 @src/checks/tree_structure/commons_contents/desc.xml
 @src/checks/tree_structure/commons_items/desc.xml
-@src/checks/tree_structure/only_ext_traits/desc.xml
 @src/checks/tree_structure/commons_nesting/desc.xml
 @src/checks/tree_structure/impl_location/desc.xml
 @src/checks/tree_structure/contained_t/desc.xml

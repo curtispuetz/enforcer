@@ -1,10 +1,11 @@
 <commons-items-check>
   <desc>
-    Verifies that the files in each commons module (see import-rules check) are the only place where the following top-level items can be defined as public (i.e. top-level items defined anywhere else are a violation):
+    Verifies that the files in each commons module (see import-rules check) are the only place in the codebase where the following top-level items can be defined as public (i.e. top-level items defined anywhere else are a violation):
     - `t` - `struct`, `enum`, and `type` alias
     - `s` - `static`
     - `cnst` - `const`
     - `c` - `fn`
+    - `t` and `ext_traits` - `trait`
   </desc>
   <rationale>
     We want consistent locations for all user defined items.
