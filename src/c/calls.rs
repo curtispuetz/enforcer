@@ -23,14 +23,14 @@ struct Collector {
 
 impl<'ast> Visit<'ast> for Collector {
     fn visit_expr_call(&mut self, node: &'ast syn::ExprCall) {
-        if let Some(segments) = _segments(&node.func) {
-            self.paths.push(segments);
+        if let Some(segs) = segments(&node.func) {
+            self.paths.push(segs);
         }
         visit::visit_expr_call(self, node);
     }
 }
 
-fn _segments(func: &syn::Expr) -> Option<Vec<String>> {
+pub fn segments(func: &syn::Expr) -> Option<Vec<String>> {
     let syn::Expr::Path(expr_path) = func else {
         return None;
     };

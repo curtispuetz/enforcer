@@ -4,11 +4,11 @@ use std::{
 };
 
 use crate::{
-    c::{calls, files, imports, path},
+    c::{files, imports, path},
     s::EXISTING_SRC_DIRS,
 };
 
-use super::{resolve, t::CfKey};
+use super::{resolve, t::CfKey, visit};
 
 pub fn collect(defs: &HashSet<CfKey>) -> HashMap<CfKey, Vec<Vec<String>>> {
     let mut ret: HashMap<CfKey, Vec<Vec<String>>> = HashMap::new();
@@ -30,12 +30,19 @@ fn _scan(
     let Some(caller) = path::module(file) else {
         return;
     };
-    for segments in calls::paths(&ast) {
+    for (scope, segments) in visit::scoped(&ast) {
         let Some(key) = resolve::call_target(&segments, &bindings, file) else {
             continue;
         };
+        if _recursive(&scope, &key, &caller) {
+            continue;
+        }
         if defs.contains(&key) {
             ret.entry(key).or_default().push(caller.clone());
         }
     }
+}
+
+fn _recursive(scope: &Option<String>, key: &CfKey, caller: &[String]) -> bool {
+    scope.as_deref() == Some(key.1.as_str()) && key.0.as_slice() == caller
 }
