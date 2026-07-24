@@ -5,7 +5,7 @@
       - Sideways (to siblings in its own module); or
       - Deeper (into nested modules)
       And that they never point (violations):
-      - Up to a parent module, unless to a commons module (see commons-modules section below); or
+      - Up to a parent module, unless to a common module (see common-modules section below); or
       - Across into a different branch of the tree
     </desc>
     <rationale>
@@ -18,7 +18,7 @@
         To make the code more readable by distinguishing between a sideways/deeper import and an import up to a commons parent.
       </rationale>
     </more-details>
-    <commons-modules>
+    <common-modules>
       <desc>
         These are modules for shared code. The following are their names and what they are for:
         - c: free-functions
@@ -30,19 +30,106 @@
       </desc>
       <examples>
         - `crate::c` is the whole-crate shared free-functions, reachable everywhere
-        - `crate::app::c` is app-local, reachable only from files at or below `crate::app`
+        - `crate::app::s` is app-local `static` items, reachable only from files at or below `crate::app`
       </examples>
       <note>
-        Inside a commons folder, the imports must still be sideways or deeper (i.e. `c/foo/bar.rs` cannot import `c/util.rs`, which sits above it, just because they are both in `c/`). A commons folder re-roots the tree: inside it, the same up/across prohibitions apply, but measured from the commons folder rather than the crate.
+        Inside a common folder, the imports must still be sideways or deeper (i.e. `c/foo/bar.rs` cannot import `c/util.rs`, which sits above it, just because they are both in `c/`). A common folder re-roots the tree: inside it, the same up/across prohibitions apply, but measured from the common folder rather than the crate.
       </note>
       <rationale>
-        There must be a way to share certain items between separate modules that have different submodules, because otherwise it would be impossible to write DRY code. In fact, this might be exaggerating it, but it would maybe even be impossible to write code at all. So, if we didn't have these commons modules, the import rules would be too strict to work.
+        There must be a way to share certain items between separate modules that have different submodules, because otherwise it would be impossible to write DRY code. In fact, this might be exaggerating it, but it would maybe even be impossible to write code at all. So, if we didn't have these common modules, the import rules would be too strict to work.
       </rationale>
-    </commons-modules>
+    </common-modules>
     <config toml_table="import-rules">
       <item>
         ignore_export_macros - when true, imports of `#[macro_export]` macros are exempt (default false)
       </item>
     </config>
   </part1-import-rules>
+  <part2-item-homes>
+    <desc>
+      Verifies that the following top-level items are only defined as public in the following common modules:
+      - `static`: `s`
+      - `const`: `cnst`
+      - `struct`, `enum`, and `type` alias: `t`
+      - `trait`: `t` and `ext_traits`
+    </desc>
+    <exemption>Private items are allowed anywhere</exemption>
+    <rationale>We want consistent locations for all user defined items</rationale>
+  </part2-item-homes>
+  <part3-common-publics>
+    <desc>
+      Verifies that files in the following common modules only contain the following top-level items as public:
+      - `s`: `static`
+      - `cnst`: `const`
+      - `t`: `struct`, `enum`, `type` alias, and `trait`
+      - `ext_traits`: `trait`
+      - `c`: `fn`
+    </desc>
+    <exemption>
+      Items restricted to a visibility that cannot escape the common module (i.e. `pub(super)`)
+    </exemption>
+    <rationale>We want consistent items on the public surface of common modules</rationale>
+  </part3-common-publics>
+  <part4-common-nesting>
+    <desc>
+      Verifies that no common modules are nested in other common modules.
+    </desc>
+    <rationale>Make reasoning about common modules easier</rationale>
+    <exception>
+      <desc>
+        `c` modules may be nested inside `c` modules (e.g. `/c/foo/c/bar`). There may be as much nesting of these as desired.
+      </desc>
+      <rationale>It's commonly necessary to nest `c` modules to share code within a `c` module.</rationale>
+    </exception>
+  </part4-common-nesting>
+  <part5-common-reexports>
+    <desc>
+      For `t`, `s`, `cnst`, and `ext_traits` common modules, verifies that every module declaration in all mod.rs files are:
+      - Private (i.e. `mod x;`, never `pub mod x;`); and
+      - Glob re-exported (i.e. `pub use x::*;`).
+    </desc>
+    <rationale>
+      So that users can import `use ...::t::TypeName` (i.e. not `use ...::t::submodule::TypeName`), saving characters.
+    </rationale>
+    <exception>
+      The glob re-export is not required when the module exposes no public items to re-export (e.g. a module containing only `impl` blocks).
+    </exception>
+  </part5-common-reexports>
+  <part6-c-publics>
+    <desc>
+      Verifies that all `mod.rs` files in a `c` common module:
+      - Declares all of its modules as public (i.e. `pub mod ...`); and
+      - Contains no `use` statements.
+    </desc>
+    <rationale>
+      So callers of the `c` module can import the submodules and call the functions (e.g. submodule::fn_name())
+    </rationale>
+    <exception>
+      If the module contains a nested `c` module, the `mod.rs` must instead:
+      - Declare the nested module privately as `mod c;` (annotated with the outer attribute `#[allow(clippy::module_inception)]` if a `c` module is the direct parent); and
+      - Have a single `pub use c::*;` glob statement re-exporting the nested `c` module.
+    </exception>
+  </part6-c-publics>
+  <part7-impl-locations>
+    <desc>
+      Verifies that all impls:
+      - Live in a `t` common module; and
+      - Are in the same file or a sibling file of the type's definition.
+    </desc>
+    <exceptions>
+      - For foreign types (i.e. not defined in our crate; like: `impl SomeTrait for Vec&lt;T&gt;`), the impl must live in an `ext_traits` common module.
+      - For private types, impls in the same file as the type definition are allowed.
+    </exceptions>
+    <rationale>
+      To have an expected location for impls. Also, part of the effort to encourage small impls, preferring free-functions over methods.
+    </rationale>
+  </part7-impl-locations>
+  <part8-t-no-free-functions>
+    <desc>Verifies that nothing inside a `t` common module calls a free-function from our crate.</desc>
+    <exceptions>
+      - The free function is in the same `t` module
+      - We don't own the free function (e.g. it's from a dependency or std)
+    </exceptions>
+    <rationale>To encourage small impls, preferring free-functions over methods</rationale>
+  </part8-t-no-free-functions>
 </tree-structure-check>
