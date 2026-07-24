@@ -1,7 +1,7 @@
 use std::{collections::HashMap, path::Path};
 
 use crate::{
-    c::{files, imports, path, scan},
+    c::{ast, files, imports, path, scan},
     t::{ItemsViolation, Outcome},
 };
 
@@ -43,7 +43,7 @@ fn _misplaced_impl(
     type_defs: &HashMap<String, Vec<TypeDef>>,
     bindings: &HashMap<String, Vec<String>>,
 ) -> Option<String> {
-    let self_name = resolve::self_base_name(&imp.self_ty)?;
+    let self_name = ast::self_base_name(&imp.self_ty)?;
     let is_trait = imp.trait_.is_some();
     let target = resolve::target_module(&self_name, path, bindings);
     let local_defs: Vec<&TypeDef> = type_defs

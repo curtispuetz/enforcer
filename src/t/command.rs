@@ -18,6 +18,7 @@ pub enum Command {
     CommonsExports,
     CommonsContents,
     CommonsItems,
+    OnlyExtTraits,
     ModCount,
     UsePrivacy,
     CognitiveComplexity,

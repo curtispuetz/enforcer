@@ -1,5 +1,5 @@
 <duplicate-fns-check>
-  <desc>Verifies that there are no duplicate (i.e. alpha-equivalent) free-functions anywhere in the codebase</desc>
+  <desc>Verifies that there are no duplicate free-functions (based on alpha-equivalence) anywhere in the codebase</desc>
   <rationale>To encourage code reuse.</rationale>
   <config toml_table="duplicate-fns">
     <item>

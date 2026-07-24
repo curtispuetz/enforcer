@@ -9,7 +9,6 @@ pub fn of(item: &Item) -> Option<(&'static str, String)> {
         Item::Type(i) => _public("t", "type", &i.vis, &i.ident),
         Item::Static(i) => _public("s", "static", &i.vis, &i.ident),
         Item::Const(i) => _public("cnst", "const", &i.vis, &i.ident),
-        Item::Trait(i) => Some(("ext_traits", format!("trait {}", i.ident))),
         _ => None,
     }
 }

@@ -2,6 +2,14 @@ pub fn is_public(vis: &syn::Visibility) -> bool {
     !matches!(vis, syn::Visibility::Inherited)
 }
 
+pub fn self_base_name(ty: &syn::Type) -> Option<String> {
+    match ty {
+        syn::Type::Path(p) => p.path.segments.last().map(|s| s.ident.to_string()),
+        syn::Type::Reference(r) => self_base_name(&r.elem),
+        _ => None,
+    }
+}
+
 pub fn glob_module(tree: &syn::UseTree) -> Option<String> {
     match tree {
         syn::UseTree::Path(p) => match &*p.tree {

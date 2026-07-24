@@ -4,10 +4,10 @@ use crate::{c::report, t::ItemsViolation};
 
 pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
     report::summary(
-        "commons-items",
+        "only-ext-traits",
         passed,
         &format!(
-            "All public types, statics, and consts are in their commons modules ({passed} files checked)"
+            "All traits are defined in ext_traits and implemented only for external types ({passed} files checked)"
         ),
         violations,
         _print_failures,
@@ -15,9 +15,7 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
 }
 
 fn _print_failures(violations: Vec<ItemsViolation>) {
-    println!(
-        "The following file(s) define items outside the commons module that holds them:\n"
-    );
+    println!("The following file(s) define or implement traits incorrectly:\n");
     for violation in &violations {
         println!(
             "  {} ({})",

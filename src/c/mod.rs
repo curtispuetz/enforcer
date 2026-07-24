@@ -5,3 +5,4 @@ pub mod imports;
 pub mod path;
 pub mod report;
 pub mod scan;
+pub mod type_names;

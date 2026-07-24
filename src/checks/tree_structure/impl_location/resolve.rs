@@ -45,14 +45,6 @@ pub fn local_impl_ok(local_defs: &[&TypeDef], path: &Path) -> bool {
             .any(|d| d.path == path || d.path.parent() == path.parent())
 }
 
-pub fn self_base_name(ty: &syn::Type) -> Option<String> {
-    match ty {
-        syn::Type::Path(p) => p.path.segments.last().map(|s| s.ident.to_string()),
-        syn::Type::Reference(r) => self_base_name(&r.elem),
-        _ => None,
-    }
-}
-
 pub fn describe(imp: &syn::ItemImpl, self_name: &str) -> String {
     match &imp.trait_ {
         Some((trait_path, _)) => {
