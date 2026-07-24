@@ -1,37 +1,19 @@
 use std::{collections::HashMap, path::Path};
 
-use crate::{
-    c::{calls, files, imports, path, scan},
-    t::{ItemsViolation, Outcome},
-};
+use crate::c::{calls, imports, path};
 
-use super::report;
-
-pub fn run() -> bool {
-    let (passed, violations) = scan::src_files(_check_file);
-    report::print(passed, violations)
-}
-
-fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
+pub fn foreign(file: &syn::File, path: &Path) -> Vec<String> {
     if !path::is_t_commons(path) {
-        return Outcome::Skipped;
+        return Vec::new();
     }
-    let file = files::ast_parse(path);
-    let imported = imports::bindings(&file);
+    let imported = imports::bindings(file);
     let mut items = Vec::new();
-    for segments in calls::paths(&file) {
+    for segments in calls::paths(file) {
         if _is_foreign_free_call(&segments, &imported) {
             items.push(format!("{}()", segments.join("::")));
         }
     }
-    if items.is_empty() {
-        Outcome::Passed
-    } else {
-        Outcome::Failed(ItemsViolation {
-            path: path::rel(path),
-            items,
-        })
-    }
+    items
 }
 
 fn _is_foreign_free_call(

@@ -1,24 +1,15 @@
 use std::{collections::HashMap, path::Path};
 
-use crate::{
-    c::{ast, files, imports, path, scan},
-    t::{ItemsViolation, Outcome},
-};
+use crate::c::{ast, imports};
 
-use super::{report, resolve, t::TypeDef, type_defs};
+use super::{resolve, t::TypeDef};
 
-pub fn run() -> bool {
-    let type_defs = type_defs::find();
-    let (passed, violations) = scan::src_files(|path| _check_file(path, &type_defs));
-    report::print(passed, violations)
-}
-
-fn _check_file(
+pub fn misplaced(
+    file: &syn::File,
     path: &Path,
     type_defs: &HashMap<String, Vec<TypeDef>>,
-) -> Outcome<ItemsViolation> {
-    let file = files::ast_parse(path);
-    let bindings = imports::bindings(&file);
+) -> Vec<String> {
+    let bindings = imports::bindings(file);
     let mut items = Vec::new();
     for item in &file.items {
         if let syn::Item::Impl(imp) = item
@@ -27,14 +18,7 @@ fn _check_file(
             items.push(desc);
         }
     }
-    if items.is_empty() {
-        Outcome::Passed
-    } else {
-        Outcome::Failed(ItemsViolation {
-            path: path::rel(path),
-            items,
-        })
-    }
+    items
 }
 
 fn _misplaced_impl(
