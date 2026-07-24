@@ -1,0 +1,10 @@
+<only-ext-traits>
+  <desc>
+    Verifies that traits:
+    - Are only defined in a `ext_traits` commons module (see import-rules check)
+    - Are only implemented for external types (i.e. types not defined in our crate)
+  </desc>
+  <rationale>
+    We want to disallow traits on our crate's types because our preference is: enums with dispatch functions (i.e. functions that match the enum variants to a function call) instead of traits.
+  </rationale>
+</only-ext-traits>
