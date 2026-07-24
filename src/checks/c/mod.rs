@@ -1,3 +1,4 @@
+pub mod alpha;
 pub mod ast;
 pub mod calls;
 pub mod files;

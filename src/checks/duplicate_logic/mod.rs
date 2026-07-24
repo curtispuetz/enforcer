@@ -1,6 +1,7 @@
 mod collect;
+mod dedup;
+mod id;
 mod main;
-mod normalize;
 mod report;
 mod t;
 

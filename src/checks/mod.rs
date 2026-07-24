@@ -3,6 +3,7 @@ pub mod call_rules;
 pub mod cognitive_complexity;
 pub mod comment_rules;
 pub mod duplicate_fns;
+pub mod duplicate_logic;
 pub mod file_sizes;
 pub mod mod_count;
 pub mod mod_lib_contents;

@@ -13,6 +13,7 @@
 @src/checks/use_privacy/desc.xml
 @src/checks/cognitive_complexity/desc.xml
 @src/checks/duplicate_fns/desc.xml
+@src/checks/duplicate_logic/desc.xml
 @src/checks/private_fn_naming/desc.xml
 @src/checks/comment_rules/desc.xml
 @src/checks/call_rules/desc.xml

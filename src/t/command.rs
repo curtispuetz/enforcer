@@ -15,6 +15,7 @@ pub enum Command {
     UsePrivacy,
     CognitiveComplexity,
     DuplicateFns,
+    DuplicateLogic,
     PrivateFnNaming,
 }
 

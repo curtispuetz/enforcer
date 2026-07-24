@@ -18,6 +18,7 @@ pub fn check(command: Command) -> bool {
         Command::UsePrivacy => checks::use_privacy::run(),
         Command::CognitiveComplexity => checks::cognitive_complexity::run(),
         Command::DuplicateFns => checks::duplicate_fns::run(),
+        Command::DuplicateLogic => checks::duplicate_logic::run(),
         Command::PrivateFnNaming => checks::private_fn_naming::run(),
     };
     println!();
