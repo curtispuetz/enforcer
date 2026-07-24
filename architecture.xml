@@ -14,7 +14,7 @@
     `src/s/` holds static data. `src/c/` is shared logic. `src/t/` is shared types.
   </shared-code>
   <check-impls>
-    Aside from the shared-code, each check is implemented in its own folder under `src/checks`. In each folder, there is a description of the check in CLAUDE.md.
+    Aside from the shared-code, each check is implemented in its own folder under `src/checks` (Checks related to tree structure are grouped in `src/checks/tree_structure/`). In each folder, there is a description of the check in desc.xml.
   </check-impls>
   <check-anatomy>
     The conventional layout of a check folder (see `commons_items`, `commons_contents`
