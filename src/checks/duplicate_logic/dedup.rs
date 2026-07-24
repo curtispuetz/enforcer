@@ -68,9 +68,9 @@ fn _survivors(
 }
 
 fn _dominated(occ: &Occurrence, support: usize, spans: &[(usize, Occurrence)]) -> bool {
-    spans
-        .iter()
-        .any(|(other_support, other)| *other_support >= support && _contains(other, occ))
+    spans.iter().any(|(other_support, other)| {
+        *other_support >= support && _contains(other, occ)
+    })
 }
 
 fn _contains(outer: &Occurrence, inner: &Occurrence) -> bool {

@@ -8,7 +8,9 @@ pub fn print(fns: usize, groups: Vec<Group>) -> bool {
     println!("{}", "duplicate-logic report:".bold().cyan());
     if groups.is_empty() {
         let success = "[success]".green().bold();
-        println!("{success} No duplicated logic fragments found ({fns} functions scanned)");
+        println!(
+            "{success} No duplicated logic fragments found ({fns} functions scanned)"
+        );
         return false;
     }
     let occurrences: usize = groups.iter().map(|group| group.occurrences.len()).sum();
@@ -28,7 +30,9 @@ pub fn print(fns: usize, groups: Vec<Group>) -> bool {
 
 fn _print_groups(groups: Vec<Group>) {
     println!("The following logic fragments are alpha-equivalent duplicates.");
-    println!("Add an id to `[duplicate-logic] ignore` in enforcer.toml to silence one:\n");
+    println!(
+        "Add an id to `[duplicate-logic] ignore` in enforcer.toml to silence one:\n"
+    );
     for group in &groups {
         let header = format!("id: {}", group.id);
         println!("  {}", header.yellow().bold());

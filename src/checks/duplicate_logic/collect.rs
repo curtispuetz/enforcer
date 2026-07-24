@@ -1,9 +1,8 @@
-use syn::Stmt;
-use syn::visit_mut::VisitMut;
 use syn::{
-    Block,
+    Block, Stmt,
     spanned::Spanned,
     visit::{self, Visit},
+    visit_mut::VisitMut,
 };
 
 use crate::{

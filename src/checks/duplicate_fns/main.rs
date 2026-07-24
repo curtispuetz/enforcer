@@ -1,7 +1,6 @@
 use crate::checks::c::alpha;
 use std::collections::HashMap;
-use syn::visit::Visit;
-use syn::visit_mut::VisitMut;
+use syn::{visit::Visit, visit_mut::VisitMut};
 
 use proc_macro2::Span;
 use syn::{Ident, ItemFn, Visibility};

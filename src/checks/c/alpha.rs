@@ -1,5 +1,4 @@
-use crate::checks::t::AlphaCollector;
-use crate::checks::t::AlphaRenamer;
+use crate::checks::t::{AlphaCollector, AlphaRenamer};
 
 pub fn canonicalize<N>(
     node: &mut N,

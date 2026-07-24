@@ -1,13 +1,17 @@
 use std::collections::HashMap;
+use syn::visit::Visit;
 
-use crate::checks::c::{calls, imports};
+use crate::checks::{
+    c::{calls, imports},
+    t::CallsCollector,
+};
 
 use super::{message, words};
 
 pub fn violations(file: &syn::File) -> Vec<String> {
     let imported = imports::bindings(file);
     let mut items = Vec::new();
-    for segments in calls::paths(file) {
+    for segments in _paths(file) {
         if let Some(item) = _item(&segments, &imported) {
             items.push(item);
         }
@@ -38,7 +42,7 @@ fn _direct_import(
     imported: &HashMap<String, Vec<String>>,
 ) -> Option<String> {
     let path = imported.get(name)?;
-    if !calls::is_internal_path(path) {
+    if !_is_internal_path(path) {
         return None;
     }
     Some(message::direct_import(name, path))
@@ -48,5 +52,18 @@ fn _is_internal(root: &str, imported: &HashMap<String, Vec<String>>) -> bool {
     matches!(root, "crate" | "super" | "self")
         || imported
             .get(root)
-            .is_some_and(|path| calls::is_internal_path(path))
+            .is_some_and(|path| _is_internal_path(path))
+}
+
+fn _is_internal_path(path: &[String]) -> bool {
+    matches!(
+        path.first().map(String::as_str),
+        Some("crate" | "super" | "self")
+    )
+}
+
+fn _paths(file: &syn::File) -> Vec<Vec<String>> {
+    let mut collector = CallsCollector { paths: Vec::new() };
+    collector.visit_file(file);
+    collector.paths
 }
