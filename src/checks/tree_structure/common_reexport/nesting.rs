@@ -4,6 +4,7 @@ use std::{
 };
 
 use crate::checks::s::COMMON;
+use crate::checks::tree_structure::c::path as path2;
 use crate::{
     checks::c::path,
     s::{EXISTING_SRC_DIRS, ROOT},
@@ -80,14 +81,6 @@ fn _common_kind(path: &Path) -> Option<&'static str> {
         let name = path.file_name()?.to_str()?;
         COMMON.into_iter().find(|c| *c == name)
     } else {
-        _common_file_kind(path)
+        path2::common_file_kind(path)
     }
-}
-
-fn _common_file_kind(path: &Path) -> Option<&'static str> {
-    if path.extension().and_then(|e| e.to_str()) != Some("rs") {
-        return None;
-    }
-    let stem = path.file_stem()?.to_str()?;
-    COMMON.into_iter().find(|c| *c == stem)
 }
