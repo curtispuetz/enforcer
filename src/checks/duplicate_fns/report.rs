@@ -1,31 +1,24 @@
 use colored::Colorize;
 
+use crate::checks::c::report;
+
 use super::t::Group;
 
-// not-obvious: this check is cross-file, so it does not use the shared
-// `report::summary`
+// not-obvious: this check is cross-file, so its counts are functions and groups
+// rather than the files `report::summary` assumes
 pub fn print(checked: usize, groups: Vec<Group>) -> bool {
-    println!("{}", "duplicate-fns report:".bold().cyan());
-    if groups.is_empty() {
-        let success = "[success]".green().bold();
-        println!(
-            "{success} No alpha-equivalent functions found ({checked} functions checked)"
-        );
-        return false;
-    }
     let duplicated: usize = groups.iter().map(|group| group.members.len()).sum();
-    println!(
-        "\n{}, {}\n",
-        format!("{checked} functions checked").green(),
-        format!(
+    report::counted(
+        "duplicate-fns",
+        &format!("No alpha-equivalent functions found ({checked} functions checked)"),
+        &format!("{checked} functions checked"),
+        &format!(
             "{duplicated} duplicate functions in {} group(s)",
             groups.len()
-        )
-        .red()
-        .bold()
-    );
-    _print_groups(groups);
-    true
+        ),
+        groups,
+        _print_groups,
+    )
 }
 
 fn _print_groups(groups: Vec<Group>) {

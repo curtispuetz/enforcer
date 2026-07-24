@@ -24,10 +24,9 @@ fn _collect(file: &Path, aliases: &HashSet<Vec<String>>, ret: &mut Vec<CFn>) {
     if !path::in_common(file, "c") {
         return;
     }
-    let Some(raw) = path::module(file) else {
+    let Some(module) = reexports::module_of(file, aliases) else {
         return;
     };
-    let module = reexports::canonical(&raw, aliases);
     let Some(parent) = _parent(&module) else {
         return;
     };

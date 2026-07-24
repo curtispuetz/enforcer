@@ -4,6 +4,7 @@ pub mod calls;
 pub mod files;
 pub mod fn_name;
 pub mod imports;
+pub mod outcome;
 pub mod path;
 pub mod report;
 pub mod scan;

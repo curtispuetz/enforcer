@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::{
     checks::{
-        c::{path, scan},
+        c::{outcome, scan},
         tree_structure::c::path as path2,
     },
     t::{ItemsViolation, Outcome},
@@ -18,15 +18,7 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     if !_is_common_mod(path) {
         return Outcome::Skipped;
     }
-    let items = issues::of(path);
-    if items.is_empty() {
-        Outcome::Passed
-    } else {
-        Outcome::Failed(ItemsViolation {
-            path: path::rel(path),
-            items,
-        })
-    }
+    outcome::of_items(path, issues::of(path))
 }
 
 fn _is_common_mod(path: &Path) -> bool {

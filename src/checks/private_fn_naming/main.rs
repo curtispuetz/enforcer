@@ -1,27 +1,18 @@
 use std::path::Path;
 
 use crate::{
-    checks::c::{ast, files, path, scan},
+    checks::c::{ast, files, outcome, scan},
     t::{ItemsViolation, Outcome},
 };
 
 use super::report;
 
 pub fn run() -> bool {
-    let (passed, violations) = scan::src_files(_check_file);
-    report::print(passed, violations)
+    scan::run(_check_file, report::print)
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    let items = _misnamed_fns(path);
-    if items.is_empty() {
-        Outcome::Passed
-    } else {
-        Outcome::Failed(ItemsViolation {
-            path: path::rel(path),
-            items,
-        })
-    }
+    outcome::of_items(path, _misnamed_fns(path))
 }
 
 fn _misnamed_fns(path: &Path) -> Vec<String> {

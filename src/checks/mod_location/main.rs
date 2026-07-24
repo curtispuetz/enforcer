@@ -8,8 +8,7 @@ use crate::{
 use super::{report, t::Violation};
 
 pub fn run() -> bool {
-    let (passed, violations) = scan::src_files(_check_file);
-    report::print(passed, violations)
+    scan::run(_check_file, report::print)
 }
 
 fn _check_file(path: &Path) -> Outcome<Violation> {

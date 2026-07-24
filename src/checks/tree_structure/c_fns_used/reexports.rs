@@ -29,6 +29,10 @@ pub fn canonical(module: &[String], aliases: &HashSet<Vec<String>>) -> Vec<Strin
     out
 }
 
+pub fn module_of(file: &Path, aliases: &HashSet<Vec<String>>) -> Option<Vec<String>> {
+    Some(canonical(&path2::module(file)?, aliases))
+}
+
 fn _raw() -> Vec<Vec<String>> {
     let mut ret = Vec::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {

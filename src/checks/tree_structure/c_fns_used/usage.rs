@@ -3,8 +3,6 @@ use std::{
     path::Path,
 };
 
-use crate::checks::tree_structure::c::path;
-
 use crate::{
     checks::c::{files, imports},
     s::EXISTING_SRC_DIRS,
@@ -33,10 +31,9 @@ fn _scan(
 ) {
     let ast = files::ast_parse(file);
     let bindings = imports::bindings(&ast);
-    let Some(raw_caller) = path::module(file) else {
+    let Some(caller) = reexports::module_of(file, aliases) else {
         return;
     };
-    let caller = reexports::canonical(&raw_caller, aliases);
     for (scope, segments) in visit::scoped(&ast) {
         let Some((raw_module, name)) = resolve::call_target(&segments, &bindings, file)
         else {

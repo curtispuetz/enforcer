@@ -32,18 +32,32 @@ pub fn summary<V>(
     violations: Vec<V>,
     on_fail: impl FnOnce(Vec<V>),
 ) -> bool {
+    let failed = violations.len();
+    counted(
+        name,
+        success_msg,
+        &format!("{passed} files passed"),
+        &format!("{failed} files failed"),
+        violations,
+        on_fail,
+    )
+}
+
+pub fn counted<V>(
+    name: &str,
+    success_msg: &str,
+    passed_msg: &str,
+    failed_msg: &str,
+    violations: Vec<V>,
+    on_fail: impl FnOnce(Vec<V>),
+) -> bool {
     println!("{}", format!("{name} report:").bold().cyan());
     if violations.is_empty() {
         let s = "[success]".green().bold();
         println!("{s} {success_msg}");
         return false;
     }
-    let failed = violations.len();
-    println!(
-        "\n{}, {}\n",
-        format!("{passed} files passed").green(),
-        format!("{failed} files failed").red().bold()
-    );
+    println!("\n{}, {}\n", passed_msg.green(), failed_msg.red().bold());
     on_fail(violations);
     true
 }

@@ -19,5 +19,5 @@ impl Default for DuplicateLogic {
 }
 
 fn _default_min_stmts() -> usize {
-    3
+    2
 }

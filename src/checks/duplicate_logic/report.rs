@@ -1,31 +1,26 @@
 use colored::Colorize;
 
+use crate::checks::c::report;
+
 use super::t::Group;
 
-// not-obvious: this check is cross-file, so it does not use the shared
-// `report::summary`
+// not-obvious: this check is cross-file, so its counts are fragments and groups
+// rather than the files `report::summary` assumes
 pub fn print(scanned: usize, groups: Vec<Group>) -> bool {
-    println!("{}", "duplicate-logic report:".bold().cyan());
-    if groups.is_empty() {
-        let success = "[success]".green().bold();
-        println!(
-            "{success} No duplicated logic fragments found ({scanned} fragments scanned)"
-        );
-        return false;
-    }
     let occurrences: usize = groups.iter().map(|group| group.occurrences.len()).sum();
-    println!(
-        "\n{}, {}\n",
-        format!("{scanned} fragments scanned").green(),
-        format!(
+    report::counted(
+        "duplicate-logic",
+        &format!(
+            "No duplicated logic fragments found ({scanned} fragments scanned)"
+        ),
+        &format!("{scanned} fragments scanned"),
+        &format!(
             "{occurrences} duplicated fragments in {} group(s)",
             groups.len()
-        )
-        .red()
-        .bold()
-    );
-    _print_groups(groups);
-    true
+        ),
+        groups,
+        _print_groups,
+    )
 }
 
 fn _print_groups(groups: Vec<Group>) {
