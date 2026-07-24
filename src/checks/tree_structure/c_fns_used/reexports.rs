@@ -1,11 +1,9 @@
 use std::{collections::HashSet, path::Path};
 
-use crate::checks::c::path;
-use crate::checks::tree_structure::c::path as path2;
 use crate::{
     checks::{
-        c::{ast, files},
-        tree_structure::c::ast as ast2,
+        c::{ast, files, path},
+        tree_structure::c::{ast as ast2, path as path2},
     },
     s::EXISTING_SRC_DIRS,
 };

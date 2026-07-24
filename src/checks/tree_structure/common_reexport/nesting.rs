@@ -3,10 +3,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::checks::s::COMMON;
-use crate::checks::tree_structure::c::path as path2;
 use crate::{
-    checks::c::path,
+    checks::{c::path, s::COMMON, tree_structure::c::path as path2},
     s::{EXISTING_SRC_DIRS, ROOT},
     t::ItemsViolation,
 };

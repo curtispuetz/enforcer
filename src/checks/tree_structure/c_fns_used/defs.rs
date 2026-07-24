@@ -1,8 +1,10 @@
 use std::{collections::HashSet, path::Path};
 
-use crate::checks::tree_structure::c::path;
 use crate::{
-    checks::c::{ast, files},
+    checks::{
+        c::{ast, files},
+        tree_structure::c::path,
+    },
     s::EXISTING_SRC_DIRS,
 };
 

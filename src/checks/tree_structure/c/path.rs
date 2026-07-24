@@ -1,6 +1,7 @@
-use crate::checks::c::path;
-use crate::checks::s::COMMON;
-use crate::s::ROOT;
+use crate::{
+    checks::{c::path, s::COMMON},
+    s::ROOT,
+};
 use std::path::{Component, Path};
 
 pub fn file_dir(path: &Path) -> Option<Vec<String>> {

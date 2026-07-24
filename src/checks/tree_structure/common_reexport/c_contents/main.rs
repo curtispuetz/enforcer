@@ -1,8 +1,10 @@
 use std::path::Path;
 
-use crate::checks::tree_structure::c::path as path2;
 use crate::{
-    checks::c::{files, path, scan},
+    checks::{
+        c::{files, path, scan},
+        tree_structure::c::path as path2,
+    },
     t::{ItemsViolation, Outcome},
 };
 
