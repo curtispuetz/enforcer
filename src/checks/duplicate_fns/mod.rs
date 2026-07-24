@@ -1,6 +1,5 @@
 mod collect;
 mod main;
-mod normalize;
 mod report;
 mod t;
 

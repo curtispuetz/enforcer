@@ -11,5 +11,6 @@ pub mod mod_location;
 pub mod mod_over_file;
 pub mod private_fn_naming;
 mod s;
+pub mod t;
 pub mod tree_structure;
 pub mod use_privacy;

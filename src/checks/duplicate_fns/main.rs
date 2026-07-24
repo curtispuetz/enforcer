@@ -1,9 +1,13 @@
+use crate::checks::c::alpha;
 use std::collections::HashMap;
+use syn::visit::Visit;
+use syn::visit_mut::VisitMut;
 
-use syn::ItemFn;
+use proc_macro2::Span;
+use syn::{Ident, ItemFn, Visibility};
 
 use super::{
-    collect, normalize, report,
+    collect, report,
     t::{Config, Duplicate, Group},
 };
 
@@ -14,7 +18,7 @@ pub fn run() -> bool {
 
     let mut buckets: HashMap<ItemFn, Vec<Duplicate>> = HashMap::new();
     for function in free_fns {
-        let key = normalize::canonical(&function.item);
+        let key = _canonicalize_item_fn(&function.item);
         buckets.entry(key).or_default().push(Duplicate {
             path: function.path,
             name: function.name,
@@ -50,4 +54,17 @@ fn _ignored(members: &[Duplicate], config: &Config) -> bool {
             .ignore
             .contains(&format!("{}::{}", member.path, member.name))
     })
+}
+
+fn _canonicalize_item_fn(item: &ItemFn) -> ItemFn {
+    let mut out = item.clone();
+    alpha::canonicalize(
+        &mut out,
+        |c, node| c.visit_item_fn(node),
+        |r, node| r.visit_item_fn_mut(node),
+    );
+    out.attrs.clear();
+    out.vis = Visibility::Inherited;
+    out.sig.ident = Ident::new("__fn", Span::call_site());
+    out
 }

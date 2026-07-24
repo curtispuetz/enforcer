@@ -1,3 +1,5 @@
+use syn::Stmt;
+use syn::visit_mut::VisitMut;
 use syn::{
     Block,
     spanned::Spanned,
@@ -43,7 +45,7 @@ impl Walk {
             for end in (start + self.min_stmts)..=n {
                 let slice = &stmts[start..end];
                 self.candidates.push(Candidate {
-                    canonical: alpha::canonical_block(slice),
+                    canonical: _canonicalize_block(slice),
                     occurrence: Occurrence {
                         path: self.path.clone(),
                         start: slice[0].span().start().line,
@@ -70,4 +72,17 @@ impl<'ast> Visit<'ast> for Walk {
         self.fns += 1;
         visit::visit_impl_item_fn(self, item);
     }
+}
+
+fn _canonicalize_block(stmts: &[Stmt]) -> Block {
+    let mut out = Block {
+        brace_token: Default::default(),
+        stmts: stmts.to_vec(),
+    };
+    alpha::canonicalize(
+        &mut out,
+        |c, node| c.visit_block(node),
+        |r, node| r.visit_block_mut(node),
+    );
+    out
 }

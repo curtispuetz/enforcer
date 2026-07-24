@@ -138,6 +138,35 @@
     <rationale>
       A function in a `c` module is there because it's needed in multiple child branches. If a function is only used in one branch, it can be moved to that branch.
     </rationale>
+    <shared-privates>
+      <desc>
+        The branch test is applied per cluster of public functions, not per
+        function. Two public functions in the same file are in the same cluster
+        when they both transitively reach a private item of that file (a private
+        fn, type, or its impls). A cluster's callers are pooled, so a public
+        function used in only one branch still passes when a cluster-mate is used
+        in a different one. When a whole cluster is confined to one branch, every
+        member is reported.
+      </desc>
+      <rationale>
+        The rationale above ("it can be moved to that branch") is false when the
+        function is a thin wrapper over private helpers that another branch also
+        depends on: moving it would either duplicate those helpers or force them
+        public, which in turn forces their types into a `t` module where
+        part8 forbids the crate free-functions they call. Without this, such code
+        has nowhere legal to live.
+      </rationale>
+      <note>
+        Reachability is a name-based heuristic: an item references a private name
+        if that identifier appears anywhere inside it. It can over-link (a local
+        variable sharing a private item's name), which only ever loosens the
+        check, never tightens it.
+      </note>
+      <unaffected>
+        The "is never called" violation stays per-function; a dead public function
+        is not rescued by its cluster-mates.
+      </unaffected>
+    </shared-privates>
   </part9-c-fns-used>
   <config toml_table="tree-structure.import-rules">
     <item>
