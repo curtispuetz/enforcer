@@ -1,8 +1,7 @@
 use std::path::Path;
 
 use crate::{
-    c::path,
-    c::scan,
+    c::{path, scan},
     t::{ItemsViolation, Outcome},
 };
 
