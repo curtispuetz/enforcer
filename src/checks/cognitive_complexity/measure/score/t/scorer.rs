@@ -19,6 +19,11 @@ impl Scorer {
         self.nesting -= 1;
     }
 
+    pub fn scored_expr(&mut self, expr: &Expr) {
+        self.score += 1 + self.nesting;
+        self.visit_expr(expr);
+    }
+
     pub fn if_chain(&mut self, node: &ExprIf) {
         self.visit_expr(&node.cond);
         self.nested_block(&node.then_branch);

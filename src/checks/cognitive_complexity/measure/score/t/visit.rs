@@ -33,8 +33,7 @@ impl<'ast> Visit<'ast> for Scorer {
     }
 
     fn visit_expr_match(&mut self, node: &'ast syn::ExprMatch) {
-        self.score += 1 + self.nesting;
-        self.visit_expr(&node.expr);
+        self.scored_expr(&node.expr);
         self.nesting += 1;
         for arm in &node.arms {
             if let syn::Pat::Guard(guard) = &arm.pat {
@@ -46,14 +45,12 @@ impl<'ast> Visit<'ast> for Scorer {
     }
 
     fn visit_expr_for_loop(&mut self, node: &'ast syn::ExprForLoop) {
-        self.score += 1 + self.nesting;
-        self.visit_expr(&node.expr);
+        self.scored_expr(&node.expr);
         self.nested_block(&node.body);
     }
 
     fn visit_expr_while(&mut self, node: &'ast syn::ExprWhile) {
-        self.score += 1 + self.nesting;
-        self.visit_expr(&node.cond);
+        self.scored_expr(&node.cond);
         self.nested_block(&node.body);
     }
 
