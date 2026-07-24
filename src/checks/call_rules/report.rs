@@ -5,7 +5,8 @@ pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
         "call-rules",
         passed,
         &format!(
-            "All function calls go through a parent module and never repeat a word ({passed} files checked)"
+            "All function calls go through a parent module and never repeat a word \
+            ({passed} files checked)"
         ),
         "The following file(s) call functions incorrectly:",
         violations,
