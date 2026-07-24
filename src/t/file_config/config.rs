@@ -1,14 +1,14 @@
 use serde::Deserialize;
 
 use super::{
-    CognitiveComplexity, CommentRules, DuplicateFns, FileSizes, ImportRules, ModCount,
+    CognitiveComplexity, CommentRules, DuplicateFns, FileSizes, ModCount, TreeStructure,
 };
 
 #[derive(Deserialize, Default)]
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 pub struct FileConfig {
     #[serde(default)]
-    pub import_rules: ImportRules,
+    pub tree_structure: TreeStructure,
     #[serde(default)]
     pub file_sizes: FileSizes,
     #[serde(default)]

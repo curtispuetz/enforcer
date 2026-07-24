@@ -3,7 +3,7 @@ use std::{collections::HashMap, path::Path};
 use crate::c::{calls, imports, path};
 
 pub fn foreign(file: &syn::File, path: &Path) -> Vec<String> {
-    if !path::is_t_commons(path) {
+    if !path::is_t_common(path) {
         return Vec::new();
     }
     let imported = imports::bindings(file);

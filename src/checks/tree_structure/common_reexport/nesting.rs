@@ -12,12 +12,12 @@ use crate::{
 pub fn check() -> (usize, Vec<ItemsViolation>) {
     let mut passed = 0;
     let mut violations = Vec::new();
-    for module in _commons() {
+    for module in _common() {
         match _bad_ancestor(&module) {
             Some(ancestor) => violations.push(ItemsViolation {
                 path: path::rel(&module),
                 items: vec![format!(
-                    "nested inside commons module `{}`",
+                    "nested inside common module `{}`",
                     path::rel(&ancestor)
                 )],
             }),
@@ -27,7 +27,7 @@ pub fn check() -> (usize, Vec<ItemsViolation>) {
     (passed, violations)
 }
 
-fn _commons() -> Vec<PathBuf> {
+fn _common() -> Vec<PathBuf> {
     let mut dirs = Vec::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         _collect(&ROOT.join(dir_name), &mut dirs);
@@ -41,7 +41,7 @@ fn _collect(dir: &Path, out: &mut Vec<PathBuf>) {
     };
     for entry in entries.flatten() {
         let path = entry.path();
-        if path::commons_kind(&path).is_some() {
+        if path::common_kind(&path).is_some() {
             out.push(path.clone());
         }
         if path.is_dir() {
@@ -51,8 +51,8 @@ fn _collect(dir: &Path, out: &mut Vec<PathBuf>) {
 }
 
 fn _bad_ancestor(module: &Path) -> Option<PathBuf> {
-    let kind = path::commons_kind(module)?;
-    let (ancestor, ancestor_kind) = _nearest_commons_ancestor(module)?;
+    let kind = path::common_kind(module)?;
+    let (ancestor, ancestor_kind) = _nearest_common_ancestor(module)?;
     // not-obvious: c-in-c is the only nesting allowed, so it's the one pairing we skip.
     if kind == "c" && ancestor_kind == "c" {
         return None;
@@ -60,13 +60,13 @@ fn _bad_ancestor(module: &Path) -> Option<PathBuf> {
     Some(ancestor)
 }
 
-fn _nearest_commons_ancestor(module: &Path) -> Option<(PathBuf, &'static str)> {
+fn _nearest_common_ancestor(module: &Path) -> Option<(PathBuf, &'static str)> {
     let mut parent = module.parent();
     while let Some(p) = parent {
         if p == ROOT.as_path() {
             break;
         }
-        if let Some(kind) = path::commons_kind(p) {
+        if let Some(kind) = path::common_kind(p) {
             return Some((p.to_path_buf(), kind));
         }
         parent = p.parent();

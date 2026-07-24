@@ -2,14 +2,20 @@ use std::path::Path;
 
 use crate::{
     c::{files, path, scan},
+    checks::tree_structure::{c, t::PartReport},
     t::{ItemsViolation, Outcome},
 };
 
-use super::{contents, home, report};
+use super::{contents, home};
 
-pub fn run() -> bool {
+pub fn part() -> PartReport {
     let (passed, violations) = scan::src_files(_check_file);
-    report::print(passed, violations)
+    PartReport {
+        name: "common-items",
+        unit: "files",
+        passed,
+        violations: violations.into_iter().map(c::file_violation).collect(),
+    }
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {

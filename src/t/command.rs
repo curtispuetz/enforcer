@@ -4,16 +4,13 @@ use strum::{Display, EnumIter, EnumString, IntoEnumIterator};
 #[strum(serialize_all = "kebab-case")]
 pub enum Command {
     All,
-    ImportRules,
+    TreeStructure,
     FileSizes,
     ModLocation,
     ModOverFile,
     ModLibContents,
     CommentRules,
-    TCommons,
     CallRules,
-    CommonsReexport,
-    CommonsItems,
     ModCount,
     UsePrivacy,
     CognitiveComplexity,

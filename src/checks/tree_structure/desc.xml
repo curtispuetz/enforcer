@@ -13,9 +13,9 @@
     </rationale>
     <more-details>
       <detail>Sideways/deeper imports must be written with `super::...` (i.e. never `crate::...`).</detail>
-      <detail>Imports to a commons parent module must be written with `crate::...` (i.e. never `super::super...`).</detail>
+      <detail>Imports to a common parent module must be written with `crate::...` (i.e. never `super::super...`).</detail>
       <rationale>
-        To make the code more readable by distinguishing between a sideways/deeper import and an import up to a commons parent.
+        To make the code more readable by distinguishing between a sideways/deeper import and an import up to a common parent.
       </rationale>
     </more-details>
     <common-modules>

@@ -39,7 +39,7 @@ pub fn local_impl_ok(local_defs: &[&TypeDef], path: &Path) -> bool {
     if private_same_file {
         return true;
     }
-    path::is_t_commons(path)
+    path::is_t_common(path)
         && local_defs
             .iter()
             .any(|d| d.path == path || d.path.parent() == path.parent())
@@ -60,5 +60,5 @@ pub fn describe(imp: &syn::ItemImpl, self_name: &str) -> String {
 }
 
 pub fn is_ext_traits(path: &Path) -> bool {
-    path::in_commons(path, "ext_traits")
+    path::in_common(path, "ext_traits")
 }

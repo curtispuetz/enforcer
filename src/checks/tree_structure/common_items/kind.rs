@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::c::path;
 
-static COMMONS: [&str; 5] = ["c", "cnst", "ext_traits", "s", "t"];
+static COMMON: [&str; 5] = ["c", "cnst", "ext_traits", "s", "t"];
 
 pub fn of(path: &Path) -> Option<&'static str> {
     _stem(path).or_else(|| _dir(path))
@@ -20,5 +20,5 @@ fn _dir(path: &Path) -> Option<&'static str> {
 }
 
 fn _named(name: &str) -> Option<&'static str> {
-    COMMONS.into_iter().find(|commons| *commons == name)
+    COMMON.into_iter().find(|common| *common == name)
 }

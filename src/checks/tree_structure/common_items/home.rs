@@ -7,10 +7,10 @@ use crate::c::{ast, path};
 pub fn misplaced(path: &Path, file: &File) -> Vec<String> {
     let mut ret = Vec::new();
     for item in &file.items {
-        if let Some((commons, desc)) = _home(item)
-            && !commons.iter().any(|c| path::in_commons(path, c))
+        if let Some((common, desc)) = _home(item)
+            && !common.iter().any(|c| path::in_common(path, c))
         {
-            ret.push(format!("{desc} -> {}", commons.join(" or ")));
+            ret.push(format!("{desc} -> {}", common.join(" or ")));
         }
     }
     ret
@@ -29,10 +29,10 @@ fn _home(item: &Item) -> Option<(&'static [&'static str], String)> {
 }
 
 fn _public(
-    commons: &'static [&'static str],
+    common: &'static [&'static str],
     kind: &str,
     vis: &Visibility,
     ident: &Ident,
 ) -> Option<(&'static [&'static str], String)> {
-    ast::is_public(vis).then(|| (commons, format!("{kind} {ident}")))
+    ast::is_public(vis).then(|| (common, format!("{kind} {ident}")))
 }

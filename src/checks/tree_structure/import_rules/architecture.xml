@@ -9,10 +9,10 @@
   `file.rs` orchestrates one file's check; `location.rs` derives a file's containing-folder
   segments (`file_dir_segments`) and its own module path (`own_module_segments`, which
   appends the file stem for a normal file but not for `mod.rs`/`lib.rs`) and flags the
-  commons `c`/`s`/`t`/`ext_traits` dirs; `imports.rs` walks the syn AST to extract
+  common `c`/`s`/`t`/`ext_traits` dirs; `imports.rs` walks the syn AST to extract
   `crate::`/`super::`-rooted use paths (expanding groups/globs/renames); `rules.rs`
   resolves each path to an absolute module path (using `own_module` for `super`) and
-  returns the violation reason, if any, including the commons-directory recursion. This
+  returns the violation reason, if any, including the common-directory recursion. This
   mirrors the
   &lt;import-rules&gt; preferences documented below — the check enforces the same rules the
   codebase itself follows.

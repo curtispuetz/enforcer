@@ -2,15 +2,21 @@ use std::{collections::HashMap, path::Path};
 
 use crate::{
     c::{files, path, scan},
+    checks::tree_structure::{c, t::PartReport},
     t::{ItemsViolation, Outcome},
 };
 
-use super::{free_calls, impls, report, t::TypeDef, type_defs};
+use super::{free_calls, impls, t::TypeDef, type_defs};
 
-pub fn run() -> bool {
+pub fn part() -> PartReport {
     let type_defs = type_defs::find();
     let (passed, violations) = scan::src_files(|path| _check_file(path, &type_defs));
-    report::print(passed, violations)
+    PartReport {
+        name: "t-common",
+        unit: "files",
+        passed,
+        violations: violations.into_iter().map(c::file_violation).collect(),
+    }
 }
 
 fn _check_file(

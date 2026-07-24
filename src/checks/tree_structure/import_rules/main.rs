@@ -1,20 +1,43 @@
 use std::collections::HashSet;
 
+use colored::Colorize;
+
 use crate::{
     c::scan,
+    checks::tree_structure::t::{FileViolation, PartReport},
     s::{EXISTING_SRC_DIRS, FILE_CONFIG},
 };
 
-use super::{check, macros, report, t::Config};
+use super::{
+    check, macros,
+    t::{Config, Violation},
+};
 
-pub fn run() -> bool {
+pub fn part() -> PartReport {
     let config = _init_config();
     let (passed, violations) = scan::src_files(|path| check::file::run(path, &config));
-    report::print(passed, violations)
+    PartReport {
+        name: "import-rules",
+        unit: "files",
+        passed,
+        violations: violations.into_iter().map(_render).collect(),
+    }
+}
+
+fn _render(violation: Violation) -> FileViolation {
+    let mut lines = Vec::new();
+    for import in &violation.imports {
+        lines.push(import.text.red().to_string());
+        lines.push(format!("  {}", import.reason.dimmed()));
+    }
+    FileViolation {
+        path: violation.path,
+        lines,
+    }
 }
 
 fn _init_config() -> Config {
-    let ignore_exported_macros = FILE_CONFIG.import_rules.ignore_export_macros;
+    let ignore_exported_macros = FILE_CONFIG.tree_structure.import_rules.ignore_export_macros;
     let mut exported_macros = HashSet::new();
     if ignore_exported_macros {
         for dir_name in EXISTING_SRC_DIRS.iter() {

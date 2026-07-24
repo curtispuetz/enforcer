@@ -18,7 +18,7 @@ pub fn import_violation(
         Form::Crate if sideways_or_deeper => {
             Some("sideways or deeper import must use `super::`, not `crate::`")
         }
-        Form::Crate if _allowed_through_commons_dir(&resolved, file_dir) => None,
+        Form::Crate if _allowed_through_common_dir(&resolved, file_dir) => None,
         Form::Crate => Some("import reaches up or across the module tree"),
     }
 }
@@ -43,17 +43,17 @@ fn _joined(base: &[String], rest: &[String]) -> Vec<String> {
     ret
 }
 
-fn _within_or_commons(use_path: &[String], file_dir: &[String]) -> bool {
-    use_path.starts_with(file_dir) || _allowed_through_commons_dir(use_path, file_dir)
+fn _within_or_common(use_path: &[String], file_dir: &[String]) -> bool {
+    use_path.starts_with(file_dir) || _allowed_through_common_dir(use_path, file_dir)
 }
 
-fn _allowed_through_commons_dir(use_path: &[String], file_dir: &[String]) -> bool {
+fn _allowed_through_common_dir(use_path: &[String], file_dir: &[String]) -> bool {
     for (i, seg) in use_path.iter().enumerate() {
-        if !path::is_commons(seg) || !file_dir.starts_with(&use_path[..i]) {
+        if !path::is_common(seg) || !file_dir.starts_with(&use_path[..i]) {
             continue;
         }
         if file_dir.get(i) == Some(seg) {
-            return _within_or_commons(&use_path[i + 1..], &file_dir[i + 1..]);
+            return _within_or_common(&use_path[i + 1..], &file_dir[i + 1..]);
         }
         return true;
     }

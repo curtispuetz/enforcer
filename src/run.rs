@@ -7,16 +7,13 @@ use super::checks;
 pub fn check(command: Command) -> bool {
     let ret = match command {
         Command::All => _all(),
-        Command::ImportRules => checks::tree_structure::import_rules::run(),
+        Command::TreeStructure => checks::tree_structure::run(),
         Command::FileSizes => checks::file_sizes::run(),
         Command::ModLocation => checks::mod_location::run(),
         Command::ModOverFile => checks::mod_over_file::run(),
         Command::ModLibContents => checks::mod_lib_contents::run(),
         Command::CommentRules => checks::comment_rules::run(),
-        Command::TCommons => checks::tree_structure::t_commons::run(),
         Command::CallRules => checks::call_rules::run(),
-        Command::CommonsReexport => checks::tree_structure::commons_reexport::run(),
-        Command::CommonsItems => checks::tree_structure::commons_items::run(),
         Command::ModCount => checks::mod_count::run(),
         Command::UsePrivacy => checks::use_privacy::run(),
         Command::CognitiveComplexity => checks::cognitive_complexity::run(),

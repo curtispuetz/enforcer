@@ -16,7 +16,4 @@
 @src/checks/private_fn_naming/desc.xml
 @src/checks/comment_rules/desc.xml
 @src/checks/call_rules/desc.xml
-@src/checks/tree_structure/import_rules/desc.xml
-@src/checks/tree_structure/commons_items/desc.xml
-@src/checks/tree_structure/commons_reexport/desc.xml
-@src/checks/tree_structure/t_commons/desc.xml
+@src/checks/tree_structure/desc.xml

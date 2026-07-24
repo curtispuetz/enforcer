@@ -7,7 +7,7 @@
   </entrypoints>
   <commands-dispatch>
     `src/t/command.rs` defines the `Command` enum. `Command::run` dispatches to
-    each check's module (e.g. `import_rules::run()`). Adding a check = new enum variant +
+    each check's module (e.g. `file_sizes::run()`). Adding a check = new enum variant +
     new check module.
   </commands-dispatch>
   <shared-code>
@@ -17,7 +17,7 @@
     Aside from the shared-code, each check is implemented in its own folder under `src/checks` (Checks related to tree structure are grouped in `src/checks/tree_structure/`). In each folder, there is a description of the check in desc.xml.
   </check-impls>
   <check-anatomy>
-    The conventional layout of a check folder (see `commons_items`, `commons_contents`
+    The conventional layout of a check folder (see `mod_location`, `mod_over_file`
     for minimal examples):
     - `mod.rs` — declares the submodules and does `pub use main::run;`.
     - `main.rs` — `pub fn run() -&gt; bool` is the entrypoint. It typically calls
@@ -46,9 +46,9 @@
     violation payload (used by type/static/trait-location, etc.).
     - `c::files` — `rs(dir_name) -&gt; Vec&lt;PathBuf&gt;` (glob), `parse(path) -&gt; syn::File`.
     - `c::path` — `rel(path)` (root-relative display string), `under_dir(path, name)`
-    (any path component equals `name`), `commons_file_kind(path)` (`Some("c"|"s"|"t"
-    |"ext_traits")` when the file stem is a commons name), `parent_name`,
-    `is_mod_or_lib`. Commons dirs/files are the four names `c, s, t, ext_traits`.
+    (any path component equals `name`), `common_file_kind(path)` (`Some("c"|"cnst"|"s"|"t"
+    |"ext_traits")` when the file stem is a common name), `parent_name`,
+    `is_mod_or_lib`. Common dirs/files are the five names `c, cnst, s, t, ext_traits`.
     - `c::ast` — `is_public(vis)`, plus `use`-tree helpers (`glob_module`,
     `exposed_names`). AST work uses the `syn` crate (`syn::Item::*`, etc.).
     - `c::report::summary(name, passed, success_msg, violations, on_fail)` — prints the

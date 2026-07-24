@@ -12,7 +12,7 @@ pub fn check() -> (usize, Vec<ItemsViolation>) {
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
-    if !_is_commons_mod(path) {
+    if !_is_common_mod(path) {
         return Outcome::Skipped;
     }
     let items = issues::of(path);
@@ -26,7 +26,7 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
     }
 }
 
-fn _is_commons_mod(path: &Path) -> bool {
+fn _is_common_mod(path: &Path) -> bool {
     if path.file_name().and_then(|n| n.to_str()) != Some("mod.rs") {
         return false;
     }

@@ -5,13 +5,13 @@ use syn::{File, Ident, Item, Visibility};
 use super::kind;
 
 pub fn disallowed(path: &Path, file: &File) -> Vec<String> {
-    let Some(commons) = kind::of(path) else {
+    let Some(common) = kind::of(path) else {
         return Vec::new();
     };
     let mut ret = Vec::new();
     for item in &file.items {
         if let Some((kind, name)) = _exported(item)
-            && !_allowed(commons, kind)
+            && !_allowed(common, kind)
         {
             ret.push(format!("{kind} {name}"));
         }
@@ -19,8 +19,8 @@ pub fn disallowed(path: &Path, file: &File) -> Vec<String> {
     ret
 }
 
-fn _allowed(commons: &str, kind: &str) -> bool {
-    match commons {
+fn _allowed(common: &str, kind: &str) -> bool {
+    match common {
         "t" => matches!(kind, "struct" | "enum" | "type" | "trait"),
         "s" => kind == "static",
         "cnst" => kind == "const",

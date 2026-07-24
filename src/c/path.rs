@@ -1,26 +1,26 @@
 use crate::s::ROOT;
 use std::path::{Component, Path};
 
-static COMMONS: [&str; 5] = ["c", "cnst", "ext_traits", "s", "t"];
+static COMMON: [&str; 5] = ["c", "cnst", "ext_traits", "s", "t"];
 
-pub fn is_commons(name: &str) -> bool {
-    COMMONS.contains(&name)
+pub fn is_common(name: &str) -> bool {
+    COMMON.contains(&name)
 }
 
-pub fn commons_file_kind(path: &Path) -> Option<&'static str> {
+pub fn common_file_kind(path: &Path) -> Option<&'static str> {
     if path.extension().and_then(|e| e.to_str()) != Some("rs") {
         return None;
     }
     let stem = path.file_stem()?.to_str()?;
-    COMMONS.into_iter().find(|c| *c == stem)
+    COMMON.into_iter().find(|c| *c == stem)
 }
 
-pub fn commons_kind(path: &Path) -> Option<&'static str> {
+pub fn common_kind(path: &Path) -> Option<&'static str> {
     if path.is_dir() {
         let name = path.file_name()?.to_str()?;
-        COMMONS.into_iter().find(|c| *c == name)
+        COMMON.into_iter().find(|c| *c == name)
     } else {
-        commons_file_kind(path)
+        common_file_kind(path)
     }
 }
 
@@ -68,10 +68,10 @@ pub fn module(path: &Path) -> Option<Vec<String>> {
     Some(segments)
 }
 
-pub fn in_commons(path: &Path, name: &str) -> bool {
-    under_dir(path, name) || commons_file_kind(path) == Some(name)
+pub fn in_common(path: &Path, name: &str) -> bool {
+    under_dir(path, name) || common_file_kind(path) == Some(name)
 }
 
-pub fn is_t_commons(path: &Path) -> bool {
-    in_commons(path, "t")
+pub fn is_t_common(path: &Path) -> bool {
+    in_common(path, "t")
 }

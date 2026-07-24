@@ -3,6 +3,6 @@ ignore = ["src/checks"]
 
 [duplicate-fns]
 ignore = [
-    "src/checks/tree_structure/commons_items/main.rs::run",
+    "src/checks/call_rules/main.rs::run",
     "src/checks/cognitive_complexity/main.rs::run",
 ]

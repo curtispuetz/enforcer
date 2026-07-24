@@ -19,7 +19,7 @@
     </notes>
   </cargo-commands>
   <code-preferences>
-    Don't re-write logic that is clearly the same. Extract it to a commons location to be used in multiple places.
+    Don't re-write logic that is clearly the same. Extract it to a common location to be used in multiple places.
   </code-preferences>
   <rust-code-preferences>
     <enforcer-import-rules>
