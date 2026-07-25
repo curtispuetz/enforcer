@@ -1,7 +1,5 @@
-use crate::{
-    rules::{c::path, s::COMMON},
-    s::ROOT,
-};
+use super::util;
+use crate::{rules::c::path, s::ROOT};
 use std::path::{Component, Path};
 
 pub fn file_dir(path: &Path) -> Option<Vec<String>> {
@@ -24,14 +22,6 @@ pub fn module(path: &Path) -> Option<Vec<String>> {
     Some(segments)
 }
 
-pub fn common_file_kind(path: &Path) -> Option<&'static str> {
-    if path.extension().and_then(|e| e.to_str()) != Some("rs") {
-        return None;
-    }
-    let stem = path.file_stem()?.to_str()?;
-    COMMON.into_iter().find(|c| *c == stem)
-}
-
 pub fn under_dir(path: &Path, dir: &str) -> bool {
     let rel = path.strip_prefix(ROOT.as_path()).unwrap_or(path);
     rel.components()
@@ -39,5 +29,5 @@ pub fn under_dir(path: &Path, dir: &str) -> bool {
 }
 
 pub fn in_common(path: &Path, name: &str) -> bool {
-    under_dir(path, name) || common_file_kind(path) == Some(name)
+    under_dir(path, name) || util::common_file_kind(path) == Some(name)
 }

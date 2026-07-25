@@ -3,12 +3,11 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use super::util;
 use crate::{
     rules::s::COMMON,
     s::{EXISTING_SRC_DIRS, ROOT},
 };
-
-use super::path;
 
 pub fn common() -> Vec<PathBuf> {
     let mut dirs = Vec::new();
@@ -23,7 +22,7 @@ pub fn common_kind(path: &Path) -> Option<&'static str> {
         let name = path.file_name()?.to_str()?;
         return COMMON.into_iter().find(|c| *c == name);
     }
-    path::common_file_kind(path)
+    util::common_file_kind(path)
 }
 
 pub fn ancestor(module: &Path) -> Option<(PathBuf, &'static str)> {
