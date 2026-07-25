@@ -1,0 +1,15 @@
+<duplicate-logic-check>
+  <desc>
+    Verifies that no run of consecutive statements is repeated (based on
+    alpha-equivalence) anywhere in the codebase. Every duplicated run is
+    reported as a group: the set of locations that share it.
+  </desc>
+  <rationale>To encourage code reuse.</rationale>
+  <config toml_table="duplicate-logic">
+    <item>
+      min_stmts - how short a repeated run may be before it is reported;
+      runs of fewer statements than this are ignored (default 2).
+    </item>
+    <item>ignore - list of group ids to skip (copy them from the violation output)</item>
+  </config>
+</duplicate-logic-check>

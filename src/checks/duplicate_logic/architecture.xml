@@ -1,0 +1,15 @@
+<method>
+  <step>
+    Enumerate every contiguous run of `min_stmts` or more statements in every block in the codebase.
+  </step>
+  <step>
+    Alpha-normalize each run (locals, generics, and lifetimes renamed to
+    placeholders by first-seen order) and bucket runs that share a canonical
+    form; a bucket with 2+ members is a duplicate group.
+  </step>
+  <step>
+    Suppress dominated spans: a smaller fragment that only appears nested inside
+    a larger, equally-or-more-duplicated fragment is dropped, so only maximal
+    clones are reported.
+  </step>
+</method>
