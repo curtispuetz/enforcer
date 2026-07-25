@@ -85,6 +85,7 @@
     <exceptions>
       - For foreign types (i.e. not defined in our crate; like: `impl SomeTrait for Vec&lt;T&gt;`), the impl must live in an `ext_traits` common module.
       - For private types, impls in the same file as the type definition are allowed.
+      - If we are implementing a foreign trait (i.e. `impl ForeignTrait for MyType`), it is allowed anywhere.
     </exceptions>
     <rationale>
       To have an expected location for impls. Also to gently encourage small impls, preferring free-functions over methods.

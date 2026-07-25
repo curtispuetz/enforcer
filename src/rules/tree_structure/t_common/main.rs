@@ -1,4 +1,4 @@
-use std::{collections::HashMap, path::Path};
+use std::path::Path;
 
 use crate::{
     rules::{
@@ -8,11 +8,11 @@ use crate::{
     t::{ItemsViolation, Outcome},
 };
 
-use super::{impls, t::TypeDef, type_defs};
+use super::{defs, impls, t::Defs};
 
 pub fn part() -> PartReport {
-    let type_defs = type_defs::find();
-    let res = scan::src_files(|path| _check_file(path, &type_defs));
+    let defs = defs::find();
+    let res = scan::src_files(|path| _check_file(path, &defs));
     PartReport {
         name: "t-common",
         unit: "files",
@@ -21,12 +21,9 @@ pub fn part() -> PartReport {
     }
 }
 
-fn _check_file(
-    path: &Path,
-    type_defs: &HashMap<String, Vec<TypeDef>>,
-) -> Outcome<ItemsViolation> {
+fn _check_file(path: &Path, defs: &Defs) -> Outcome<ItemsViolation> {
     let file = files::ast_parse(path);
-    let items = impls::misplaced(&file, path, type_defs);
+    let items = impls::misplaced(&file, path, defs);
     if items.is_empty() {
         Outcome::Passed
     } else {

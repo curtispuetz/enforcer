@@ -35,6 +35,20 @@ fn _absolute_module(use_path: &[String], path: &Path) -> Option<Vec<String>> {
     (acc.first().map(String::as_str) == Some("crate")).then_some(acc)
 }
 
+pub fn local_defs<'a>(
+    name: &str,
+    path: &Path,
+    defs: &'a HashMap<String, Vec<TypeDef>>,
+    bindings: &HashMap<String, Vec<String>>,
+) -> Vec<&'a TypeDef> {
+    let target = target_module(name, path, bindings);
+    defs.get(name)
+        .into_iter()
+        .flatten()
+        .filter(|d| target.as_ref().is_some_and(|t| d.module.starts_with(t)))
+        .collect()
+}
+
 pub fn local_impl_ok(local_defs: &[&TypeDef], path: &Path) -> bool {
     let private_same_file = local_defs.iter().any(|d| !d.is_public && d.path == path);
     if private_same_file {
@@ -47,17 +61,15 @@ pub fn local_impl_ok(local_defs: &[&TypeDef], path: &Path) -> bool {
 }
 
 pub fn describe(imp: &syn::ItemImpl, self_name: &str) -> String {
-    match &imp.trait_ {
-        Some((trait_path, _)) => {
-            let trait_name = trait_path
-                .segments
-                .last()
-                .map(|s| s.ident.to_string())
-                .unwrap_or_default();
-            format!("impl {trait_name} for {self_name}")
-        }
+    match trait_base_name(imp) {
+        Some(trait_name) => format!("impl {trait_name} for {self_name}"),
         None => format!("impl {self_name}"),
     }
+}
+
+pub fn trait_base_name(imp: &syn::ItemImpl) -> Option<String> {
+    let (trait_path, _) = imp.trait_.as_ref()?;
+    trait_path.segments.last().map(|s| s.ident.to_string())
 }
 
 pub fn is_ext_traits(path: &Path) -> bool {
