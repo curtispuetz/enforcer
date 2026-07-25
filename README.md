@@ -31,6 +31,10 @@ cargo enforcer file-sizes cognitive-complexity
 
 The process exits `1` when any rule fails and `2` on a bad invocation
 
+## Opinions
+
+Some of the rules are opinionated, and deliberately so. They encode one particular way of laying out a crate. They might work well for a new project where you can run `enforcer` after each change, but adopting `enforcer` wholesale on an existing codebase will produce a lot of violations. Enabling just a set of the rules (like file-sizes, cognitive-complexity) would be more reasonable in that case.
+
 ## Rules
 
 | Rule | Verifies |
@@ -40,14 +44,14 @@ The process exits `1` when any rule fails and `2` on a bad invocation
 | `duplicate-fns` | No two functions are alpha-equivalent |
 | `duplicate-logic` | No run of consecutive statements is repeated |
 | `comments` | No comments except short trailing ones and those prefixed `not-obvious: ` |
+| `mod-over-file` | Folder modules use the `mod.rs` form, not the sibling-file form |
 | `mod-count` | No `mod.rs`/`lib.rs` declares more than a maximum number of modules |
 | `mod-location` | `mod` statements appear only in `mod.rs` and `lib.rs` |
-| `mod-over-file` | Folder modules use the `mod.rs` form, not the sibling-file form |
 | `mod-lib-contents` | `mod.rs`/`lib.rs` contain only `mod` and `use` statements |
 | `use-privacy` | `use` statements outside `mod.rs`/`lib.rs` are private |
 | `private-fn-naming` | Private functions and methods are prefixed with `_` |
 | `calls` | Public functions are called through a parent module path, with no repeated words in the path |
-| `tree-structure` | Imports point only sideways or deeper, never up or across; items live in their designated common module; impls sit beside their types; shared `c` functions are used by more than one branch |
+| `tree-structure` | Imports point only sideways or deeper, never up or across; items of particular kinds live in their designated common module, which can be imported from more freely |
 
 `all` runs every rule above.
 
@@ -64,10 +68,6 @@ Goes in an optional `enforcer.toml` in the project root.
 Top-level:
 
 - `debug` - bool
-
-## Opinions
-
-These rules are opinionated, and deliberately so. They encode one particular way of laying out a crate. They might work well for a new project where you can run it after each change, but adopting `enforcer` wholesale on an existing codebase will produce a lot of violations. Enabling just a set of the rules (like file-sizes, cognitive-complexity) would be more reasonable in that case.
 
 ## License
 

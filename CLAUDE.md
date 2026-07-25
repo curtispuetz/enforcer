@@ -10,8 +10,8 @@
 @src/rules/duplicate_fns/desc.xml
 @src/rules/duplicate_logic/desc.xml
 @src/rules/comments/desc.xml
-@src/rules/mod_count/desc.xml
 @src/rules/mod_over_file/desc.xml
+@src/rules/mod_count/desc.xml
 @src/rules/mod_location/desc.xml
 @src/rules/mod_lib_contents/desc.xml
 @src/rules/use_privacy/desc.xml
