@@ -11,8 +11,9 @@ use crate::{
 };
 
 use super::{
-    verify, macros,
+    macros,
     t::{Config, Violation},
+    verify,
 };
 
 pub fn part() -> PartReport {

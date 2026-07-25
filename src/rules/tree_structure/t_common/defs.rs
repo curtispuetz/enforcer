@@ -43,11 +43,21 @@ fn _add_file(file_path: &Path, defs: &mut Defs) {
 
 fn _def(item: &syn::Item) -> Option<(String, bool, bool)> {
     match item {
-        syn::Item::Struct(i) => Some((i.ident.to_string(), ast::is_public(&i.vis), false)),
-        syn::Item::Enum(i) => Some((i.ident.to_string(), ast::is_public(&i.vis), false)),
-        syn::Item::Union(i) => Some((i.ident.to_string(), ast::is_public(&i.vis), false)),
-        syn::Item::Type(i) => Some((i.ident.to_string(), ast::is_public(&i.vis), false)),
-        syn::Item::Trait(i) => Some((i.ident.to_string(), ast::is_public(&i.vis), true)),
+        syn::Item::Struct(i) => {
+            Some((i.ident.to_string(), ast::is_public(&i.vis), false))
+        }
+        syn::Item::Enum(i) => {
+            Some((i.ident.to_string(), ast::is_public(&i.vis), false))
+        }
+        syn::Item::Union(i) => {
+            Some((i.ident.to_string(), ast::is_public(&i.vis), false))
+        }
+        syn::Item::Type(i) => {
+            Some((i.ident.to_string(), ast::is_public(&i.vis), false))
+        }
+        syn::Item::Trait(i) => {
+            Some((i.ident.to_string(), ast::is_public(&i.vis), true))
+        }
         _ => None,
     }
 }

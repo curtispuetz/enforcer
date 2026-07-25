@@ -48,7 +48,9 @@ fn _is_foreign_trait(
     bindings: &HashMap<String, Vec<String>>,
 ) -> bool {
     match trait_name {
-        Some(name) => resolve::local_defs(name, path, &defs.traits, bindings).is_empty(),
+        Some(name) => {
+            resolve::local_defs(name, path, &defs.traits, bindings).is_empty()
+        }
         None => false,
     }
 }
