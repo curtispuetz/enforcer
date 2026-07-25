@@ -1,6 +1,6 @@
 <duplicate-logic-check>
   <desc>
-    Verifies that no run of consecutive statements is repeated (based on
+    Verifies that no run of statements is repeated (based on
     alpha-equivalence) anywhere in the codebase. Every duplicated run is
     reported as a group: the set of locations that share it.
   </desc>
