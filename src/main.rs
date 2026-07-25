@@ -1,16 +1,35 @@
 use std::{process, str::FromStr};
 
-use enforcer::{run, t::Command};
+use enforcer::{help, run, t::Command};
 
 fn main() {
-    let names = _subcommands();
-    if names.is_empty() {
+    let args = _args();
+    if _asks_for_help(&args) {
+        _exit_help(&args);
+    }
+    if args.is_empty() {
         eprintln!("enforcer: no check specified");
         eprintln!("usage: cargo enforcer <check> [<check>...]");
         _exit_unusable();
     }
+    if _run_all(&args) {
+        process::exit(1);
+    }
+}
+
+fn _run_all(args: &[String]) -> bool {
+    let mut any_failed = false;
+    for command in _commands(args) {
+        if run::check(command) {
+            any_failed = true;
+        }
+    }
+    any_failed
+}
+
+fn _commands(args: &[String]) -> Vec<Command> {
     let mut commands = Vec::new();
-    for name in &names {
+    for name in args {
         match Command::from_str(name) {
             Ok(command) => commands.push(command),
             Err(_) => {
@@ -19,15 +38,22 @@ fn main() {
             }
         }
     }
-    let mut all_passed = true;
-    for command in commands {
-        if run::check(command) {
-            all_passed = false;
-        }
-    }
-    if !all_passed {
-        process::exit(1);
-    }
+    commands
+}
+
+fn _asks_for_help(args: &[String]) -> bool {
+    args.iter()
+        .any(|a| matches!(a.as_str(), "help" | "--help" | "-h"))
+}
+
+fn _exit_help(args: &[String]) -> ! {
+    let checks: Vec<String> = args
+        .iter()
+        .filter(|a| !matches!(a.as_str(), "help" | "--help" | "-h"))
+        .cloned()
+        .collect();
+    let ok = help::print(&checks);
+    process::exit(if ok { 0 } else { 2 })
 }
 
 fn _exit_unusable() -> ! {
@@ -37,13 +63,10 @@ fn _exit_unusable() -> ! {
 
 // not-obvious: When invoked as `cargo enforcer <check>`, cargo injects a leading
 // `enforcer` argument, which we skip.
-fn _subcommands() -> Vec<String> {
-    let mut positional: Vec<String> = std::env::args()
-        .skip(1)
-        .filter(|a| !a.starts_with('-'))
-        .collect();
-    if positional.first().map(String::as_str) == Some("enforcer") {
-        positional.remove(0);
+fn _args() -> Vec<String> {
+    let mut args: Vec<String> = std::env::args().skip(1).collect();
+    if args.first().map(String::as_str) == Some("enforcer") {
+        args.remove(0);
     }
-    positional
+    args
 }
