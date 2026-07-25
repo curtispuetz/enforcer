@@ -1,0 +1,8 @@
+<file-sizes-rule>
+  <desc>Verifies that no source file has more than a specified maximum number of lines.</desc>
+  <rationale>To encourage smaller, more focused files.</rationale>
+  <config toml_table="file-sizes">
+    <item>max - max number of lines (default 99)</item>
+    <item>ignore - list of exempt files from the rule</item>
+  </config>
+</file-sizes-rule>

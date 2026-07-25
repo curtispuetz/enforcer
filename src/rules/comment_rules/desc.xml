@@ -1,0 +1,13 @@
+<comment-rules-rule>
+  <desc>
+    Verifies that there are no comments in the code, except for:
+    - comments that start with `not-obvious: `; or
+    - short trailing comments, up to a maximum length (configurable).
+  </desc>
+  <rationale>
+    Instead of comments, we want to encourage having good module, type, and function/method names because they can make the code self-documenting. We want the code to "comment itself", as they say. However, comments about something obscure that's not very obvious from the code can (infrequently) be desired, and that is what `not-obvious` is for.
+  </rationale>
+  <config toml_table="comment-rules">
+    <item>max_trailing_comment_len (default 20)</item>
+  </config>
+</comment-rules-rule>

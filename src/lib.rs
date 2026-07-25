@@ -1,4 +1,4 @@
-mod checks;
+mod rules;
 pub mod help;
 pub mod run;
 mod s;

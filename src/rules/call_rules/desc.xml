@@ -1,0 +1,15 @@
+<call-rules-rule>
+  <desc>
+    Verifies that functions are not called:
+    - Bare (i.e. imported and called directly); or
+    - With a qualified path that repeats any word in its segments.
+    So, to clarify, that means one of the function's parent modules are imported the function is called with segments that do not repeat any word.
+  </desc>
+  <rationale>
+    We want function names to be short and their functionality to be clear from their parent module names as well as its own name. We also don't want repeating words in these qualified paths so that we save characters.
+  </rationale>
+  <exceptions>
+    - Private functions
+    - Any functions we don't own (i.e. from external crates or std)
+  </exceptions>
+</call-rules-rule>

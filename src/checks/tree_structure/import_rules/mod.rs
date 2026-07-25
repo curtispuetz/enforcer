@@ -1,6 +1,0 @@
-mod check;
-mod macros;
-mod main;
-mod t;
-
-pub use main::part;

@@ -2,45 +2,45 @@
   <entrypoints>
     The crate builds a `cargo-enforcer` binary (see Cargo.toml `[[bin]]`). `src/main.rs`
     is the thin CLI shell: it reads the subcommand argument (skipping the leading
-    `enforcer` arg that cargo injects for `cargo enforcer &lt;check&gt;`), parses it into a
+    `enforcer` arg that cargo injects for `cargo enforcer &lt;rule&gt;`), parses it into a
     `Command`, and calls `command.run()`.
   </entrypoints>
   <commands-dispatch>
     `src/t/command.rs` defines the `Command` enum. `Command::run` dispatches to
-    each check's module (e.g. `file_sizes::run()`). Adding a check = new enum variant +
-    new check module.
+    each rule's module (e.g. `file_sizes::run()`). Adding a rule = new enum variant +
+    new rule module.
   </commands-dispatch>
   <shared-code>
     `src/s/` holds static data. `src/c/` is shared logic. `src/t/` is shared types.
   </shared-code>
-  <check-impls>
-    Aside from the shared-code, each check is implemented in its own folder under `src/checks` (Checks related to tree structure are grouped in `src/checks/tree_structure/`). In each folder, there is a description of the check in desc.xml.
-  </check-impls>
-  <check-anatomy>
-    The conventional layout of a check folder (see `mod_location`, `mod_over_file`
+  <rule-impls>
+    Aside from the shared-code, each rule is implemented in its own folder under `src/rules` (Rules related to tree structure are grouped in `src/rules/tree_structure/`). In each folder, there is a description of the rule in desc.xml.
+  </rule-impls>
+  <rule-anatomy>
+    The conventional layout of a rule folder (see `mod_location`, `mod_over_file`
     for minimal examples):
     - `mod.rs` — declares the submodules and does `pub use main::run;`.
     - `main.rs` — `pub fn run() -&gt; bool` is the entrypoint. It typically calls
     `scan::src_files(_check_file)` and hands the result to `report::print`. `run`
-    returns `true` when the check FAILED (any violations), matching `Command::run`.
+    returns `true` when the rule FAILED (any violations), matching `Command::run`.
     - `report.rs` — `print(passed, violations) -&gt; bool`, wrapping `c::report::summary`.
-    - Optional `t.rs` (or `t/`) for check-local types; extra files/subfolders for
-    bigger checks (e.g. `import_rules/check/`, `call_rules/find/`).
-    Wiring a new check requires three edits beyond the folder: add `pub mod &lt;name&gt;;`
-    to `src/checks/mod.rs`, a `Command` variant in `src/t/command.rs`, and a match arm
+    - Optional `t.rs` (or `t/`) for rule-local types; extra files/subfolders for
+    bigger rules (e.g. `import_rules/verify/`, `call_rules/find/`).
+    Wiring a new rule requires three edits beyond the folder: add `pub mod &lt;name&gt;;`
+    to `src/rules/mod.rs`, a `Command` variant in `src/t/command.rs`, and a match arm
     in `src/run.rs`. Private fns are prefixed with `_` per the project convention.
-  </check-anatomy>
-  <check-docs>
-    Every check folder carries:
-    - `desc.xml` — the human spec of the check. READ THIS FIRST when implementing or changing a check — it is the source of truth for behavior.
-  </check-docs>
+  </rule-anatomy>
+  <rule-docs>
+    Every rule folder carries:
+    - `desc.xml` — the human spec of the rule. READ THIS FIRST when implementing or changing a rule — it is the source of truth for behavior.
+  </rule-docs>
   <shared-helpers>
-    Reusable building blocks the checks lean on, so you rarely need bespoke fs/AST code:
-    - `c::scan::src_files(check)` — iterates every `.rs` under the existing src dirs
-    (`s::EXISTING_SRC_DIRS`, i.e. `src` and `tests`), calling `check(&amp;Path) -&gt;
+    Reusable building blocks the rules lean on, so you rarely need bespoke fs/AST code:
+    - `c::scan::src_files(rule)` — iterates every `.rs` under the existing src dirs
+    (`s::EXISTING_SRC_DIRS`, i.e. `src` and `tests`), calling `rule(&amp;Path) -&gt;
     Outcome&lt;V&gt;` per file and tallying results into `(passed: usize, Vec&lt;V&gt;)`.
     - `t::Outcome&lt;V&gt;` — `Skipped | Passed | Failed(V)`; the return type of a per-file
-    check. `t::ItemsViolation { path: String, items: Vec&lt;String&gt; }` is the common
+    rule. `t::ItemsViolation { path: String, items: Vec&lt;String&gt; }` is the common
     violation payload (used by type/static/trait-location, etc.).
     - `c::files` — `rs(dir_name) -&gt; Vec&lt;PathBuf&gt;` (glob), `parse(path) -&gt; syn::File`.
     - `c::path` — `rel(path)` (root-relative display string), `under_dir(path, name)`
@@ -55,9 +55,9 @@
   </shared-helpers>
   <enforcer.toml>
     `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
-    `enforcer.toml` from the project root (`ROOT`), allows users to configure the checks.
+    `enforcer.toml` from the project root (`ROOT`), allows users to configure the rules.
   </enforcer.toml>
   <std-out>
-    All checks should print good messages to the console about the results using nice color schemes following the pattern already laid out. A message of the "all passed" sort if all pass, and if failures should print details, so the user knows where the failures happened and can click links, if possible, to go fix. The number of passes and failures should be printed in all cases, like it is for the existing checks.
+    All rules should print good messages to the console about the results using nice color schemes following the pattern already laid out. A message of the "all passed" sort if all pass, and if failures should print details, so the user knows where the failures happened and can click links, if possible, to go fix. The number of passes and failures should be printed in all cases, like it is for the existing rules.
   </std-out>
 </code-architecture>

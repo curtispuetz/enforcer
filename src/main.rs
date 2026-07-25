@@ -8,8 +8,8 @@ fn main() {
         _exit_help(&args);
     }
     if args.is_empty() {
-        eprintln!("enforcer: no check specified");
-        eprintln!("usage: cargo enforcer <check> [<check>...]");
+        eprintln!("enforcer: no rule specified");
+        eprintln!("usage: cargo enforcer <rule> [<rule>...]");
         _exit_unusable();
     }
     if _run_all(&args) {
@@ -20,7 +20,7 @@ fn main() {
 fn _run_all(args: &[String]) -> bool {
     let mut any_failed = false;
     for command in _commands(args) {
-        if run::check(command) {
+        if run::rule(command) {
             any_failed = true;
         }
     }
@@ -33,7 +33,7 @@ fn _commands(args: &[String]) -> Vec<Command> {
         match Command::from_str(name) {
             Ok(command) => commands.push(command),
             Err(_) => {
-                eprintln!("enforcer: unknown check '{name}'");
+                eprintln!("enforcer: unknown rule '{name}'");
                 _exit_unusable();
             }
         }
@@ -47,21 +47,21 @@ fn _asks_for_help(args: &[String]) -> bool {
 }
 
 fn _exit_help(args: &[String]) -> ! {
-    let checks: Vec<String> = args
+    let rules: Vec<String> = args
         .iter()
         .filter(|a| !matches!(a.as_str(), "help" | "--help" | "-h"))
         .cloned()
         .collect();
-    let ok = help::print(&checks);
+    let ok = help::print(&rules);
     process::exit(if ok { 0 } else { 2 })
 }
 
 fn _exit_unusable() -> ! {
-    eprintln!("available checks: {}", Command::available());
+    eprintln!("available rules: {}", Command::available());
     process::exit(2)
 }
 
-// not-obvious: When invoked as `cargo enforcer <check>`, cargo injects a leading
+// not-obvious: When invoked as `cargo enforcer <rule>`, cargo injects a leading
 // `enforcer` argument, which we skip.
 fn _args() -> Vec<String> {
     let mut args: Vec<String> = std::env::args().skip(1).collect();

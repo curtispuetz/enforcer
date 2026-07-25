@@ -1,11 +1,11 @@
 [mod-count]
-ignore = ["src/checks"]
+ignore = ["src/rules"]
 
 [duplicate-fns]
 ignore = [
-    "src/checks/call_rules/main.rs::run",
-    "src/checks/cognitive_complexity/main.rs::run",
-    "src/checks/tree_structure/common_reexport/c_contents/main.rs::check"
+    "src/rules/call_rules/main.rs::run",
+    "src/rules/cognitive_complexity/main.rs::run",
+    "src/rules/tree_structure/common_reexport/c_contents/main.rs::run"
 ]
 
 [duplicate-logic]

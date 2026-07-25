@@ -7,7 +7,7 @@ A cargo subcommand that enforces structural rules on a Rust codebase, such as:
 - No duplicated functions or duplicate runs of statements
 - Limited comments
 
-The main idea is to use this enforcer with AI agents, telling the AI agent to run these after each change and keeping all the rules.
+The main idea is to use this enforcer with AI agents, telling the agent to run these after each change it makes so that it has to fix any rule violations. Starting a project from scratch with this, will force the agents to not have large files, complex functions, and duplicated logic.
 
 ## Install
 
@@ -23,17 +23,17 @@ Run from within the crate you want to check:
 cargo enforcer all
 ```
 
-Or run individual checks, one or several at a time:
+Or run individual rules, one or several at a time:
 
 ```sh
 cargo enforcer file-sizes cognitive-complexity
 ```
 
-The process exits `1` when any check fails and `2` on a bad invocation
+The process exits `1` when any rule fails and `2` on a bad invocation
 
-## Checks
+## Rules
 
-| Check | Verifies |
+| Rule | Verifies |
 | --- | --- |
 | `file-sizes` | No file exceeds a maximum line count (99 default; configurable) |
 | `cognitive-complexity` | Every function scores below a maximum SonarQube cognitive complexity (8 default; configurable) |
@@ -49,9 +49,9 @@ The process exits `1` when any check fails and `2` on a bad invocation
 | `call-rules` | Public functions are called through a parent module path, with no repeated words in the path |
 | `tree-structure` | Imports point only sideways or deeper, never up or across; items live in their designated common module; impls sit beside their types; shared `c` functions are used by more than one branch |
 
-`all` runs every check above.
+`all` runs every rule above.
 
-For complete descriptions of individuals check, along with configuration options:
+For complete descriptions of individual rules, along with configuration options:
 
 ```sh
 cargo enforcer help file-size
@@ -63,7 +63,7 @@ Goes in an optional `enforcer.toml` in the project root.
 
 ## Opinions
 
-These rules are opinionated, and deliberately so. They encode one particular way of laying out a crate. They might work well for a new project where you can run it after each change, but adopting `enforcer` wholesale on an existing codebase will produce a lot of violations. Enabling just a set of the checks (like file-sizes, cognitive-complexity) might be more reasonable.
+These rules are opinionated, and deliberately so. They encode one particular way of laying out a crate. They might work well for a new project where you can run it after each change, but adopting `enforcer` wholesale on an existing codebase will produce a lot of violations. Enabling just a set of the rules (like file-sizes, cognitive-complexity) would be more reasonable in that case.
 
 ## License
 
