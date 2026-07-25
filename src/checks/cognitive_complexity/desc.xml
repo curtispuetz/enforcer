@@ -4,7 +4,7 @@
   </desc>
   <rationale>Keep functions more human understandable</rationale>
   <config toml_table="cognitive-complexity">
-    <item>max - maximum cognitive complexity allowed per function (default 15).</item>
+    <item>max - maximum cognitive complexity allowed per function (default 8).</item>
     <item>
       ignore - list of functions to skip. A file path followed by `::` and the function or `Type::method` (e.g. `src/main.rs::run`, `src/main.rs::Config::new`)
     </item>
