@@ -2,9 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-@agent.xml
-@cargo_commands.xml
-@architecture.xml
+@docs/context.xml
+@docs/cargo_commands.xml
+@docs/architecture.xml
 
 ## Enforcer Rules
 
