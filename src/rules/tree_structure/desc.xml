@@ -55,16 +55,13 @@
   </part2-item-homes>
   <part3-common-publics>
     <desc>
-      Verifies that files in the following common modules only contain the following top-level items as public:
+      Verifies that the public surface (i.e. leaf items reachable from outside the module) in the following common modules is limited to the following items:
       - `s`: `static`
       - `cnst`: `const`
       - `t`: `struct`, `enum`, `type` alias, and `trait`
       - `ext_traits`: `trait`
       - `c`: `fn`
     </desc>
-    <exemption>
-      Items restricted to a visibility that cannot escape the common module (i.e. `pub(super)`)
-    </exemption>
     <rationale>We want consistent items on the public surface of common modules</rationale>
   </part3-common-publics>
   <part4-common-nesting>
@@ -92,21 +89,6 @@
       The glob re-export is not required when the module exposes no public items to re-export (e.g. a module containing only `impl` blocks).
     </exception>
   </part5-common-reexports>
-  <part6-c-publics>
-    <desc>
-      Verifies that all `mod.rs` files in a `c` common module:
-      - Declares all of its modules as public (i.e. `pub mod ...`); and
-      - Contains no `use` statements.
-    </desc>
-    <rationale>
-      So callers of the `c` module can import the submodules and call the functions (e.g. submodule::fn_name())
-    </rationale>
-    <exception>
-      If the module contains a nested `c` module, the `mod.rs` must instead:
-      - Declare the nested module privately as `mod c;` (annotated with the outer attribute `#[allow(clippy::module_inception)]` if a `c` module is the direct parent); and
-      - Have a single `pub use c::*;` glob statement re-exporting the nested `c` module.
-    </exception>
-  </part6-c-publics>
   <part7-impl-locations>
     <desc>
       Verifies that all impls:
@@ -123,10 +105,10 @@
   </part7-impl-locations>
   <part8-c-fns-used>
     <desc>
-      Verify that all clusters of public functions in a `c` common module are called in 2 or more distinct child branches of the directory that the `c` module is in.
+      Verifies for each function on the public surface of a c module sitting at [D]/c, that the nearest common ancestor (NCA) of its call-site modules is [D] itself.
     </desc>
     <rationale>
-      A function in a `c` module is there because it's needed in multiple child branches. If a function is only used in one branch, it can be moved to that branch.
+      We want functions in c modules at the right level of the tree.
     </rationale>
   </part8-c-fns-used>
   <config toml_table="tree-structure.imports">
