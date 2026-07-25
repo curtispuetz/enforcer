@@ -7,7 +7,7 @@ A cargo subcommand that enforces structural rules on a Rust codebase, such as:
 - No duplicated functions or duplicate runs of statements
 - Limited comments
 
-The main ideas is to use this enforcer with AI agents, telling the AI agent to run these after each change and keeping all the rules. 
+The main idea is to use this enforcer with AI agents, telling the AI agent to run these after each change and keeping all the rules.
 
 ## Install
 
@@ -51,63 +51,19 @@ The process exits `1` when any check fails and `2` on a bad invocation
 
 `all` runs every check above.
 
-### The module tree
+For complete descriptions of individuals check, along with configuration options:
 
-The rules lean on five conventional module names for shared code, any of which
-may be a folder or a single file:
-
-- `t` — types (`struct`, `enum`, `trait`, `type` alias)
-- `c` — free functions
-- `s` — `static` items
-- `cnst` — `const` items
-- `ext_traits` — extension traits for types you don't own
-
-A file may import its siblings and anything nested below it using `super::`, or a
-common module at or above it using `crate::`. It may not reach up into a parent's
-own logic or sideways into a different branch. The effect is a tree where
-submodules only ever support their parents.
+```sh
+cargo enforcer help file-size
+```
 
 ## Configuration
 
-Checks read an optional `enforcer.toml` in the project root. Every key is
-optional; omit the file entirely to take the defaults.
-
-```toml
-[file-sizes]
-max = 99
-ignore = ["src/generated/big_table.rs"]
-
-[mod-count]
-max = 10
-ignore = ["src/checks"]
-
-[cognitive-complexity]
-max = 8
-ignore = ["src/main.rs::run", "src/config.rs::Config::new"]
-
-[duplicate-fns]
-ignore = ["src/checks/call_rules/main.rs::run"]
-
-[duplicate-logic]
-min_stmts = 2
-ignore = ["b841dd53"]
-
-[comment-rules]
-max_trailing_comment_len = 20
-
-[tree-structure.import-rules]
-ignore_export_macros = false
-```
-
-`duplicate-logic` group ids are printed with each violation; copy them into
-`ignore` to silence a group.
+Goes in an optional `enforcer.toml` in the project root.
 
 ## Opinions
 
-These rules are opinionated, and deliberately so — they encode one particular
-way of laying out a crate. Adopting `enforcer` wholesale on an existing codebase
-will produce a lot of violations. Enabling a few checks at a time tends to work
-better than starting with `all`.
+These rules are opinionated, and deliberately so. They encode one particular way of laying out a crate. They might work well for a new project where you can run it after each change, but adopting `enforcer` wholesale on an existing codebase will produce a lot of violations. Enabling just a set of the checks (like file-sizes, cognitive-complexity) might be more reasonable.
 
 ## License
 
