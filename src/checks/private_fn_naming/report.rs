@@ -1,13 +1,17 @@
-use crate::{checks::c::report, t::ItemsViolation};
+use crate::{
+    checks::{c::report, t::Results},
+    t::ItemsViolation,
+};
 
-pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
+pub fn print(res: Results<ItemsViolation>) -> bool {
     report::items(
         "fn-naming",
-        passed,
+        res.passed,
         &format!(
-            "All private functions/methods start with `_` ({passed} files checked)"
+            "All private functions/methods start with `_` ({} files checked)",
+            res.passed
         ),
         "The following file(s) define private functions/methods without a leading underscore:",
-        violations,
+        res.violations,
     )
 }

@@ -11,12 +11,12 @@ use crate::{
 use super::{contents, home};
 
 pub fn part() -> PartReport {
-    let (passed, violations) = scan::src_files(_check_file);
+    let res = scan::src_files(_check_file);
     PartReport {
         name: "common-items",
         unit: "files",
-        passed,
-        violations: violations.into_iter().map(FileViolation::new).collect(),
+        passed: res.passed,
+        violations: res.violations.into_iter().map(FileViolation::new).collect(),
     }
 }
 

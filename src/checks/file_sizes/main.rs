@@ -12,8 +12,8 @@ use super::{
 
 pub fn run() -> bool {
     let config = Config::new();
-    let (passed, violations) = scan::src_files(|path| _check_file(path, &config));
-    report::print(config, passed, violations)
+    let res = scan::src_files(|path| _check_file(path, &config));
+    report::print(config, res)
 }
 
 fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {

@@ -12,12 +12,12 @@ use super::{impls, t::TypeDef, type_defs};
 
 pub fn part() -> PartReport {
     let type_defs = type_defs::find();
-    let (passed, violations) = scan::src_files(|path| _check_file(path, &type_defs));
+    let res = scan::src_files(|path| _check_file(path, &type_defs));
     PartReport {
         name: "t-common",
         unit: "files",
-        passed,
-        violations: violations.into_iter().map(FileViolation::new).collect(),
+        passed: res.passed,
+        violations: res.violations.into_iter().map(FileViolation::new).collect(),
     }
 }
 

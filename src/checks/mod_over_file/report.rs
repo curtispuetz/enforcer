@@ -4,12 +4,17 @@ use crate::checks::c::report;
 
 use super::t::Violation;
 
-pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
+use crate::checks::t::Results;
+
+pub fn print(res: Results<Violation>) -> bool {
     report::summary(
         "mod-over-file",
-        passed,
-        &format!("All folder modules use mod.rs ({passed} files checked)"),
-        violations,
+        res.passed,
+        &format!(
+            "All folder modules use mod.rs ({} files checked)",
+            res.passed
+        ),
+        res.violations,
         _print_failures,
     )
 }

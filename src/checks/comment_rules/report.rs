@@ -1,15 +1,15 @@
 use colored::Colorize;
 
-use crate::checks::c::report;
+use crate::checks::{c::report, t::Results};
 
 use super::t::{Config, Violation};
 
-pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool {
+pub fn print(config: Config, res: Results<Violation>) -> bool {
     report::summary(
         "comment-rules",
-        passed,
-        &format!("No disallowed comments ({passed} files checked)"),
-        violations,
+        res.passed,
+        &format!("No disallowed comments ({} files checked)", res.passed),
+        res.violations,
         |violations| _print_failures(&config, violations),
     )
 }

@@ -1,13 +1,17 @@
-use crate::{checks::c::report, t::ItemsViolation};
+use crate::{
+    checks::{c::report, t::Results},
+    t::ItemsViolation,
+};
 
-pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
+pub fn print(res: Results<ItemsViolation>) -> bool {
     report::items(
         "use-privacy",
-        passed,
+        res.passed,
         &format!(
-            "All use statements outside mod.rs and lib.rs are private ({passed} files checked)"
+            "All use statements outside mod.rs and lib.rs are private ({} files checked)",
+            res.passed
         ),
         "The following file(s) have a `pub use` outside mod.rs or lib.rs:",
-        violations,
+        res.violations,
     )
 }

@@ -3,6 +3,7 @@ use std::path::Path;
 use crate::{
     checks::{
         c::{files, path, scan},
+        t::Results,
         tree_structure::c::path as path2,
     },
     t::{ItemsViolation, Outcome},
@@ -10,7 +11,7 @@ use crate::{
 
 use super::{inception, simple};
 
-pub fn check() -> (usize, Vec<ItemsViolation>) {
+pub fn check() -> Results<ItemsViolation> {
     scan::src_files(_check_file)
 }
 

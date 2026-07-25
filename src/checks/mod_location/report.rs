@@ -4,14 +4,17 @@ use crate::checks::c::report;
 
 use super::t::Violation;
 
-pub fn print(passed: usize, violations: Vec<Violation>) -> bool {
+use crate::checks::t::Results;
+
+pub fn print(res: Results<Violation>) -> bool {
     report::summary(
         "mod-location",
-        passed,
+        res.passed,
         &format!(
-            "All mod statements are in mod.rs or lib.rs files ({passed} files checked)"
+            "All mod statements are in mod.rs or lib.rs files ({} files checked)",
+            res.passed
         ),
-        violations,
+        res.violations,
         _print_failures,
     )
 }

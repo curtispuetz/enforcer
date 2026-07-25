@@ -1,18 +1,18 @@
 use colored::Colorize;
 
-use crate::checks::c::report;
+use crate::checks::{c::report, t::Results};
 
 use super::t::{Config, Violation};
 
-pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool {
+pub fn print(config: Config, res: Results<Violation>) -> bool {
     report::summary(
         "cognitive-complexity",
-        passed,
+        res.passed,
         &format!(
-            "All functions have cognitive complexity at most {} ({passed} files checked)",
-            config.max
+            "All functions have cognitive complexity at most {} ({} files checked)",
+            config.max, res.passed
         ),
-        violations,
+        res.violations,
         |violations| _print_failures(&config, violations),
     )
 }

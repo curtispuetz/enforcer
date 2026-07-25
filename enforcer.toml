@@ -8,5 +8,3 @@ ignore = [
     "src/checks/tree_structure/common_reexport/c_contents/main.rs::check"
 ]
 
-[duplicate-logic]
-ignore = ["ef274c63"]

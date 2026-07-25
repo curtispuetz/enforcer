@@ -4,27 +4,26 @@ use std::{
 };
 
 use crate::{
-    checks::{c::path, s::COMMON, tree_structure::c::path as path2},
+    checks::{c::path, s::COMMON, t::Results, tree_structure::c::path as path2},
     s::{EXISTING_SRC_DIRS, ROOT},
     t::ItemsViolation,
 };
 
-pub fn check() -> (usize, Vec<ItemsViolation>) {
-    let mut passed = 0;
-    let mut violations = Vec::new();
+pub fn check() -> Results<ItemsViolation> {
+    let mut r = Results::new();
     for module in _common() {
         match _bad_ancestor(&module) {
-            Some(ancestor) => violations.push(ItemsViolation {
+            Some(ancestor) => r.violations.push(ItemsViolation {
                 path: path::rel(&module),
                 items: vec![format!(
                     "nested inside common module `{}`",
                     path::rel(&ancestor)
                 )],
             }),
-            None => passed += 1,
+            None => r.passed += 1,
         }
     }
-    (passed, violations)
+    r
 }
 
 fn _common() -> Vec<PathBuf> {

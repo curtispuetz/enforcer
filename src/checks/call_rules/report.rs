@@ -1,16 +1,20 @@
-use crate::{checks::c::report, t::ItemsViolation};
+use crate::{
+    checks::{c::report, t::Results},
+    t::ItemsViolation,
+};
 use colored::Colorize;
 
-pub fn print(passed: usize, violations: Vec<ItemsViolation>) -> bool {
+pub fn print(res: Results<ItemsViolation>) -> bool {
     _listed(
         "call-rules",
-        passed,
+        res.passed,
         &format!(
             "All function calls go through a parent module and never repeat a word \
-            ({passed} files checked)"
+            ({} files checked)",
+            res.passed
         ),
         "The following file(s) call functions incorrectly:",
-        violations,
+        res.violations,
     )
 }
 

@@ -1,28 +1,27 @@
 use std::path::Path;
 
-use crate::{s::EXISTING_SRC_DIRS, t::Outcome};
+use crate::{checks::t::Results, s::EXISTING_SRC_DIRS, t::Outcome};
 
 use super::files;
 
 pub fn run<V>(
     check: impl FnMut(&Path) -> Outcome<V>,
-    print: impl FnOnce(usize, Vec<V>) -> bool,
+    print: impl FnOnce(Results<V>) -> bool,
 ) -> bool {
-    let (passed, violations) = src_files(check);
-    print(passed, violations)
+    let r = src_files(check);
+    print(r)
 }
 
-pub fn src_files<V>(mut check: impl FnMut(&Path) -> Outcome<V>) -> (usize, Vec<V>) {
-    let mut passed = 0;
-    let mut violations = Vec::new();
+pub fn src_files<V>(mut check: impl FnMut(&Path) -> Outcome<V>) -> Results<V> {
+    let mut r = Results::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for path in files::rs(dir_name) {
             match check(&path) {
                 Outcome::Skipped => {}
-                Outcome::Passed => passed += 1,
-                Outcome::Failed(violation) => violations.push(violation),
+                Outcome::Passed => r.passed += 1,
+                Outcome::Failed(violation) => r.violations.push(violation),
             }
         }
     }
-    (passed, violations)
+    r
 }

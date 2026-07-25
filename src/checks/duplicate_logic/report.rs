@@ -10,9 +10,7 @@ pub fn print(scanned: usize, groups: Vec<Group>) -> bool {
     let occurrences: usize = groups.iter().map(|group| group.occurrences.len()).sum();
     report::counted(
         "duplicate-logic",
-        &format!(
-            "No duplicated logic fragments found ({scanned} fragments scanned)"
-        ),
+        &format!("No duplicated logic fragments found ({scanned} fragments scanned)"),
         &format!("{scanned} fragments scanned"),
         &format!(
             "{occurrences} duplicated fragments in {} group(s)",

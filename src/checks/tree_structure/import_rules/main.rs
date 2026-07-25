@@ -17,12 +17,12 @@ use super::{
 
 pub fn part() -> PartReport {
     let config = _init_config();
-    let (passed, violations) = scan::src_files(|path| check::file::run(path, &config));
+    let res = scan::src_files(|path| check::file::run(path, &config));
     PartReport {
         name: "import-rules",
         unit: "files",
-        passed,
-        violations: violations.into_iter().map(_render).collect(),
+        passed: res.passed,
+        violations: res.violations.into_iter().map(_render).collect(),
     }
 }
 

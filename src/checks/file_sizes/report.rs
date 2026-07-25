@@ -4,15 +4,18 @@ use crate::checks::c::report;
 
 use super::t::{Config, Violation};
 
-pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool {
+use crate::checks::t::Results;
+
+pub fn print(config: Config, res: Results<Violation>) -> bool {
     report::summary(
         "file-sizes",
-        passed,
+        res.passed,
         &format!(
-            "All files under {} lines ({passed} files checked)",
-            config.max_lines + 1
+            "All files under {} lines ({} files checked)",
+            config.max_lines + 1,
+            res.passed
         ),
-        violations,
+        res.violations,
         |violations| _print_failures(&config, violations),
     )
 }

@@ -4,15 +4,17 @@ use crate::checks::c::report;
 
 use super::t::{Config, Violation};
 
-pub fn print(config: Config, passed: usize, violations: Vec<Violation>) -> bool {
+use crate::checks::t::Results;
+
+pub fn print(config: Config, res: Results<Violation>) -> bool {
     report::summary(
         "mod-count",
-        passed,
+        res.passed,
         &format!(
-            "All mod.rs and lib.rs files declare at most {} modules ({passed} files checked)",
-            config.max
+            "All mod.rs and lib.rs files declare at most {} modules ({} files checked)",
+            config.max, res.passed
         ),
-        violations,
+        res.violations,
         |violations| _print_failures(&config, violations),
     )
 }
