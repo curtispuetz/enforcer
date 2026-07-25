@@ -1,51 +1,41 @@
-use std::{collections::HashSet, path::Path};
+use std::path::Path;
 
-use crate::{
-    rules::{
-        c::{ast, files},
-        tree_structure::c::path,
-    },
-    s::EXISTING_SRC_DIRS,
-};
+use crate::rules::tree_structure::c::{modules, path, surface};
 
-use super::{reexports, t::CFn};
+use super::t::CFn;
 
-pub fn find(aliases: &HashSet<Vec<String>>) -> Vec<CFn> {
+pub fn find() -> Vec<CFn> {
     let mut ret = Vec::new();
-    for dir_name in EXISTING_SRC_DIRS.iter() {
-        for file in files::rs(dir_name) {
-            _collect(&file, aliases, &mut ret);
-        }
+    for module in modules::common() {
+        _collect(&module, &mut ret);
     }
     ret
 }
 
-fn _collect(file: &Path, aliases: &HashSet<Vec<String>>, ret: &mut Vec<CFn>) {
-    if !path::in_common(file, "c") {
+// not-obvious: a `c` nested in a `c` is judged through its outer module, whose
+// surface already carries whatever the nested one re-exports.
+fn _collect(module: &Path, ret: &mut Vec<CFn>) {
+    if modules::common_kind(module) != Some("c") || modules::ancestor(module).is_some()
+    {
         return;
     }
-    let Some(module) = reexports::module_of(file, aliases) else {
+    let Some(parent) = _parent(module) else {
         return;
     };
-    let Some(parent) = _parent(&module) else {
-        return;
-    };
-    for item in files::ast_parse(file).items {
-        let syn::Item::Fn(f) = item else {
-            continue;
-        };
-        if ast::is_public(&f.vis) {
+    for item in surface::items(module) {
+        if item.kind == "fn" {
             ret.push(CFn {
-                name: f.sig.ident.to_string(),
-                module: module.clone(),
+                name: item.name,
+                module: item.module,
                 parent: parent.clone(),
-                path: file.to_path_buf(),
+                path: item.file,
             });
         }
     }
 }
 
-fn _parent(module: &[String]) -> Option<Vec<String>> {
-    let idx = module.iter().position(|s| s == "c")?;
-    Some(module[..idx].to_vec())
+fn _parent(module: &Path) -> Option<Vec<String>> {
+    let mut segments = path::module(&modules::root_file(module))?;
+    segments.pop()?;
+    Some(segments)
 }

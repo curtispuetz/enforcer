@@ -4,8 +4,7 @@ ignore = ["src/rules"]
 [duplicate-fns]
 ignore = [
     "src/rules/calls/main.rs::run",
-    "src/rules/cognitive_complexity/main.rs::run",
-    "src/rules/tree_structure/common_reexport/c_contents/main.rs::run"
+    "src/rules/cognitive_complexity/main.rs::run"
 ]
 
 [duplicate-logic]

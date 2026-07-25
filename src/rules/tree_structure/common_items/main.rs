@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{collections::HashMap, path::Path};
 
 use crate::{
     rules::{
@@ -11,7 +11,8 @@ use crate::{
 use super::{contents, home};
 
 pub fn part() -> PartReport {
-    let res = scan::src_files(_check_file);
+    let disallowed = contents::disallowed();
+    let res = scan::src_files(|path| _check_file(path, &disallowed));
     PartReport {
         name: "common-items",
         unit: "files",
@@ -20,16 +21,17 @@ pub fn part() -> PartReport {
     }
 }
 
-fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
+fn _check_file(
+    path: &Path,
+    disallowed: &HashMap<String, Vec<String>>,
+) -> Outcome<ItemsViolation> {
+    let rel = path::rel(path);
     let file = files::ast_parse(path);
     let mut items = home::misplaced(path, &file);
-    items.extend(contents::disallowed(path, &file));
+    items.extend(disallowed.get(&rel).cloned().unwrap_or_default());
     if items.is_empty() {
         Outcome::Passed
     } else {
-        Outcome::Failed(ItemsViolation {
-            path: path::rel(path),
-            items,
-        })
+        Outcome::Failed(ItemsViolation { path: rel, items })
     }
 }

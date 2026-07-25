@@ -13,7 +13,7 @@ use super::{
 
 pub fn part() -> PartReport {
     let aliases = reexports::aliases();
-    let cfns = defs::find(&aliases);
+    let cfns = defs::find();
     let keys: HashSet<CfKey> = cfns
         .iter()
         .map(|f| (f.module.clone(), f.name.clone()))

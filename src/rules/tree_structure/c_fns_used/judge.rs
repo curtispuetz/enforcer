@@ -7,7 +7,7 @@ pub fn reason(cfn: &CFn, callers: &[Vec<String>]) -> Option<String> {
         return Some(format!("{}() is never called", cfn.name));
     }
     let ancestor = nca::common_prefix(callers);
-    if ancestor.len() <= cfn.parent.len() {
+    if ancestor == cfn.parent {
         return None;
     }
     Some(_message(cfn, &ancestor))
@@ -15,6 +15,12 @@ pub fn reason(cfn: &CFn, callers: &[Vec<String>]) -> Option<String> {
 
 fn _message(cfn: &CFn, ancestor: &[String]) -> String {
     let branch = _branch_path(ancestor);
+    if ancestor.len() < cfn.parent.len() {
+        return format!(
+            "{}() is reached from outside its branch; move it up to {branch}",
+            cfn.name
+        );
+    }
     if ancestor.get(cfn.parent.len()).map(String::as_str) == Some("c") {
         return format!(
             "{}() is only used inside its own `c` module ({branch})",

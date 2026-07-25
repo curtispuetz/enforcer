@@ -3,11 +3,11 @@ use crate::rules::{
     tree_structure::t::{FileViolation, PartReport},
 };
 
-use super::{c_contents, exports, nesting};
+use super::{exports, nesting};
 
 pub fn part() -> PartReport {
     let mut res = Results::new();
-    for part in [nesting::run(), exports::run(), c_contents::run()] {
+    for part in [nesting::run(), exports::run()] {
         res.passed += part.passed;
         res.violations.extend(part.violations);
     }
