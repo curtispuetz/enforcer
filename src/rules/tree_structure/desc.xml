@@ -95,9 +95,10 @@
     <desc>
       Verifies, for each function on the public surface of a c module sitting at [D]/c, that the nearest common ancestor (NCA) of its call-site modules is [D] itself.
     </desc>
-    <rationale>
-      We want functions in c modules at the right level of the tree.
-    </rationale>
+    <rationale>We want functions in c modules at the right level of the tree.</rationale>
+    <note>
+      We won't worry about a similar rule for other common module types (e.g. `t`). Those users can specify those other items where they want.
+    </note>
   </part6-c-fn-location>
   <config toml_table="tree-structure.imports">
     <item>
