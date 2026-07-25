@@ -1,5 +1,5 @@
 <tree-structure-rule>
-  <part1-import-rules>
+  <part1-imports>
     <desc>
       Verifies that a file's imports only point:
       - Sideways (to siblings in its own module); or
@@ -41,7 +41,7 @@
         There must be a way to share certain items between separate modules that have different submodules, because otherwise it would be impossible to write DRY code. In fact, this might be exaggerating it, but it would maybe even be impossible to write code at all. So, if we didn't have these common modules, the import rules would be too strict to work.
       </rationale>
     </common-modules>
-  </part1-import-rules>
+  </part1-imports>
   <part2-item-homes>
     <desc>
       Verifies that the following top-level items are only defined as public in the following common modules:
@@ -123,41 +123,13 @@
   </part7-impl-locations>
   <part8-c-fns-used>
     <desc>
-      Verify that all public functions in a `c` common module are called in 2 or more distinct child branches of the directory that the `c` module is in.
+      Verify that all clusters of public functions in a `c` common module are called in 2 or more distinct child branches of the directory that the `c` module is in.
     </desc>
     <rationale>
       A function in a `c` module is there because it's needed in multiple child branches. If a function is only used in one branch, it can be moved to that branch.
     </rationale>
-    <shared-privates>
-      <desc>
-        The branch test is applied per cluster of public functions, not per
-        function. Two public functions in the same file are in the same cluster
-        when they both transitively reach a private item of that file (a private
-        fn, type, or its impls). A cluster's callers are pooled, so a public
-        function used in only one branch still passes when a cluster-mate is used
-        in a different one. When a whole cluster is confined to one branch, every
-        member is reported.
-      </desc>
-      <rationale>
-        The rationale above ("it can be moved to that branch") is false when the
-        function is a thin wrapper over private helpers that another branch also
-        depends on: moving it would either duplicate those helpers or force them
-        public, which in turn forces their types into a `t` module. Without this,
-        such code has nowhere natural to live.
-      </rationale>
-      <note>
-        Reachability is a name-based heuristic: an item references a private name
-        if that identifier appears anywhere inside it. It can over-link (a local
-        variable sharing a private item's name), which only ever loosens the
-        rule, never tightens it.
-      </note>
-      <unaffected>
-        The "is never called" violation stays per-function; a dead public function
-        is not rescued by its cluster-mates.
-      </unaffected>
-    </shared-privates>
   </part8-c-fns-used>
-  <config toml_table="tree-structure.import-rules">
+  <config toml_table="tree-structure.imports">
     <item>
       ignore_export_macros - when true, imports of macros that use `#[macro_export]` are exempt (default false)
     </item>

@@ -39,14 +39,14 @@ The process exits `1` when any rule fails and `2` on a bad invocation
 | `cognitive-complexity` | Every function scores below a maximum SonarQube cognitive complexity (8 default; configurable) |
 | `duplicate-fns` | No two functions are alpha-equivalent |
 | `duplicate-logic` | No run of consecutive statements is repeated |
-| `comment-rules` | No comments except short trailing ones and those prefixed `not-obvious: ` |
+| `comments` | No comments except short trailing ones and those prefixed `not-obvious: ` |
 | `mod-count` | No `mod.rs`/`lib.rs` declares more than a maximum number of modules |
 | `mod-location` | `mod` statements appear only in `mod.rs` and `lib.rs` |
 | `mod-over-file` | Folder modules use the `mod.rs` form, not the sibling-file form |
 | `mod-lib-contents` | `mod.rs`/`lib.rs` contain only `mod` and `use` statements |
 | `use-privacy` | `use` statements outside `mod.rs`/`lib.rs` are private |
 | `private-fn-naming` | Private functions and methods are prefixed with `_` |
-| `call-rules` | Public functions are called through a parent module path, with no repeated words in the path |
+| `calls` | Public functions are called through a parent module path, with no repeated words in the path |
 | `tree-structure` | Imports point only sideways or deeper, never up or across; items live in their designated common module; impls sit beside their types; shared `c` functions are used by more than one branch |
 
 `all` runs every rule above.

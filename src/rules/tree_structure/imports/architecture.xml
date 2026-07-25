@@ -1,7 +1,7 @@
 <code-architecture>
   Flow:
   `main::run` builds a `Config` (from `t/config.rs`; reads `ignore_export_macros` from the
-  `[import_rules]` section of `enforcer.toml` in the project root via `read_toml.rs`,
+  `[tree-structure.imports]` section of `enforcer.toml` in the project root via `read_toml.rs`,
   defaulting to false if the file or key is absent, and,
   if set, collects `#[macro_export]` names via `macros.rs`), iterates every `.rs` file in
   each existing src dir, and calls `verify::file::run` on each, then `report::report`
@@ -14,6 +14,6 @@
   resolves each path to an absolute module path (using `own_module` for `super`) and
   returns the violation reason, if any, including the common-directory recursion. This
   mirrors the
-  &lt;import-rules&gt; preferences documented below — the rule enforces the same conventions the
+  &lt;enforcer-import-rules&gt; preferences documented below — the rule enforces the same conventions the
   codebase itself follows.
 </code-architecture>

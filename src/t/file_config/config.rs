@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 use super::{
-    CognitiveComplexity, CommentRules, DuplicateFns, DuplicateLogic, FileSizes,
+    CognitiveComplexity, Comments, DuplicateFns, DuplicateLogic, FileSizes,
     ModCount, TreeStructure,
 };
 
@@ -13,7 +13,7 @@ pub struct FileConfig {
     #[serde(default)]
     pub file_sizes: FileSizes,
     #[serde(default)]
-    pub comment_rules: CommentRules,
+    pub comments: Comments,
     #[serde(default)]
     pub mod_count: ModCount,
     #[serde(default)]

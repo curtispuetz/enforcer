@@ -4,7 +4,7 @@ use std::{collections::HashSet, path::Path};
 use crate::{
     rules::{
         c::{files, path},
-        tree_structure::import_rules::t::{BadImport, Config, Violation},
+        tree_structure::imports::t::{BadImport, Config, Violation},
     },
     t::Outcome,
 };

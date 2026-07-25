@@ -25,7 +25,7 @@
     returns `true` when the rule FAILED (any violations), matching `Command::run`.
     - `report.rs` — `print(passed, violations) -&gt; bool`, wrapping `c::report::summary`.
     - Optional `t.rs` (or `t/`) for rule-local types; extra files/subfolders for
-    bigger rules (e.g. `import_rules/verify/`, `call_rules/find/`).
+    bigger rules (e.g. `imports/verify/`, `calls/find/`).
     Wiring a new rule requires three edits beyond the folder: add `pub mod &lt;name&gt;;`
     to `src/rules/mod.rs`, a `Command` variant in `src/t/command.rs`, and a match arm
     in `src/run.rs`. Private fns are prefixed with `_` per the project convention.

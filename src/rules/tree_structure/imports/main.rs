@@ -19,7 +19,7 @@ pub fn part() -> PartReport {
     let config = _init_config();
     let res = scan::src_files(|path| verify::file::run(path, &config));
     PartReport {
-        name: "import-rules",
+        name: "imports",
         unit: "files",
         passed: res.passed,
         violations: res.violations.into_iter().map(_render).collect(),
@@ -40,7 +40,7 @@ fn _render(violation: Violation) -> FileViolation {
 
 fn _init_config() -> Config {
     let ignore_exported_macros =
-        FILE_CONFIG.tree_structure.import_rules.ignore_export_macros;
+        FILE_CONFIG.tree_structure.imports.ignore_export_macros;
     let mut exported_macros = HashSet::new();
     if ignore_exported_macros {
         for dir_name in EXISTING_SRC_DIRS.iter() {

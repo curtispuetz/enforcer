@@ -9,8 +9,8 @@ pub enum Command {
     ModLocation,
     ModOverFile,
     ModLibContents,
-    CommentRules,
-    CallRules,
+    Comments,
+    Calls,
     ModCount,
     UsePrivacy,
     CognitiveComplexity,
@@ -38,8 +38,8 @@ impl Command {
             Command::ModLibContents => {
                 include_str!("../rules/mod_lib_contents/desc.xml")
             }
-            Command::CommentRules => include_str!("../rules/comment_rules/desc.xml"),
-            Command::CallRules => include_str!("../rules/call_rules/desc.xml"),
+            Command::Comments => include_str!("../rules/comments/desc.xml"),
+            Command::Calls => include_str!("../rules/calls/desc.xml"),
             Command::ModCount => include_str!("../rules/mod_count/desc.xml"),
             Command::UsePrivacy => include_str!("../rules/use_privacy/desc.xml"),
             Command::CognitiveComplexity => {

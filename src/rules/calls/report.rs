@@ -6,7 +6,7 @@ use colored::Colorize;
 
 pub fn print(res: Results<ItemsViolation>) -> bool {
     _listed(
-        "call-rules",
+        "calls",
         res.passed,
         &format!(
             "All function calls go through a parent module and never repeat a word \

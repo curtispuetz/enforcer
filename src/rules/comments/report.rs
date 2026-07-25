@@ -6,7 +6,7 @@ use super::t::{Config, Violation};
 
 pub fn print(config: Config, res: Results<Violation>) -> bool {
     report::summary(
-        "comment-rules",
+        "comments",
         res.passed,
         &format!("No disallowed comments ({} files checked)", res.passed),
         res.violations,

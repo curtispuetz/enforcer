@@ -1,7 +1,7 @@
 pub mod c;
-pub mod call_rules;
+pub mod calls;
 pub mod cognitive_complexity;
-pub mod comment_rules;
+pub mod comments;
 pub mod duplicate_fns;
 pub mod duplicate_logic;
 pub mod file_sizes;

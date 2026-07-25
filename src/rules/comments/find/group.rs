@@ -1,4 +1,4 @@
-use crate::rules::comment_rules::t::Comment;
+use crate::rules::comments::t::Comment;
 
 pub fn merge(raw: Vec<Comment>) -> Vec<Comment> {
     let mut out: Vec<Comment> = Vec::new();
