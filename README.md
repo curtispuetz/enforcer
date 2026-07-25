@@ -7,7 +7,7 @@ A cargo subcommand that enforces structural rules on a Rust codebase, such as:
 - No duplicated functions or duplicate runs of statements
 - Limited comments
 
-The main idea is to use this enforcer with AI agents, telling the agent to run these after each change it makes so that it has to fix any rule violations. Starting a project from scratch with this, will force the agents to not have large files, complex functions, and duplicated logic.
+The main idea is to use this enforcer with AI agents, telling the agent to run these after each change it makes so that it has to fix any rule violations. Starting a project from scratch with this will force the agents to not have large files, complex functions, and duplicated logic.
 
 ## Install
 
