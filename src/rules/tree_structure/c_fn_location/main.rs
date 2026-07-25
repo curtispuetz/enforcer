@@ -48,7 +48,7 @@ fn _build(total: usize, lines: HashMap<String, Vec<String>>) -> PartReport {
         .collect();
     violations.sort_by(|a, b| a.path.cmp(&b.path));
     PartReport {
-        name: "c-fns-used",
+        name: "c-fn-location",
         unit: "c files",
         passed: total - failing,
         violations,

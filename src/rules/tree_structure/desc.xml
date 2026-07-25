@@ -89,7 +89,7 @@
       The glob re-export is not required when the module exposes no public items to re-export (e.g. a module containing only `impl` blocks).
     </exception>
   </part5-common-reexports>
-  <part7-impl-locations>
+  <part6-impl-locations>
     <desc>
       Verifies that all impls:
       - Live in a `t` common module; and
@@ -102,15 +102,15 @@
     <rationale>
       To have an expected location for impls. Also to gently encourage small impls, preferring free-functions over methods.
     </rationale>
-  </part7-impl-locations>
-  <part8-c-fns-used>
+  </part6-impl-locations>
+  <part7-c-fn-location>
     <desc>
-      Verifies for each function on the public surface of a c module sitting at [D]/c, that the nearest common ancestor (NCA) of its call-site modules is [D] itself.
+      Verifies, for each function on the public surface of a c module sitting at [D]/c, that the nearest common ancestor (NCA) of its call-site modules is [D] itself.
     </desc>
     <rationale>
       We want functions in c modules at the right level of the tree.
     </rationale>
-  </part8-c-fns-used>
+  </part7-c-fn-location>
   <config toml_table="tree-structure.imports">
     <item>
       ignore_export_macros - when true, imports of macros that use `#[macro_export]` are exempt (default false)
