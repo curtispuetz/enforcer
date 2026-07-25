@@ -1,7 +1,5 @@
 # Claude Onboarding
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 @docs/context.xml
 @docs/cargo_commands.xml
 @docs/architecture.xml
