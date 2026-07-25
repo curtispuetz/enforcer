@@ -1,31 +1,8 @@
 <context>
-  <preamble>
-    This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-  </preamble>
   <what-this-is>
     This is a crate called 'enforcer' that enforces structural rules on a Rust codebase. The enforcer reports any violations of rules. We are running it on this codebase itself, but also of course intend to use it on other codebases.
   </what-this-is>
-  <cargo-commands>
-    <build>cargo build</build>
-    <test>
-      There is no test suite at the moment. Don't add tests unless asked.
-    </test>
-    <clippy>cargo clippy</clippy>
-    <enforcer>
-      cargo run enforcer all - To run the enforcer itself on its own code
-    </enforcer>
-    <notes>
-      `cargo clippy` and `cargo run enforcer all` should be run after each change to make sure there are no warnings. However, leave any new enforcer violations introduced from your change alone, so that I can see them.
-    </notes>
-  </cargo-commands>
-  <code-preferences>
-    Don't re-write logic that is clearly the same. Extract it to a common location to be used in multiple places.
-  </code-preferences>
-  <rust-code-preferences>
-    <enforcer-import-rules>
-      <general-guide>
-        The idea is to put all static data in 's' dirs and public types in 't' dirs. There can also be some basic impl's for simple methods in the 't' directories alongside the types. 'ext_traits' are for extension traits (adding traits to types we don't own). Principle: minimize c (ideally nothing in it), instead placing code right where it's used. However, a balancing principle: extract duplicated logic to 'c' dirs. Principle: put all types used multiple places in 't' directories.
-      </general-guide>
-    </enforcer-import-rules>
-  </rust-code-preferences>
+  <tests>
+    There is no test suite at the moment. Don't add tests unless asked.
+  </tests>
 </context>

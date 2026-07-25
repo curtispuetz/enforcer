@@ -1,0 +1,10 @@
+<cargo-commands>
+  <note>
+    `cargo clippy` and `cargo run enforcer all` should be run after each change to make sure there are no warnings. However, leave any new enforcer violations introduced from your change alone, so that I can see them.
+  </note>
+  <build>cargo build</build>
+  <clippy>cargo clippy</clippy>
+  <enforcer>
+    cargo run enforcer all - To run the enforcer itself on its own code
+  </enforcer>
+</cargo-commands>
