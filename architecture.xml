@@ -32,9 +32,7 @@
   </check-anatomy>
   <check-docs>
     Every check folder carries:
-    - `desc.xml` — the human spec of the check: a `&lt;desc&gt;` summary plus the
-    `&lt;rules&gt;` (and any `&lt;exemption&gt;`) it enforces. READ THIS FIRST when
-    implementing or changing a check — it is the source of truth for behavior.
+    - `desc.xml` — the human spec of the check. READ THIS FIRST when implementing or changing a check — it is the source of truth for behavior.
   </check-docs>
   <shared-helpers>
     Reusable building blocks the checks lean on, so you rarely need bespoke fs/AST code:
