@@ -3,7 +3,7 @@ use std::{collections::HashSet, path::Path};
 use crate::{
     rules::{
         c::{ast, files, path},
-        tree_structure::c::{ast as ast2, path as path2},
+        tree_structure::c::path as path2,
     },
     s::EXISTING_SRC_DIRS,
 };
@@ -60,5 +60,15 @@ fn _is_c_glob(item: &syn::Item) -> bool {
     let syn::Item::Use(u) = item else {
         return false;
     };
-    ast::is_public(&u.vis) && ast2::glob_module(&u.tree) == Some("c".to_string())
+    ast::is_public(&u.vis) && _glob_module(&u.tree) == Some("c".to_string())
+}
+
+fn _glob_module(tree: &syn::UseTree) -> Option<String> {
+    match tree {
+        syn::UseTree::Path(p) => match &*p.tree {
+            syn::UseTree::Glob(_) => Some(p.ident.to_string()),
+            inner => _glob_module(inner),
+        },
+        _ => None,
+    }
 }

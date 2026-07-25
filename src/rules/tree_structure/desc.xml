@@ -76,20 +76,7 @@
       <rationale>It's commonly necessary to nest `c` modules to share code within a `c` module.</rationale>
     </exception>
   </part4-common-nesting>
-  <part5-common-reexports>
-    <desc>
-      For `t`, `s`, `cnst`, and `ext_traits` common modules, verifies that every module declaration in all mod.rs files are:
-      - Private (i.e. `mod x;`, never `pub mod x;`); and
-      - Glob re-exported (i.e. `pub use x::*;`).
-    </desc>
-    <rationale>
-      So that users can import `use ...::t::TypeName` (i.e. not `use ...::t::submodule::TypeName`), saving characters.
-    </rationale>
-    <exception>
-      The glob re-export is not required when the module exposes no public items to re-export (e.g. a module containing only `impl` blocks).
-    </exception>
-  </part5-common-reexports>
-  <part6-impl-locations>
+  <part5-impl-locations>
     <desc>
       Verifies that all impls:
       - Live in a `t` common module; and
@@ -102,15 +89,15 @@
     <rationale>
       To have an expected location for impls. Also to gently encourage small impls, preferring free-functions over methods.
     </rationale>
-  </part6-impl-locations>
-  <part7-c-fn-location>
+  </part5-impl-locations>
+  <part6-c-fn-location>
     <desc>
       Verifies, for each function on the public surface of a c module sitting at [D]/c, that the nearest common ancestor (NCA) of its call-site modules is [D] itself.
     </desc>
     <rationale>
       We want functions in c modules at the right level of the tree.
     </rationale>
-  </part7-c-fn-location>
+  </part6-c-fn-location>
   <config toml_table="tree-structure.imports">
     <item>
       ignore_export_macros - when true, imports of macros that use `#[macro_export]` are exempt (default false)
