@@ -61,6 +61,10 @@ cargo enforcer help file-size
 
 Goes in an optional `enforcer.toml` in the project root.
 
+Top-level:
+
+- `debug` - bool
+
 ## Opinions
 
 These rules are opinionated, and deliberately so. They encode one particular way of laying out a crate. They might work well for a new project where you can run it after each change, but adopting `enforcer` wholesale on an existing codebase will produce a lot of violations. Enabling just a set of the rules (like file-sizes, cognitive-complexity) would be more reasonable in that case.

@@ -1,14 +1,21 @@
 use colored::Colorize;
 
+use crate::s::FILE_CONFIG;
+
 use super::t::PartReport;
 
 pub fn print(parts: Vec<PartReport>) -> bool {
+    let any_failed = parts.iter().any(|p| !p.violations.is_empty());
+    if !any_failed && !FILE_CONFIG.debug {
+        return false;
+    }
     println!("{}", "tree-structure report:".bold().cyan());
     println!();
     for part in &parts {
-        _status_line(part);
+        if FILE_CONFIG.debug || !part.violations.is_empty() {
+            _status_line(part);
+        }
     }
-    let any_failed = parts.iter().any(|p| !p.violations.is_empty());
     if !any_failed {
         return false;
     }

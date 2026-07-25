@@ -12,19 +12,9 @@ fn main() {
         eprintln!("usage: cargo enforcer <rule> [<rule>...]");
         _exit_unusable();
     }
-    if _run_all(&args) {
+    if run::rules(&_commands(&args)) {
         process::exit(1);
     }
-}
-
-fn _run_all(args: &[String]) -> bool {
-    let mut any_failed = false;
-    for command in _commands(args) {
-        if run::rule(command) {
-            any_failed = true;
-        }
-    }
-    any_failed
 }
 
 fn _commands(args: &[String]) -> Vec<Command> {

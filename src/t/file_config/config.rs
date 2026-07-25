@@ -9,6 +9,8 @@ use super::{
 #[serde(deny_unknown_fields, rename_all = "kebab-case")]
 pub struct FileConfig {
     #[serde(default)]
+    pub debug: bool,
+    #[serde(default)]
     pub tree_structure: TreeStructure,
     #[serde(default)]
     pub file_sizes: FileSizes,

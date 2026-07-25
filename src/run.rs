@@ -1,8 +1,19 @@
+use colored::Colorize;
 use strum::IntoEnumIterator;
 
 use super::t::Command;
 
+use super::s::FILE_CONFIG;
+
 use super::rules;
+
+pub fn rules(commands: &[Command]) -> bool {
+    let any_failed = _each(commands);
+    if !any_failed && !FILE_CONFIG.debug {
+        println!("{} All rules passed", "[Success]".green().bold());
+    }
+    any_failed
+}
 
 pub fn rule(command: Command) -> bool {
     let ret = match command {
@@ -21,17 +32,23 @@ pub fn rule(command: Command) -> bool {
         Command::DuplicateLogic => rules::duplicate_logic::run(),
         Command::PrivateFnNaming => rules::private_fn_naming::run(),
     };
-    println!();
+    if ret || FILE_CONFIG.debug {
+        println!();
+    }
     ret
 }
 
 fn _all() -> bool {
+    let commands: Vec<Command> = Command::iter()
+        .filter(|command| !matches!(command, Command::All))
+        .collect();
+    _each(&commands)
+}
+
+fn _each(commands: &[Command]) -> bool {
     let mut any_failed = false;
-    for command in Command::iter() {
-        if matches!(command, Command::All) {
-            continue;
-        }
-        if rule(command) {
+    for command in commands {
+        if rule(*command) {
             any_failed = true;
         }
     }

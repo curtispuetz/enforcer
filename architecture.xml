@@ -56,8 +56,11 @@
   <enforcer.toml>
     `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
     `enforcer.toml` from the project root (`ROOT`), allows users to configure the rules.
+    The top-level `debug` flag (default false) controls output verbosity: see std-out.
   </enforcer.toml>
   <std-out>
-    All rules should print good messages to the console about the results using nice color schemes following the pattern already laid out. A message of the "all passed" sort if all pass, and if failures should print details, so the user knows where the failures happened and can click links, if possible, to go fix. The number of passes and failures should be printed in all cases, like it is for the existing rules.
+    With `debug = true` in enforcer.toml, every rule prints a full report: nice color schemes following the pattern already laid out, a message of the "all passed" sort if all pass, and if failures the details, so the user knows where the failures happened and can click links, if possible, to go fix. The number of passes and failures is printed in all cases, like it is for the existing rules.
+
+    With debug off (the default), passing rules print nothing at all: only failing rules print their report, and if every rule passes a single `[Success] All rules passed` line is printed by `run::rules`.
   </std-out>
 </code-architecture>

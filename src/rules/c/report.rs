@@ -1,5 +1,7 @@
 use colored::Colorize;
 
+use crate::s::FILE_CONFIG;
+
 use crate::t::ItemsViolation;
 
 pub fn items(
@@ -51,12 +53,15 @@ pub fn counted<V>(
     violations: Vec<V>,
     on_fail: impl FnOnce(Vec<V>),
 ) -> bool {
-    println!("{}", format!("{name} report:").bold().cyan());
     if violations.is_empty() {
-        let s = "[success]".green().bold();
-        println!("{s} {success_msg}");
+        if FILE_CONFIG.debug {
+            println!("{}", format!("{name} report:").bold().cyan());
+            let s = "[success]".green().bold();
+            println!("{s} {success_msg}");
+        }
         return false;
     }
+    println!("{}", format!("{name} report:").bold().cyan());
     println!("\n{}, {}\n", passed_msg.green(), failed_msg.red().bold());
     on_fail(violations);
     true
