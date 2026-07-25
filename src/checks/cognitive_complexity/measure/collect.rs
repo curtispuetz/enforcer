@@ -19,29 +19,35 @@ fn _items(items: &[Item], type_name: Option<&str>, found: &mut Vec<Function>) {
 fn _item(item: &Item, type_name: Option<&str>, found: &mut Vec<Function>) {
     match item {
         Item::Fn(f) => _measure(&f.sig, &f.block, type_name, found),
-        Item::Mod(m) => {
-            if let Some((_, items)) = &m.content {
-                _items(items, type_name, found);
-            }
-        }
-        Item::Impl(i) => {
-            let self_name = fn_name::self_type(&i.self_ty);
-            for impl_item in &i.items {
-                if let ImplItem::Fn(m) = impl_item {
-                    _measure(&m.sig, &m.block, self_name.as_deref(), found);
-                }
-            }
-        }
-        Item::Trait(t) => {
-            for trait_item in &t.items {
-                if let TraitItem::Fn(m) = trait_item
-                    && let Some(block) = &m.default
-                {
-                    _measure(&m.sig, block, Some(&t.ident.to_string()), found);
-                }
-            }
-        }
+        Item::Mod(m) => _module(m, type_name, found),
+        Item::Impl(i) => _impl_fns(i, found),
+        Item::Trait(t) => _trait_fns(t, found),
         _ => {}
+    }
+}
+
+fn _module(m: &syn::ItemMod, type_name: Option<&str>, found: &mut Vec<Function>) {
+    if let Some((_, items)) = &m.content {
+        _items(items, type_name, found);
+    }
+}
+
+fn _impl_fns(i: &syn::ItemImpl, found: &mut Vec<Function>) {
+    let self_name = fn_name::self_type(&i.self_ty);
+    for impl_item in &i.items {
+        if let ImplItem::Fn(m) = impl_item {
+            _measure(&m.sig, &m.block, self_name.as_deref(), found);
+        }
+    }
+}
+
+fn _trait_fns(t: &syn::ItemTrait, found: &mut Vec<Function>) {
+    for trait_item in &t.items {
+        if let TraitItem::Fn(m) = trait_item
+            && let Some(block) = &m.default
+        {
+            _measure(&m.sig, block, Some(&t.ident.to_string()), found);
+        }
     }
 }
 

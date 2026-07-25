@@ -4,14 +4,18 @@ pub fn internal_use_paths(file: &syn::File) -> Vec<Vec<String>> {
     let mut ret = Vec::new();
     for item in &file.items {
         if let Some(tree) = _use_tree(item) {
-            for path in _expand_use_tree(vec![], tree) {
-                if _is_internal(&path) {
-                    ret.push(path);
-                }
-            }
+            _add_tree_use_paths(tree, &mut ret);
         }
     }
     ret
+}
+
+fn _add_tree_use_paths(tree: &UseTree, ret: &mut Vec<Vec<String>>) {
+    for path in _expand_use_tree(vec![], tree) {
+        if _is_internal(&path) {
+            ret.push(path);
+        }
+    }
 }
 
 fn _use_tree(item: &syn::Item) -> Option<&UseTree> {

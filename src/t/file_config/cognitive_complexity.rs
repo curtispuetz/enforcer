@@ -19,5 +19,5 @@ impl Default for CognitiveComplexity {
 }
 
 fn _default_max_complexity() -> usize {
-    15
+    9
 }

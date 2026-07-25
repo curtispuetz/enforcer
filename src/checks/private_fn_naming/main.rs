@@ -18,19 +18,23 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
 fn _misnamed_fns(path: &Path) -> Vec<String> {
     let mut items = Vec::new();
     for item in &files::ast_parse(path).items {
-        match item {
-            syn::Item::Fn(f) => _check_fn(&f.vis, &f.sig.ident, &mut items),
-            syn::Item::Impl(imp) if imp.trait_.is_none() => {
-                for impl_item in &imp.items {
-                    if let syn::ImplItem::Fn(f) = impl_item {
-                        _check_fn(&f.vis, &f.sig.ident, &mut items);
-                    }
-                }
-            }
-            _ => {}
-        }
+        _check_item(item, &mut items);
     }
     items
+}
+
+fn _check_item(item: &syn::Item, items: &mut Vec<String>) {
+    match item {
+        syn::Item::Fn(f) => _check_fn(&f.vis, &f.sig.ident, items),
+        syn::Item::Impl(imp) if imp.trait_.is_none() => {
+            for impl_item in &imp.items {
+                if let syn::ImplItem::Fn(f) = impl_item {
+                    _check_fn(&f.vis, &f.sig.ident, items);
+                }
+            }
+        }
+        _ => {}
+    }
 }
 
 fn _check_fn(vis: &syn::Visibility, ident: &syn::Ident, items: &mut Vec<String>) {

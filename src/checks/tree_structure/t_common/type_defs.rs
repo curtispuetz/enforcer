@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, path::Path};
 
 use crate::{
     checks::{
@@ -14,19 +14,23 @@ pub fn find() -> HashMap<String, Vec<TypeDef>> {
     let mut map: HashMap<String, Vec<TypeDef>> = HashMap::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for file_path in files::rs(dir_name) {
-            let module = path::module(&file_path).unwrap_or_default();
-            for item in files::ast_parse(&file_path).items {
-                if let Some((name, is_public)) = _type_def(&item) {
-                    map.entry(name).or_default().push(TypeDef {
-                        path: file_path.clone(),
-                        module: module.clone(),
-                        is_public,
-                    });
-                }
-            }
+            _add_file(&file_path, &mut map);
         }
     }
     map
+}
+
+fn _add_file(file_path: &Path, map: &mut HashMap<String, Vec<TypeDef>>) {
+    let module = path::module(file_path).unwrap_or_default();
+    for item in files::ast_parse(file_path).items {
+        if let Some((name, is_public)) = _type_def(&item) {
+            map.entry(name).or_default().push(TypeDef {
+                path: file_path.to_path_buf(),
+                module: module.clone(),
+                is_public,
+            });
+        }
+    }
 }
 
 fn _type_def(item: &syn::Item) -> Option<(String, bool)> {
