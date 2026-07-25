@@ -9,7 +9,7 @@
     We want function names to be short and their functionality to be clear from their parent module names as well as its own name. We also don't want repeating words in these qualified paths so that we save characters.
   </rationale>
   <exceptions>
-    <exception>Private functions</exception>
-    <exception>Any functions we don't own (i.e. from external crates or std)</exception>
+    - Private functions
+    - Any functions we don't own (i.e. from external crates or std)
   </exceptions>
 </call-rules-check>

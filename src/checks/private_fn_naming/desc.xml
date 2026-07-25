@@ -4,12 +4,8 @@
     Mimics Python's convention. I like it because it makes it easy to tell at a glance whether a function is private or public.
   </rationale>
   <exemptions>
-    <exemption>
-      Methods inside `impl Trait for Type` blocks, since their names are dictated by the trait.
-    </exemption>
-    <exemption>
-      Methods inside a `trait` definition, since trait items carry no visibility modifier of their own.
-    </exemption>
-    <exemption>`fn main`, since the name is fixed by the language.</exemption>
+    - Methods inside `impl Trait for Type` blocks, since their names are dictated by the trait.
+    - Methods inside a `trait` definition, since trait items carry no visibility modifier of their own.
+    - `fn main`, since the name is fixed by the language.
   </exemptions>
 </fn-naming-check>
