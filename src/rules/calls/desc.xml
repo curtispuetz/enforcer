@@ -6,7 +6,7 @@
     So, to clarify, that means one of the function's parent modules are imported the function is called with segments that do not repeat any word.
   </desc>
   <rationale>
-    We want function names to be short and their functionality to be clear from their parent module names as well as its own name. We also don't want repeating words in these qualified paths so that we save characters.
+    We want function names to be short and their functionality to be defined from their parent module names as well as its own name. And, repeated words are a sign of redundancy.
   </rationale>
   <exceptions>
     - Private functions
