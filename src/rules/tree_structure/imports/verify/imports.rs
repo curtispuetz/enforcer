@@ -1,4 +1,4 @@
-use syn::UseTree;
+use syn::{Ident, UseTree};
 
 pub fn internal_use_paths(file: &syn::File) -> Vec<Vec<String>> {
     let mut ret = Vec::new();
@@ -35,14 +35,8 @@ fn _expand_use_tree(mut prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>>
             prefix.push(p.ident.to_string());
             _expand_use_tree(prefix, &p.tree)
         }
-        UseTree::Name(n) => {
-            prefix.push(n.ident.to_string());
-            vec![prefix]
-        }
-        UseTree::Rename(r) => {
-            prefix.push(r.ident.to_string());
-            vec![prefix]
-        }
+        UseTree::Name(n) => _leaf(prefix, &n.ident),
+        UseTree::Rename(r) => _leaf(prefix, &r.ident),
         UseTree::Glob(_) => vec![prefix],
         UseTree::Group(g) => g
             .items
@@ -50,4 +44,9 @@ fn _expand_use_tree(mut prefix: Vec<String>, tree: &UseTree) -> Vec<Vec<String>>
             .flat_map(|item| _expand_use_tree(prefix.clone(), item))
             .collect(),
     }
+}
+
+fn _leaf(mut prefix: Vec<String>, ident: &Ident) -> Vec<Vec<String>> {
+    prefix.push(ident.to_string());
+    vec![prefix]
 }

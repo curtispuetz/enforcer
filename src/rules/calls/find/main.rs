@@ -9,8 +9,7 @@ use crate::rules::{
 use super::{ignored, message, words};
 
 pub fn violations(file: &syn::File) -> Vec<String> {
-    let imported = imports::bindings(file);
-    let mut items = Vec::new();
+    let (imported, mut items) = imports::bindings_and_items(file);
     for segments in _paths(file) {
         if let Some(item) = _item(&segments, &imported) {
             items.push(item);

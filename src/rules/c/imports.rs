@@ -14,6 +14,12 @@ pub fn bindings(file: &syn::File) -> HashMap<String, Vec<String>> {
     ret
 }
 
+pub fn bindings_and_items(
+    file: &syn::File,
+) -> (HashMap<String, Vec<String>>, Vec<String>) {
+    (bindings(file), Vec::new())
+}
+
 fn _expand(mut prefix: Vec<String>, tree: &UseTree) -> Vec<(String, Vec<String>)> {
     match tree {
         UseTree::Path(p) => {
