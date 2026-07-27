@@ -10,7 +10,7 @@ pub fn print(checked: usize, groups: Vec<Group>) -> bool {
     let duplicated: usize = groups.iter().map(|group| group.members.len()).sum();
     report::counted(
         "duplicate-fns",
-        &format!("No alpha-equivalent functions found ({checked} functions checked)"),
+        &format!("No duplicate functions found ({checked} functions checked)"),
         &format!("{checked} functions checked"),
         &format!(
             "{duplicated} duplicate functions in {} group(s)",
@@ -22,7 +22,7 @@ pub fn print(checked: usize, groups: Vec<Group>) -> bool {
 }
 
 fn _print_groups(groups: Vec<Group>) {
-    println!("The following functions are alpha-equivalent duplicates:\n");
+    println!("The following functions are identifier-normalized duplicates:\n");
     for group in &groups {
         for member in &group.members {
             let location = format!("{}:{}", member.path, member.line);

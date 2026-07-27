@@ -3,9 +3,11 @@
     Enumerate every contiguous run of `min_stmts` or more statements in every block in the codebase.
   </step>
   <step>
-    Alpha-normalize each run (locals, generics, and lifetimes renamed to
-    placeholders by first-seen order) and bucket runs that share a canonical
-    form; a bucket with 2+ members is a duplicate group.
+    Normalize the identifiers in each run (every snake_case value name it
+    mentions, plus generics and lifetimes, renamed to placeholders by
+    first-seen order) and bucket runs that share a canonical form; a bucket
+    with 2+ members is a duplicate group. See desc.xml for what the
+    equivalence does and does not claim.
   </step>
   <step>
     Suppress dominated spans: a smaller fragment that only appears nested inside

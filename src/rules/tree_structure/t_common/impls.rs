@@ -5,11 +5,11 @@ use crate::rules::c::imports;
 use super::{resolve, t::Defs};
 
 pub fn misplaced(file: &syn::File, path: &Path, defs: &Defs) -> Vec<String> {
-    let bindings = imports::bindings(file);
+    let imported = imports::bindings(file);
     let mut items = Vec::new();
     for item in &file.items {
         if let syn::Item::Impl(imp) = item
-            && let Some(desc) = _misplaced_impl(imp, path, defs, &bindings)
+            && let Some(desc) = _misplaced_impl(imp, path, defs, &imported)
         {
             items.push(desc);
         }

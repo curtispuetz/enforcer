@@ -22,7 +22,7 @@ pub fn print(scanned: usize, groups: Vec<Group>) -> bool {
 }
 
 fn _print_groups(groups: Vec<Group>) {
-    println!("The following logic fragments are alpha-equivalent duplicates.");
+    println!("The following logic fragments are identifier-normalized duplicates.");
     println!(
         "Add an id to `[duplicate-logic] ignore` in enforcer.toml to silence one:\n"
     );

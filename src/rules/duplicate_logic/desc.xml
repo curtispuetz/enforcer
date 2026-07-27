@@ -1,9 +1,13 @@
 <duplicate-logic-rule>
   <desc>
-    Verifies that no run of statements is repeated (based on
-    alpha-equivalence) anywhere in the codebase. Every duplicated run is
-    reported as a group: the set of locations that share it.
+    Verifies that no run of statements is repeated anywhere in the codebase.
+    Every duplicated run is reported as a group: the set of locations that
+    share it.
   </desc>
+  <equivalence>
+    Two runs are duplicates when one can be turned into the other by renaming
+    identifiers (i.e. a "p-match", or Type-2 clone).
+  </equivalence>
   <rationale>To encourage code reuse.</rationale>
   <config toml_table="duplicate-logic">
     <item>

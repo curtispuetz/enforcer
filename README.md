@@ -41,7 +41,7 @@ Some of the rules are opinionated, and deliberately so. They encode one particul
 | --- | --- |
 | `file-sizes` | No file exceeds a maximum line count (99 default; configurable) |
 | `cognitive-complexity` | Every function scores below a maximum SonarQube cognitive complexity (8 default; configurable) |
-| `duplicate-fns` | No two functions are alpha-equivalent |
+| `duplicate-fns` | No two functions are the same |
 | `duplicate-logic` | No run of consecutive statements is repeated |
 | `comments` | No comments except short trailing ones and those prefixed `not-obvious: ` |
 | `mod-over-file` | Folder modules use the `mod.rs` form, not the sibling-file form |
