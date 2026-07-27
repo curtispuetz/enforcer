@@ -13,7 +13,11 @@ pub fn spots(
     found
 }
 
-fn _walk(stream: TokenStream, names: &Misnamed, found: &mut Vec<(String, usize, usize)>) {
+fn _walk(
+    stream: TokenStream,
+    names: &Misnamed,
+    found: &mut Vec<(String, usize, usize)>,
+) {
     let trees: Vec<TokenTree> = stream.into_iter().collect();
     for (i, tree) in trees.iter().enumerate() {
         match tree {

@@ -31,11 +31,7 @@ fn _fix_file(file_path: &Path) -> Option<String> {
     _rewrite(file_path, &file, &misnamed)
 }
 
-fn _rewrite(
-    file_path: &Path,
-    file: &syn::File,
-    misnamed: &Misnamed,
-) -> Option<String> {
+fn _rewrite(file_path: &Path, file: &syn::File, misnamed: &Misnamed) -> Option<String> {
     let (found, renamed) = spots::of_names(file, misnamed);
     if found.is_empty() {
         return None;

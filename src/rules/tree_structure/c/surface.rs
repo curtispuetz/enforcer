@@ -5,12 +5,9 @@ use std::{
 
 use syn::UseTree;
 
-use crate::rules::{
-    c::{ast, files},
-    tree_structure::t::SurfaceItem,
-};
+use crate::rules::{c::files, tree_structure::t::SurfaceItem};
 
-use super::{children, leaves, modules, path};
+use super::{children, dedup, leaves, modules, path, reexports};
 
 type Visited = HashSet<(PathBuf, Vec<String>)>;
 
@@ -19,7 +16,7 @@ pub fn items(module: &Path) -> Vec<SurfaceItem> {
     let Some(segments) = path::module(&root) else {
         return Vec::new();
     };
-    _dedup(_exports(&root, &segments, &mut Visited::new()))
+    dedup::unique(_exports(&root, &segments, &mut Visited::new()))
 }
 
 fn _exports(file: &Path, module: &[String], visited: &mut Visited) -> Vec<SurfaceItem> {
@@ -33,20 +30,10 @@ fn _exports(file: &Path, module: &[String], visited: &mut Visited) -> Vec<Surfac
         deeper.push(name);
         ret.extend(_exports(&child, &deeper, visited));
     }
-    for tree in _reexport_trees(&ast) {
+    for tree in reexports::trees(&ast) {
         _reexported(tree, file, module, visited, &mut ret);
     }
     ret
-}
-
-fn _reexport_trees(ast: &syn::File) -> Vec<&UseTree> {
-    ast.items
-        .iter()
-        .filter_map(|item| match item {
-            syn::Item::Use(u) if ast::is_public(&u.vis) => Some(&u.tree),
-            _ => None,
-        })
-        .collect()
 }
 
 fn _reexported(
@@ -95,12 +82,4 @@ fn _named(
 ) {
     let exports = _exports(file, module, visited);
     out.extend(exports.into_iter().filter(|i| i.name == name));
-}
-
-fn _dedup(items: Vec<SurfaceItem>) -> Vec<SurfaceItem> {
-    let mut seen: HashSet<(String, &'static str, String)> = HashSet::new();
-    items
-        .into_iter()
-        .filter(|i| seen.insert((i.file.display().to_string(), i.kind, i.name.clone())))
-        .collect()
 }
