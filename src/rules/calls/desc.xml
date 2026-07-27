@@ -8,6 +8,12 @@
   <rationale>
     We want function names to be short and their functionality to be defined from their parent module names as well as its own name. And, repeated words are a sign of redundancy.
   </rationale>
+  <config toml_table="calls">
+    <item>
+      ignore - list of calls exempt from the repeated-word check. An entry is a `::`-separated
+      path suffix of the call as written.
+    </item>
+  </config>
   <exceptions>
     - Private functions
     - Any functions we don't own (i.e. from external crates or std)

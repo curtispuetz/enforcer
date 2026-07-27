@@ -6,7 +6,7 @@ use crate::rules::{
     t::CallsCollector,
 };
 
-use super::{message, words};
+use super::{ignored, message, words};
 
 pub fn violations(file: &syn::File) -> Vec<String> {
     let imported = imports::bindings(file);
@@ -30,7 +30,7 @@ fn _item(
     if segments.len() == 1 {
         return _direct_import(name, imported);
     }
-    if !_is_internal(&segments[0], imported) {
+    if !_is_internal(&segments[0], imported) || ignored::call(segments) {
         return None;
     }
     let word = words::duplicate(segments)?;

@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 use super::{
-    CognitiveComplexity, Comments, DuplicateFns, DuplicateLogic, FileSizes, ModCount,
+    Calls, CognitiveComplexity, Comments, DuplicateFns, DuplicateLogic, FileSizes, ModCount,
     TreeStructure,
 };
 
@@ -26,4 +26,6 @@ pub struct FileConfig {
     pub duplicate_fns: DuplicateFns,
     #[serde(default)]
     pub duplicate_logic: DuplicateLogic,
+    #[serde(default)]
+    pub calls: Calls,
 }

@@ -1,3 +1,4 @@
+mod calls;
 mod cognitive_complexity;
 mod comments;
 mod config;
@@ -8,6 +9,7 @@ mod imports;
 mod mod_count;
 mod tree_structure;
 
+pub use calls::*;
 pub use cognitive_complexity::*;
 pub use comments::*;
 pub use config::*;
