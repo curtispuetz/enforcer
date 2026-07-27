@@ -25,8 +25,8 @@ pub fn run() -> Results<ItemsViolation> {
 fn _bad_ancestor(module: &Path) -> Option<PathBuf> {
     let kind = modules::common_kind(module)?;
     let (ancestor, ancestor_kind) = modules::ancestor(module)?;
-    // not-obvious: c-in-c is the only nesting allowed, so it's the one pairing we skip.
-    if kind == "c" && ancestor_kind == "c" {
+    // not-obvious: same-kind nesting is the only nesting allowed, so we skip those pairings.
+    if kind == ancestor_kind {
         return None;
     }
     Some(ancestor)

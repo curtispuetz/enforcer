@@ -71,9 +71,9 @@
     <rationale>Make reasoning about common modules easier</rationale>
     <exception>
       <desc>
-        `c` modules may be nested inside `c` modules (e.g. `/c/foo/c/bar`). There may be as much nesting of these as desired.
+        A common module may be nested inside another common module of the same kind (e.g. `/c/foo/c/bar`, `/t/foo/t/bar`). There may be as much nesting of these as desired.
       </desc>
-      <rationale>It's commonly necessary to nest `c` modules to share code within a `c` module.</rationale>
+      <rationale>It's commonly necessary to nest a common module to share code within a common module of that same kind.</rationale>
     </exception>
   </part4-common-nesting>
   <part5-impl-locations>
