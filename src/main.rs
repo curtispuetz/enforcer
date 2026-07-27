@@ -3,18 +3,25 @@ use std::{process, str::FromStr};
 use enforcer::{help, run, t::Command};
 
 fn main() {
-    let args = _args();
+    let mut args = _args();
     if _asks_for_help(&args) {
         _exit_help(&args);
     }
+    let fix = _take_fix_flag(&mut args);
     if args.is_empty() {
         eprintln!("enforcer: no rule specified");
-        eprintln!("usage: cargo enforcer <rule> [<rule>...]");
+        eprintln!("usage: cargo enforcer <rule> [<rule>...] [--fix]");
         _exit_unusable();
     }
-    if run::rules(&_commands(&args)) {
+    if run::rules(&_commands(&args), fix) {
         process::exit(1);
     }
+}
+
+fn _take_fix_flag(args: &mut Vec<String>) -> bool {
+    let asked = args.iter().any(|a| a == "--fix");
+    args.retain(|a| a != "--fix");
+    asked
 }
 
 fn _commands(args: &[String]) -> Vec<Command> {

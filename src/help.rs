@@ -25,6 +25,7 @@ fn _usage() {
     println!("{}", "usage: cargo enforcer <rule> [<rule>...]".bold());
     println!("{}", "       cargo enforcer help <rule>".bold());
     println!("available rules: {}", Command::available());
+    println!("{}", "--fix: apply the available automated fixes".bold());
 }
 
 fn _desc(command: Command) {

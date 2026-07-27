@@ -69,6 +69,16 @@ Top-level:
 
 - `debug` - bool
 
+## Automated fixes
+
+Add `--fix` to apply the automated fixes any of the selected rules offer, before the rules are checked:
+
+```sh
+cargo enforcer all --fix
+```
+
+Only `private-fn-naming` has a fix for now.
+
 ## License
 
 [MIT](LICENSE)

@@ -3,6 +3,12 @@
   <rationale>
     Mimics Python's convention. I like it because it makes it easy to tell at a glance whether a function is private or public.
   </rationale>
+  <fix>
+    Supports `--fix`: adds the leading `_` to each offending definition and to
+    its uses in the same file (private functions/methods are only reachable
+    there). A name that is also used as a variable binding in the file is left
+    alone, since renaming it could break the code.
+  </fix>
   <exemptions>
     - Methods inside `impl Trait for Type` blocks, since their names are dictated by the trait.
     - Methods inside a `trait` definition, since trait items carry no visibility modifier of their own.
