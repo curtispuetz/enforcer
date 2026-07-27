@@ -17,7 +17,7 @@ pub fn call_target(
         return Some((path::module(file)?, name));
     }
     let full = _expand(segments, bindings)?;
-    let module = _absolute(&full[..full.len().checked_sub(1)?], file)?;
+    let module = path::absolute(&full[..full.len().checked_sub(1)?], file)?;
     Some((module, name))
 }
 
@@ -35,22 +35,4 @@ fn _expand(
     let mut full = bindings.get(first)?.clone();
     full.extend_from_slice(&segments[1..]);
     Some(full)
-}
-
-fn _absolute(module: &[String], file: &Path) -> Option<Vec<String>> {
-    let mut acc: Vec<String> = Vec::new();
-    for (i, seg) in module.iter().enumerate() {
-        match seg.as_str() {
-            "crate" if i == 0 => acc = vec!["crate".to_string()],
-            "self" if i == 0 => acc = path::module(file)?,
-            "super" => {
-                if i == 0 {
-                    acc = path::module(file)?;
-                }
-                acc.pop()?;
-            }
-            _ => acc.push(seg.clone()),
-        }
-    }
-    (acc.first().map(String::as_str) == Some("crate")).then_some(acc)
 }

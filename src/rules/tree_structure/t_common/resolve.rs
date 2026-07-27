@@ -18,21 +18,7 @@ pub fn target_module(
 
 fn _absolute_module(use_path: &[String], path: &Path) -> Option<Vec<String>> {
     let module = use_path.get(..use_path.len().checked_sub(1)?)?;
-    let mut acc: Vec<String> = Vec::new();
-    for (i, seg) in module.iter().enumerate() {
-        match seg.as_str() {
-            "crate" if i == 0 => acc = vec!["crate".to_string()],
-            "self" if i == 0 => acc = path::module(path)?,
-            "super" => {
-                if i == 0 {
-                    acc = path::module(path)?;
-                }
-                acc.pop()?;
-            }
-            _ => acc.push(seg.clone()),
-        }
-    }
-    (acc.first().map(String::as_str) == Some("crate")).then_some(acc)
+    path::absolute(module, path)
 }
 
 pub fn local_defs<'a>(

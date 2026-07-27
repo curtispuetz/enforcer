@@ -22,6 +22,24 @@ pub fn module(path: &Path) -> Option<Vec<String>> {
     Some(segments)
 }
 
+pub fn absolute(segments: &[String], file: &Path) -> Option<Vec<String>> {
+    let mut acc: Vec<String> = Vec::new();
+    for (i, seg) in segments.iter().enumerate() {
+        match seg.as_str() {
+            "crate" if i == 0 => acc = vec!["crate".to_string()],
+            "self" if i == 0 => acc = module(file)?,
+            "super" => {
+                if i == 0 {
+                    acc = module(file)?;
+                }
+                acc.pop()?;
+            }
+            _ => acc.push(seg.clone()),
+        }
+    }
+    (acc.first().map(String::as_str) == Some("crate")).then_some(acc)
+}
+
 pub fn under_dir(path: &Path, dir: &str) -> bool {
     let rel = path.strip_prefix(ROOT.as_path()).unwrap_or(path);
     rel.components()
