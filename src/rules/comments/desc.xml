@@ -1,7 +1,7 @@
 <comments-rule>
   <desc>
     Verifies that there are no comments in the code, except for:
-    - comments that start with `not-obvious: `; or
+    - comments that start with `not-obvious: ` or `TODO`; or
     - short trailing comments, up to a maximum length (configurable).
   </desc>
   <rationale>
