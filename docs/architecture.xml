@@ -61,6 +61,10 @@
     `src/s/file_config.rs` exposes the `FILE_CONFIG` static: a `LazyLock` that reads
     `enforcer.toml` from the project root (`ROOT`), allows users to configure the rules.
     The top-level `debug` flag (default false) controls output verbosity: see std-out.
+    The top-level `ignore` list (default empty) holds root-relative paths (files or
+    folders, e.g. `src/generated`, or even `src` itself); everything at or below them is
+    invisible to every rule. It is applied in `c::path::ignored`, which `c::files::rs`
+    and the common-module directory walk both filter on.
   </enforcer.toml>
   <std-out>
     With `debug = true` in enforcer.toml, every rule prints a full report: nice color schemes following the pattern already laid out, a message of the "all passed" sort if all pass, and if failures the details, so the user knows where the failures happened and can click links, if possible, to go fix. The number of passes and failures is printed in all cases, like it is for the existing rules.

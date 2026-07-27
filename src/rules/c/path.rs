@@ -1,5 +1,13 @@
-use crate::s::ROOT;
+use crate::s::{FILE_CONFIG, ROOT};
 use std::path::Path;
+
+pub fn ignored(path: &Path) -> bool {
+    let rel = rel(path);
+    FILE_CONFIG.ignore.iter().any(|i| {
+        let i = i.trim_start_matches("./").trim_end_matches('/');
+        !i.is_empty() && (rel == i || rel.starts_with(&format!("{i}/")))
+    })
+}
 
 pub fn rel(path: &Path) -> String {
     path.strip_prefix(ROOT.as_path())

@@ -11,6 +11,8 @@ pub struct FileConfig {
     #[serde(default)]
     pub debug: bool,
     #[serde(default)]
+    pub ignore: Vec<String>,
+    #[serde(default)]
     pub tree_structure: TreeStructure,
     #[serde(default)]
     pub file_sizes: FileSizes,

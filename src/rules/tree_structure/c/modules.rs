@@ -4,6 +4,7 @@ use std::{
 };
 
 use super::util;
+use crate::rules::c::path;
 use crate::{
     rules::s::COMMON,
     s::{EXISTING_SRC_DIRS, ROOT},
@@ -52,6 +53,9 @@ fn _collect(dir: &Path, out: &mut Vec<PathBuf>) {
     };
     for entry in entries.flatten() {
         let path = entry.path();
+        if path::ignored(&path) {
+            continue;
+        }
         if common_kind(&path).is_some() {
             out.push(path.clone());
         }

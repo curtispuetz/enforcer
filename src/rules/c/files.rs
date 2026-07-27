@@ -4,12 +4,15 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use super::path;
+
 pub fn rs(dir_name: &str) -> Vec<PathBuf> {
     let dir = ROOT.join(dir_name);
     let pattern = format!("{}/**/*.rs", dir.to_string_lossy().replace('\\', "/"));
     glob::glob(&pattern)
         .expect("invalid glob")
         .filter_map(|p| p.ok())
+        .filter(|p| !path::ignored(p))
         .collect()
 }
 
