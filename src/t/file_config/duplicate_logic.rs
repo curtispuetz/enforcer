@@ -13,8 +13,8 @@ impl Default for DuplicateLogic {
     fn default() -> Self {
         DuplicateLogic {
             min_stmts: 2,
-            max_holes: 1,
-            min_nodes_per_hole: 20,
+            max_holes: 4,
+            min_nodes_per_hole: 5,
             ignore: Vec::new(),
         }
     }
