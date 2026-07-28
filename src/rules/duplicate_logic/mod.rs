@@ -1,6 +1,7 @@
 mod cluster;
 mod collect;
 mod dedup;
+mod holes;
 mod id;
 mod main;
 mod nodes;

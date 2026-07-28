@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use syn::Block;
 
 use super::{
-    id,
-    t::{Candidate, Config, Group, Hole, Leaf},
+    holes, id,
+    t::{Candidate, Config, Group},
 };
 
 pub fn merge(candidates: Vec<Candidate>, config: &Config) -> Vec<Group> {
@@ -54,55 +54,24 @@ fn _merged(clusters: Vec<Vec<Candidate>>, config: &Config) -> Vec<Vec<Candidate>
 
 fn _fits(acc: &[Candidate], cluster: &[Candidate], config: &Config) -> bool {
     let joined: Vec<&Candidate> = acc.iter().chain(cluster.iter()).collect();
-    _holes(&joined).len() <= config.max_holes
+    holes::of(&joined).len() <= config.max_holes
 }
 
 fn _group(cluster: Vec<Candidate>, config: &Config) -> Option<Group> {
     if cluster.len() < 2 {
         return None;
     }
-    let holes = _holes(&cluster.iter().collect::<Vec<_>>());
-    if holes.len() * config.min_nodes_per_hole > cluster[0].shape.nodes {
+    let found = holes::of(&cluster.iter().collect::<Vec<_>>());
+    if found.len() * config.min_nodes_per_hole > cluster[0].shape.nodes {
         return None;
     }
     let id = _id(&cluster);
     let occurrences = cluster.into_iter().map(|c| c.occurrence).collect();
     Some(Group {
         id,
-        holes,
+        holes: found,
         occurrences,
     })
-}
-
-fn _holes(cluster: &[&Candidate]) -> Vec<Hole> {
-    let Some(first) = cluster.first() else {
-        return Vec::new();
-    };
-    let mut holes = Vec::new();
-    for (index, leaf) in first.shape.leaves.iter().enumerate() {
-        let values = _values_at(cluster, index);
-        if values.len() > 1 {
-            holes.push(Hole {
-                kind: leaf.kind.clone(),
-                values,
-            });
-        }
-    }
-    holes
-}
-
-fn _values_at(cluster: &[&Candidate], index: usize) -> Vec<String> {
-    let mut values: Vec<String> = cluster
-        .iter()
-        .map(|c| _text_at(&c.shape.leaves, index))
-        .collect();
-    values.sort();
-    values.dedup();
-    values
-}
-
-fn _text_at(leaves: &[Leaf], index: usize) -> String {
-    leaves.get(index).map(|l| l.text.clone()).unwrap_or_default()
 }
 
 // not-obvious: the smallest member digest keeps the id stable no matter what

@@ -2,8 +2,8 @@ use std::{collections::HashMap, path::Path};
 
 use crate::{
     rules::{
-        c::{files, path, scan},
-        tree_structure::t::{FileViolation, PartReport},
+        c::{files, path},
+        tree_structure::{c::parts, t::PartReport},
     },
     t::{ItemsViolation, Outcome},
 };
@@ -12,13 +12,7 @@ use super::{contents, home};
 
 pub fn part() -> PartReport {
     let disallowed = contents::disallowed();
-    let res = scan::src_files(|path| _check_file(path, &disallowed));
-    PartReport {
-        name: "common-items",
-        unit: "files",
-        passed: res.passed,
-        violations: res.violations.into_iter().map(FileViolation::new).collect(),
-    }
+    parts::from_files("common-items", |path| _check_file(path, &disallowed))
 }
 
 fn _check_file(

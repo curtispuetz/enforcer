@@ -1,18 +1,10 @@
 pub fn string_end(chars: &[char], i: usize) -> usize {
-    let mut j = i + 1;
-    while j < chars.len() {
-        match chars[j] {
-            '\\' => j += 2,
-            '"' => return j + 1,
-            _ => j += 1,
-        }
-    }
-    j
+    _terminated_end(chars, i, '"')
 }
 
 pub fn char_end(chars: &[char], i: usize) -> usize {
     if chars.get(i + 1) == Some(&'\\') {
-        return _escaped_char_end(chars, i);
+        return _terminated_end(chars, i, '\'');
     }
     if chars.get(i + 2) == Some(&'\'') {
         return i + 3;
@@ -40,12 +32,12 @@ pub fn raw_end(chars: &[char], r: usize) -> Option<usize> {
     Some(chars.len())
 }
 
-fn _escaped_char_end(chars: &[char], i: usize) -> usize {
+fn _terminated_end(chars: &[char], i: usize, terminator: char) -> usize {
     let mut j = i + 1;
     while j < chars.len() {
         match chars[j] {
             '\\' => j += 2,
-            '\'' => return j + 1,
+            c if c == terminator => return j + 1,
             _ => j += 1,
         }
     }

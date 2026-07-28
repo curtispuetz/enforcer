@@ -2,8 +2,8 @@ use std::path::Path;
 
 use crate::{
     rules::{
-        c::{files, path, scan},
-        tree_structure::t::{FileViolation, PartReport},
+        c::{files, path},
+        tree_structure::{c::parts, t::PartReport},
     },
     t::{ItemsViolation, Outcome},
 };
@@ -12,13 +12,7 @@ use super::{defs, impls, t::Defs};
 
 pub fn part() -> PartReport {
     let defs = defs::find();
-    let res = scan::src_files(|path| _check_file(path, &defs));
-    PartReport {
-        name: "t-common",
-        unit: "files",
-        passed: res.passed,
-        violations: res.violations.into_iter().map(FileViolation::new).collect(),
-    }
+    parts::from_files("t-common", |path| _check_file(path, &defs))
 }
 
 fn _check_file(path: &Path, defs: &Defs) -> Outcome<ItemsViolation> {
