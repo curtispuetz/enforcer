@@ -2,7 +2,7 @@ use colored::Colorize;
 
 use crate::rules::c::report;
 
-use super::t::Group;
+use super::t::{Group, Hole};
 
 // not-obvious: this rule is cross-file, so its counts are fragments and groups
 // rather than the files `report::summary` assumes
@@ -22,7 +22,8 @@ pub fn print(scanned: usize, groups: Vec<Group>) -> bool {
 }
 
 fn _print_groups(groups: Vec<Group>) {
-    println!("The following logic fragments are identifier-normalized duplicates.");
+    println!("The following logic fragments are duplicates once identifiers are");
+    println!("normalized and any holes below are made helper parameters.");
     println!(
         "Add an id to `[duplicate-logic] ignore` in enforcer.toml to silence one:\n"
     );
@@ -33,6 +34,20 @@ fn _print_groups(groups: Vec<Group>) {
             let location = format!("{}:{}-{}", occ.path, occ.start, occ.end);
             println!("    {}", location.red());
         }
+        _print_holes(&group.holes);
         println!();
+    }
+}
+
+fn _print_holes(holes: &[Hole]) {
+    if holes.is_empty() {
+        return;
+    }
+    println!(
+        "    {}",
+        format!("{} hole(s), so the shared helper takes:", holes.len()).blue()
+    );
+    for hole in holes {
+        println!("      {} <- {}", hole.kind, hole.values.join(" | "));
     }
 }

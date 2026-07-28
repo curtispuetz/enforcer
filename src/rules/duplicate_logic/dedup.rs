@@ -1,27 +1,10 @@
-use std::collections::HashMap;
-
-use syn::Block;
-
 use super::{
-    id,
+    cluster,
     t::{Candidate, Config, Group, Occurrence},
 };
 
 pub fn groups(candidates: Vec<Candidate>, config: &Config) -> Vec<Group> {
-    let mut buckets: HashMap<Block, Vec<Occurrence>> = HashMap::new();
-    for candidate in candidates {
-        buckets
-            .entry(candidate.canonical)
-            .or_default()
-            .push(candidate.occurrence);
-    }
-
-    let raw: Vec<(String, Vec<Occurrence>)> = buckets
-        .into_iter()
-        .filter(|(_, occs)| occs.len() > 1)
-        .map(|(block, occs)| (id::digest(&block), occs))
-        .collect();
-
+    let raw = cluster::merge(candidates, config);
     let spans = _all_spans(&raw);
     let mut kept = _survivors(raw, &spans, config);
     kept.sort_by(|a, b| {
@@ -32,11 +15,11 @@ pub fn groups(candidates: Vec<Candidate>, config: &Config) -> Vec<Group> {
     kept
 }
 
-fn _all_spans(raw: &[(String, Vec<Occurrence>)]) -> Vec<(usize, Occurrence)> {
+fn _all_spans(raw: &[Group]) -> Vec<(usize, Occurrence)> {
     let mut spans = Vec::new();
-    for (_, occs) in raw {
-        for occ in occs {
-            spans.push((occs.len(), occ.clone()));
+    for group in raw {
+        for occ in &group.occurrences {
+            spans.push((group.occurrences.len(), occ.clone()));
         }
     }
     spans
@@ -46,22 +29,27 @@ fn _all_spans(raw: &[(String, Vec<Occurrence>)]) -> Vec<(usize, Occurrence)> {
 // more-duplicated fragment is redundant noise, so we drop the dominated spans and
 // keep only maximal clones
 fn _survivors(
-    raw: Vec<(String, Vec<Occurrence>)>,
+    raw: Vec<Group>,
     spans: &[(usize, Occurrence)],
     config: &Config,
 ) -> Vec<Group> {
     let mut kept = Vec::new();
-    for (id, occs) in raw {
-        if config.ignore.contains(&id) {
+    for group in raw {
+        if config.ignore.contains(&group.id) {
             continue;
         }
-        let support = occs.len();
-        let occurrences: Vec<Occurrence> = occs
+        let support = group.occurrences.len();
+        let occurrences: Vec<Occurrence> = group
+            .occurrences
             .into_iter()
             .filter(|occ| !_dominated(occ, support, spans))
             .collect();
         if occurrences.len() > 1 {
-            kept.push(Group { id, occurrences });
+            kept.push(Group {
+                id: group.id,
+                holes: group.holes,
+                occurrences,
+            });
         }
     }
     kept

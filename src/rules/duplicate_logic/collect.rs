@@ -10,7 +10,10 @@ use crate::{
     s::EXISTING_SRC_DIRS,
 };
 
-use super::t::{Candidate, Occurrence};
+use super::{
+    skeleton,
+    t::{Candidate, Occurrence},
+};
 
 pub fn all_fragments(min_stmts: usize) -> Vec<Candidate> {
     let mut walk = Walk {
@@ -41,8 +44,10 @@ impl Walk {
         for start in 0..n {
             for end in (start + self.min_stmts)..=n {
                 let slice = &stmts[start..end];
+                let canonical = _canonicalize_block(slice);
                 self.candidates.push(Candidate {
-                    canonical: _canonicalize_block(slice),
+                    shape: skeleton::blank(&canonical),
+                    canonical,
                     occurrence: Occurrence {
                         path: self.path.clone(),
                         start: slice[0].span().start().line,
