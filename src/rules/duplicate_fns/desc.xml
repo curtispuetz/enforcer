@@ -1,19 +1,13 @@
 <duplicate-fns-rule>
   <desc>
-    Verifies that there are no duplicate functions anywhere in the codebase.
-    Free-functions and inherent `impl` methods are compared in the same pool,
-    so a method duplicating a free-function is caught.
+    Verifies that there are no duplicate functions anywhere in the codebase. Free-functions and inherent `impl` methods are compared in the same pool, so a method duplicating a free-function is caught.
   </desc>
   <equivalence>
-    Two functions are duplicates when one can be turned into the other by
-    renaming identifiers, one-for-one (a "p-match", or Type-2 clone). See the
-    `duplicate-logic` desc.xml for the details; both rules share the same
-    normalization.
+    Two functions are duplicates when one can be turned into the other by renaming identifiers, one-for-one (a "p-match", or Type-2 clone). See the `duplicate-logic` desc.xml for the details; both rules share the same normalization.
   </equivalence>
   <rationale>To encourage code reuse.</rationale>
   <exemption>
-    Methods in `impl Trait for Type` blocks, since the trait dictates their shape
-    and the resulting boilerplate is unavoidable.
+    Methods in `impl Trait for Type` blocks, since the trait dictates their shape and the resulting boilerplate is unavoidable.
   </exemption>
   <config toml_table="duplicate-fns">
     <item>
