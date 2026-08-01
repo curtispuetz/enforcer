@@ -8,3 +8,13 @@ pub struct CFn {
     pub parent: Vec<String>,
     pub path: PathBuf,
 }
+
+pub struct Reach {
+    pub key: CfKey,
+    pub path: PathBuf,
+}
+
+pub struct Defs {
+    pub cfns: Vec<CFn>,
+    pub reaches: Vec<Reach>,
+}

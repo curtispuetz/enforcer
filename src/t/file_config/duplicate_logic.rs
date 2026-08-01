@@ -14,7 +14,7 @@ impl Default for DuplicateLogic {
         DuplicateLogic {
             min_stmts: 2,
             max_holes: 4,
-            min_nodes_per_hole: 5,
+            min_nodes_per_hole: 20,
             ignore: Vec::new(),
         }
     }

@@ -6,20 +6,43 @@ use crate::rules::{
 };
 
 use super::{
-    defs, judge, reexports,
-    t::{CFn, CfKey},
+    defs, judge, keys, reexports,
+    t::{CFn, CfKey, Defs, Reach},
     usage,
 };
 
 pub fn part() -> PartReport {
     let aliases = reexports::aliases();
-    let cfns = defs::find();
-    let keys: HashSet<CfKey> = cfns
-        .iter()
-        .map(|f| (f.module.clone(), f.name.clone()))
-        .collect();
-    let callers = usage::collect(&keys, &aliases);
-    _report(cfns, &callers)
+    let defs = _canonical(defs::find(), &aliases);
+    let owners = keys::owners(&defs);
+    let callers = usage::collect(&owners, &aliases);
+    _report(defs.cfns, &callers)
+}
+
+fn _canonical(defs: Defs, aliases: &HashSet<Vec<String>>) -> Defs {
+    Defs {
+        cfns: defs.cfns.into_iter().map(|c| _cfn(c, aliases)).collect(),
+        reaches: defs
+            .reaches
+            .into_iter()
+            .map(|r| _reach(r, aliases))
+            .collect(),
+    }
+}
+
+fn _cfn(cfn: CFn, aliases: &HashSet<Vec<String>>) -> CFn {
+    CFn {
+        module: reexports::canonical(&cfn.module, aliases),
+        parent: reexports::canonical(&cfn.parent, aliases),
+        ..cfn
+    }
+}
+
+fn _reach(reach: Reach, aliases: &HashSet<Vec<String>>) -> Reach {
+    Reach {
+        key: (reexports::canonical(&reach.key.0, aliases), reach.key.1),
+        ..reach
+    }
 }
 
 fn _report(cfns: Vec<CFn>, callers: &HashMap<CfKey, Vec<Vec<String>>>) -> PartReport {

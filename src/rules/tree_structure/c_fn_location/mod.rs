@@ -1,5 +1,6 @@
 mod defs;
 mod judge;
+mod keys;
 mod main;
 mod nca;
 mod reexports;

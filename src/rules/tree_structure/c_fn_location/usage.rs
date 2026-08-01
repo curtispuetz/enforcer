@@ -11,13 +11,13 @@ use crate::{
 use super::{reexports, resolve, t::CfKey, visit};
 
 pub fn collect(
-    defs: &HashSet<CfKey>,
+    owners: &HashMap<CfKey, CfKey>,
     aliases: &HashSet<Vec<String>>,
 ) -> HashMap<CfKey, Vec<Vec<String>>> {
     let mut ret: HashMap<CfKey, Vec<Vec<String>>> = HashMap::new();
     for dir_name in EXISTING_SRC_DIRS.iter() {
         for file in files::rs(dir_name) {
-            _scan(&file, defs, aliases, &mut ret);
+            _scan(&file, owners, aliases, &mut ret);
         }
     }
     ret
@@ -25,7 +25,7 @@ pub fn collect(
 
 fn _scan(
     file: &Path,
-    defs: &HashSet<CfKey>,
+    owners: &HashMap<CfKey, CfKey>,
     aliases: &HashSet<Vec<String>>,
     ret: &mut HashMap<CfKey, Vec<Vec<String>>>,
 ) {
@@ -40,12 +40,13 @@ fn _scan(
             continue;
         };
         let key = (reexports::canonical(&raw_module, aliases), name);
-        if _recursive(&scope, &key, &caller) {
+        let Some(owner) = owners.get(&key) else {
+            continue;
+        };
+        if _recursive(&scope, owner, &caller) {
             continue;
         }
-        if defs.contains(&key) {
-            ret.entry(key).or_default().push(caller.clone());
-        }
+        ret.entry(owner.clone()).or_default().push(caller.clone());
     }
 }
 

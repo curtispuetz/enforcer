@@ -15,9 +15,15 @@ pub fn reason(cfn: &CFn, callers: &[Vec<String>]) -> Option<String> {
 
 fn _message(cfn: &CFn, ancestor: &[String]) -> String {
     let branch = _branch_path(ancestor);
-    if ancestor.len() < cfn.parent.len() {
+    if _above(ancestor, &cfn.parent) {
         return format!(
             "{}() is reached from outside its branch; move it up to {branch}",
+            cfn.name
+        );
+    }
+    if ancestor.len() < cfn.parent.len() {
+        return format!(
+            "{}() is reached from a different branch; move it to {branch}",
             cfn.name
         );
     }
@@ -31,6 +37,10 @@ fn _message(cfn: &CFn, ancestor: &[String]) -> String {
         "{}() is only reached under {branch}; move it there",
         cfn.name
     )
+}
+
+fn _above(ancestor: &[String], parent: &[String]) -> bool {
+    ancestor.len() < parent.len() && parent.starts_with(ancestor)
 }
 
 fn _branch_path(ancestor: &[String]) -> String {
