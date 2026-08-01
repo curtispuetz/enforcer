@@ -24,7 +24,7 @@ fn _exports(file: &Path, module: &[String], visited: &mut Visited) -> Vec<Surfac
         return Vec::new();
     }
     let ast = files::ast_parse(file);
-    let mut ret = leaves::of(&ast, file, module);
+    let mut ret = leaves::of(&ast, file);
     for (name, child) in children::public(file, &ast) {
         let mut deeper = module.to_vec();
         deeper.push(name);

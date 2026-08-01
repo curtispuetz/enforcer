@@ -7,7 +7,6 @@ pub struct SurfaceItem {
     pub kind: &'static str,
     pub name: String,
     pub file: PathBuf,
-    pub module: Vec<String>,
 }
 
 pub struct PartReport {

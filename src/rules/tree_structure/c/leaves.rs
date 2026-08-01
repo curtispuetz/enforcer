@@ -4,7 +4,7 @@ use syn::{File, Ident, Item, Visibility};
 
 use crate::rules::tree_structure::t::SurfaceItem;
 
-pub fn of(ast: &File, file: &Path, module: &[String]) -> Vec<SurfaceItem> {
+pub fn of(ast: &File, file: &Path) -> Vec<SurfaceItem> {
     let mut ret = Vec::new();
     for item in &ast.items {
         if let Some((kind, name)) = _exported(item) {
@@ -12,7 +12,6 @@ pub fn of(ast: &File, file: &Path, module: &[String]) -> Vec<SurfaceItem> {
                 kind,
                 name,
                 file: file.to_path_buf(),
-                module: module.to_vec(),
             });
         }
     }
