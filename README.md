@@ -44,20 +44,17 @@ Some of the rules are opinionated, and deliberately so. They encode one particul
 | `duplicate-fns` | No two functions are the same |
 | `duplicate-logic` | No run of consecutive statements is repeated |
 | `comments` | No comments except short trailing ones and those prefixed `not-obvious: ` |
-| `mod-over-file` | Folder modules use the `mod.rs` form, not the sibling-file form |
 | `mod-count` | No `mod.rs`/`lib.rs` declares more than a maximum number of modules |
-| `mod-location` | `mod` statements appear only in `mod.rs` and `lib.rs` |
-| `mod-lib-contents` | `mod.rs`/`lib.rs` contain only `mod` and `use` statements |
-| `use-privacy` | `use` statements outside `mod.rs`/`lib.rs` are private |
+| `modules` | Folder modules use the `mod.rs` form; `mod` statements appear only in `mod.rs`/`lib.rs`, which contain nothing but `mod` and `use`; `use` statements elsewhere are private |
 | `private-fn-naming` | Private functions and methods are prefixed with `_` |
 | `calls` | Public functions are called through a parent module path, with no repeated words in the path |
 | `tree-structure` | Imports point only sideways or deeper, never up or across; items of particular kinds live in their designated common module, which can be imported from more freely |
 
 `all` runs every rule above.
 
-## Complete Descriptions
+## Complete Descriptions and Rationale
 
-For complete descriptions of individual rules, along with configuration options:
+For complete descriptions of individual rules, along with rationale and configuration options:
 
 ```sh
 cargo enforcer help file-size

@@ -21,7 +21,7 @@ pub fn rule(command: Command) -> bool {
         Command::All => _all(),
         Command::TreeStructure => rules::tree_structure::run(),
         Command::FileSizes => rules::file_sizes::run(),
-        Command::ModuleFiles => rules::module_files::run(),
+        Command::Modules => rules::modules::run(),
         Command::Comments => rules::comments::run(),
         Command::Calls => rules::calls::run(),
         Command::ModCount => rules::mod_count::run(),

@@ -6,7 +6,7 @@ pub mod duplicate_fns;
 pub mod duplicate_logic;
 pub mod file_sizes;
 pub mod mod_count;
-pub mod module_files;
+pub mod modules;
 pub mod private_fn_naming;
 mod s;
 pub mod t;

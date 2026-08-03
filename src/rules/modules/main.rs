@@ -10,5 +10,5 @@ pub fn run() -> bool {
         mod_lib_contents::part(),
         use_privacy::part(),
     ];
-    parts::print("module-files", reports)
+    parts::print("modules", reports)
 }

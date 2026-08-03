@@ -1,4 +1,4 @@
-<module-files-rule>
+<modules-rule>
   <desc>
     Verifies that:
     - Folder modules use the `mod.rs` form (not the sibling-file form).
@@ -9,4 +9,4 @@
   <rationale>
     We want mod.rs files to be the place where module declarations and re-exports happen. And we want these files scoped to just that purpose.
   </rationale>
-</module-files-rule>
+</modules-rule>
