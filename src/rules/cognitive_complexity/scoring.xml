@@ -3,7 +3,7 @@
     +1 (plus the current nesting depth) for each `if`, `match`, `for`, `while`, `loop`, and `let ... else`. The nesting depth increases inside their bodies (for `let ... else`, inside the diverging block), so the same construct costs more the deeper it sits.
   </structural>
   <macros>
-    +1 (plus the current nesting depth) for each call to a macro that branches. Macro bodies are opaque to the parser, so these are recognized by name from a fixed list, currently just `matches!`. Every other macro costs nothing, and nothing inside any macro is scored.
+    +1 (plus the current nesting depth) for each call to a macro that branches. Macro bodies are opaque to the parser, so these are recognized by name from a fixed list, currently `matches!` and `assert_matches!`. Every other macro costs nothing, and nothing inside any macro is scored.
   </macros>
   <hybrid>
     +1 (with no nesting penalty) for each `else if` and `else`.

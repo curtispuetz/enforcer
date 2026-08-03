@@ -28,6 +28,15 @@ impl Command {
         names.join(", ")
     }
 
+    pub fn extra_desc(self) -> Option<&'static str> {
+        match self {
+            Command::CognitiveComplexity => {
+                Some(include_str!("../rules/cognitive_complexity/scoring.xml"))
+            }
+            _ => None,
+        }
+    }
+
     pub fn desc(self) -> &'static str {
         match self {
             Command::All => "",

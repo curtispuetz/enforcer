@@ -1,3 +1,3 @@
 <rule-onboarding>
-@archiitexture.xml
+@architecture.xml
 </rule-onboarding>

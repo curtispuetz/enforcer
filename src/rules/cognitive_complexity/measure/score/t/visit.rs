@@ -61,6 +61,10 @@ impl<'ast> Visit<'ast> for Scorer {
         self.branching_macro(&node.mac);
     }
 
+    fn visit_stmt_macro(&mut self, node: &'ast syn::StmtMacro) {
+        self.branching_macro(&node.mac);
+    }
+
     fn visit_local(&mut self, node: &'ast Local) {
         self.local_init(node);
     }

@@ -1,3 +1,4 @@
 <rule-onboarding>
-@archiitexture.xml
+@scoring.xml
+@architecture.xml
 </rule-onboarding>

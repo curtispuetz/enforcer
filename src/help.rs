@@ -30,4 +30,7 @@ fn _usage() {
 fn _desc(command: Command) {
     println!("{}", command.to_string().cyan().bold());
     println!("{}", command.desc().trim_end());
+    if let Some(extra) = command.extra_desc() {
+        println!("{}", extra.trim_end());
+    }
 }
