@@ -1,4 +1,8 @@
-<rule-onboarding>
+# Cognitive Complexity Rule Onboarding
+
 @docs/scoring.xml
 @docs/architecture.xml
-</rule-onboarding>
+
+## Rule Config
+
+@docs/config.xml

@@ -1,3 +1,7 @@
-<rule-onboarding>
+# Calls Rule Onboarding
+
 @docs/architecture.xml
-</rule-onboarding>
+
+## Rule Config
+
+@docs/config.xml
