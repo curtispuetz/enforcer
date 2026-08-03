@@ -5,9 +5,7 @@
   </rationale>
   <fix>
     Supports `--fix`: adds the leading `_` to each offending definition and to
-    its uses in the same file (private functions/methods are only reachable
-    there). A name that is also used as a variable binding in the file is left
-    alone, since renaming it could break the code.
+    its uses in the same file.
   </fix>
   <exemptions>
     - Methods inside `impl Trait for Type` blocks, since their names are dictated by the trait.
