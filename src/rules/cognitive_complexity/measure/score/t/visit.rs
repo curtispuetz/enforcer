@@ -1,7 +1,7 @@
 use {
-    super::{Logical, Scorer},
+    super::Scorer,
     syn::{
-        BinOp, Expr, ExprIf, ItemFn,
+        Expr, ExprIf, ItemFn, Local,
         visit::{self, Visit},
     },
 };
@@ -9,17 +9,8 @@ use {
 impl<'ast> Visit<'ast> for Scorer {
     fn visit_expr(&mut self, node: &'ast Expr) {
         if let Expr::Binary(bin) = node
-            && let Some(op) = _logical(&bin.op)
+            && self.logical_chain(bin)
         {
-            if self.parent_logical != Some(op) {
-                self.score += 1;
-            }
-            let saved = self.parent_logical;
-            self.parent_logical = Some(op);
-            self.visit_expr(&bin.left);
-            self.parent_logical = Some(op);
-            self.visit_expr(&bin.right);
-            self.parent_logical = saved;
             return;
         }
         let saved = self.parent_logical;
@@ -66,6 +57,14 @@ impl<'ast> Visit<'ast> for Scorer {
         self.nesting -= 1;
     }
 
+    fn visit_expr_macro(&mut self, node: &'ast syn::ExprMacro) {
+        self.branching_macro(&node.mac);
+    }
+
+    fn visit_local(&mut self, node: &'ast Local) {
+        self.local_init(node);
+    }
+
     fn visit_item_fn(&mut self, node: &'ast ItemFn) {
         self.nested_block(&node.block);
     }
@@ -83,13 +82,5 @@ impl<'ast> Visit<'ast> for Scorer {
         if node.label.is_some() {
             self.score += 1;
         }
-    }
-}
-
-fn _logical(op: &BinOp) -> Option<Logical> {
-    match op {
-        BinOp::And(_) => Some(Logical::And),
-        BinOp::Or(_) => Some(Logical::Or),
-        _ => None,
     }
 }

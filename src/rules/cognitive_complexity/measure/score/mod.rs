@@ -1,3 +1,4 @@
+mod cnst;
 mod main;
 mod t;
 
