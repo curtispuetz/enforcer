@@ -1,8 +1,4 @@
-use colored::Colorize;
-
-use crate::rules::c::report;
-
-use super::t::Group;
+use {super::t::Group, crate::rules::c::report, colored::Colorize};
 
 // not-obvious: this rule is cross-file, so its counts are functions and groups
 // rather than the files `report::summary` assumes

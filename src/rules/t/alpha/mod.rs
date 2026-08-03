@@ -1,5 +1,4 @@
 mod collector;
 mod renamer;
 
-pub use collector::*;
-pub use renamer::*;
+pub use {collector::*, renamer::*};

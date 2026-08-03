@@ -1,14 +1,14 @@
-use std::{collections::HashMap, path::Path};
-
-use crate::{
-    rules::{
-        c::{files, path},
-        tree_structure::{c::parts, t::PartReport},
+use {
+    super::{contents, home},
+    crate::{
+        rules::{
+            c::{files, path},
+            tree_structure::{c::parts, t::PartReport},
+        },
+        t::{ItemsViolation, Outcome},
     },
-    t::{ItemsViolation, Outcome},
+    std::{collections::HashMap, path::Path},
 };
-
-use super::{contents, home};
 
 pub fn part() -> PartReport {
     let disallowed = contents::disallowed();

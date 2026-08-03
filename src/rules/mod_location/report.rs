@@ -1,10 +1,8 @@
-use colored::Colorize;
-
-use crate::rules::c::report;
-
-use super::t::Violation;
-
-use crate::rules::t::Results;
+use {
+    super::t::Violation,
+    crate::rules::{c::report, t::Results},
+    colored::Colorize,
+};
 
 pub fn print(res: Results<Violation>) -> bool {
     report::summary(

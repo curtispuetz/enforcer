@@ -1,12 +1,12 @@
-use std::collections::HashMap;
-use syn::visit::Visit;
-
-use crate::rules::{
-    c::{calls, imports},
-    t::CallsCollector,
+use {
+    super::{ignored, message, words},
+    crate::rules::{
+        c::{calls, imports},
+        t::CallsCollector,
+    },
+    std::collections::HashMap,
+    syn::visit::Visit,
 };
-
-use super::{ignored, message, words};
 
 pub fn violations(file: &syn::File) -> Vec<String> {
     let (imported, mut items) = imports::bindings_and_items(file);

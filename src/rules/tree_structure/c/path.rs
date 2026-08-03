@@ -1,6 +1,8 @@
-use super::util;
-use crate::{rules::c::path, s::ROOT};
-use std::path::{Component, Path};
+use {
+    super::util,
+    crate::{rules::c::path, s::ROOT},
+    std::path::{Component, Path},
+};
 
 pub fn file_dir(path: &Path) -> Option<Vec<String>> {
     let rel = path.strip_prefix(ROOT.as_path()).ok()?;

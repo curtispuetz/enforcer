@@ -1,14 +1,14 @@
-use std::{fs, path::Path};
-
-use crate::{
-    rules::{
-        c::{files, path},
-        private_fn_naming::{c::names, t::Misnamed},
+use {
+    super::{apply, report, spots},
+    crate::{
+        rules::{
+            c::{files, path},
+            private_fn_naming::{c::names, t::Misnamed},
+        },
+        s::EXISTING_SRC_DIRS,
     },
-    s::EXISTING_SRC_DIRS,
+    std::{fs, path::Path},
 };
-
-use super::{apply, report, spots};
 
 pub fn fix() {
     let mut fixed = Vec::new();

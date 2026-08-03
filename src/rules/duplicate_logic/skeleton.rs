@@ -1,12 +1,13 @@
-use proc_macro2::{Ident, Span};
-use syn::{
-    Block, ExprMethodCall, Lit, LitStr, Member, TypePath,
-    visit_mut::{self, VisitMut},
-};
-
-use super::{
-    nodes,
-    t::{HoleKind, Leaf, Shape},
+use {
+    super::{
+        nodes,
+        t::{HoleKind, Leaf, Shape},
+    },
+    proc_macro2::{Ident, Span},
+    syn::{
+        Block, ExprMethodCall, Lit, LitStr, Member, TypePath,
+        visit_mut::{self, VisitMut},
+    },
 };
 
 // not-obvious: the skeleton is the canonical block with every leaf that could

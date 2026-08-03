@@ -1,9 +1,10 @@
-use syn::{
-    BinOp, Expr, ExprIf, ItemFn,
-    visit::{self, Visit},
+use {
+    super::{Logical, Scorer},
+    syn::{
+        BinOp, Expr, ExprIf, ItemFn,
+        visit::{self, Visit},
+    },
 };
-
-use super::{Logical, Scorer};
 
 impl<'ast> Visit<'ast> for Scorer {
     fn visit_expr(&mut self, node: &'ast Expr) {

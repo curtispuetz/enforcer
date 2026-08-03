@@ -1,6 +1,4 @@
-use std::collections::HashSet;
-
-use crate::rules::tree_structure::t::SurfaceItem;
+use {crate::rules::tree_structure::t::SurfaceItem, std::collections::HashSet};
 
 pub fn unique(items: Vec<SurfaceItem>) -> Vec<SurfaceItem> {
     let mut seen: HashSet<(String, &'static str, String)> = HashSet::new();

@@ -1,8 +1,9 @@
-use serde::Deserialize;
-
-use super::{
-    Calls, CognitiveComplexity, Comments, DuplicateFns, DuplicateLogic, FileSizes, ModCount,
-    TreeStructure,
+use {
+    super::{
+        Calls, CognitiveComplexity, Comments, DuplicateFns, DuplicateLogic, FileSizes,
+        ModCount, TreeStructure,
+    },
+    serde::Deserialize,
 };
 
 #[derive(Deserialize, Default)]

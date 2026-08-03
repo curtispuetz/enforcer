@@ -1,10 +1,10 @@
-use std::collections::HashMap;
-
-use syn::Block;
-
-use super::{
-    holes, id,
-    t::{Candidate, Config, Group},
+use {
+    super::{
+        holes, id,
+        t::{Candidate, Config, Group},
+    },
+    std::collections::HashMap,
+    syn::Block,
 };
 
 pub fn merge(candidates: Vec<Candidate>, config: &Config) -> Vec<Group> {

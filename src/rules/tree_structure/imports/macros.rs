@@ -1,6 +1,7 @@
-use std::{collections::HashSet, path::Path};
-
-use crate::rules::c::files;
+use {
+    crate::rules::c::files,
+    std::{collections::HashSet, path::Path},
+};
 
 pub fn collect_exported(dir_name: &str) -> HashSet<String> {
     files::rs(dir_name)

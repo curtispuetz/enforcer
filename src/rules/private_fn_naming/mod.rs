@@ -4,5 +4,4 @@ mod main;
 mod report;
 mod t;
 
-pub use fix::fix;
-pub use main::run;
+pub use {fix::fix, main::run};

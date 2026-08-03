@@ -1,6 +1,7 @@
-use proc_macro2::{Spacing, TokenStream, TokenTree};
-
-use crate::rules::private_fn_naming::t::Misnamed;
+use {
+    crate::rules::private_fn_naming::t::Misnamed,
+    proc_macro2::{Spacing, TokenStream, TokenTree},
+};
 
 pub fn spots(
     streams: Vec<TokenStream>,

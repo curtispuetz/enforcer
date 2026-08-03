@@ -1,9 +1,10 @@
-use std::{
-    collections::hash_map::DefaultHasher,
-    hash::{Hash, Hasher},
+use {
+    std::{
+        collections::hash_map::DefaultHasher,
+        hash::{Hash, Hasher},
+    },
+    syn::Block,
 };
-
-use syn::Block;
 
 // not-obvious: `DefaultHasher` has fixed keys, so its output is stable across
 // runs (unlike `RandomState`), which is required for a copy-pasteable ignore id

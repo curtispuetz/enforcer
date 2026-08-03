@@ -1,8 +1,8 @@
-use std::path::Path;
-
-use syn::{File, Ident, Item, Visibility};
-
-use crate::rules::{c::ast, tree_structure::c::path};
+use {
+    crate::rules::{c::ast, tree_structure::c::path},
+    std::path::Path,
+    syn::{File, Ident, Item, Visibility},
+};
 
 pub fn misplaced(path: &Path, file: &File) -> Vec<String> {
     let mut ret = Vec::new();

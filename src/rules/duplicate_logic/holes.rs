@@ -1,6 +1,7 @@
-use std::collections::BTreeSet;
-
-use super::t::{Candidate, Hole, Leaf};
+use {
+    super::t::{Candidate, Hole, Leaf},
+    std::collections::BTreeSet,
+};
 
 pub fn of(cluster: &[&Candidate]) -> Vec<Hole> {
     let Some(first) = cluster.first() else {
@@ -29,5 +30,8 @@ fn _values_at(cluster: &[&Candidate], index: usize) -> Vec<String> {
 }
 
 fn _text_at(leaves: &[Leaf], index: usize) -> String {
-    leaves.get(index).map(|l| l.text.clone()).unwrap_or_default()
+    leaves
+        .get(index)
+        .map(|l| l.text.clone())
+        .unwrap_or_default()
 }

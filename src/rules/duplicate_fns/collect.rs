@@ -1,11 +1,11 @@
-use syn::{ImplItem, ImplItemFn, Item, ItemFn};
-
-use crate::{
-    rules::c::{files, fn_name, path},
-    s::EXISTING_SRC_DIRS,
+use {
+    super::t::CollectedFn,
+    crate::{
+        rules::c::{files, fn_name, path},
+        s::EXISTING_SRC_DIRS,
+    },
+    syn::{ImplItem, ImplItemFn, Item, ItemFn},
 };
-
-use super::t::CollectedFn;
 
 pub fn all_codebase_fns() -> Vec<CollectedFn> {
     let mut found = Vec::new();

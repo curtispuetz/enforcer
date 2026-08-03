@@ -1,9 +1,10 @@
-use std::collections::HashMap;
-
-use proc_macro2::Ident;
-use syn::{
-    ExprPath, Lifetime, PatIdent, Path, TypePath,
-    visit_mut::{self, VisitMut},
+use {
+    proc_macro2::Ident,
+    std::collections::HashMap,
+    syn::{
+        ExprPath, Lifetime, PatIdent, Path, TypePath,
+        visit_mut::{self, VisitMut},
+    },
 };
 
 pub struct AlphaRenamer {

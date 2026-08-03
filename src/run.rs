@@ -1,11 +1,8 @@
-use colored::Colorize;
-use strum::IntoEnumIterator;
-
-use super::t::Command;
-
-use super::s::FILE_CONFIG;
-
-use super::rules;
+use {
+    super::{rules, s::FILE_CONFIG, t::Command},
+    colored::Colorize,
+    strum::IntoEnumIterator,
+};
 
 pub fn rules(commands: &[Command], fix: bool) -> bool {
     let any_failed = _each(commands, fix);

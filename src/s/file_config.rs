@@ -1,8 +1,8 @@
-use std::{process, sync::LazyLock};
-
-use crate::t::FileConfig;
-
-use super::main::ROOT;
+use {
+    super::main::ROOT,
+    crate::t::FileConfig,
+    std::{process, sync::LazyLock},
+};
 
 pub static FILE_CONFIG: LazyLock<FileConfig> = LazyLock::new(|| {
     let path = ROOT.join("enforcer.toml");

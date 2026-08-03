@@ -1,9 +1,8 @@
-use std::{collections::HashMap, path::Path};
-
-use super::util;
-use crate::rules::tree_structure::c::path;
-
-use super::t::TypeDef;
+use {
+    super::{t::TypeDef, util},
+    crate::rules::tree_structure::c::path,
+    std::{collections::HashMap, path::Path},
+};
 
 pub fn target_module(
     self_name: &str,

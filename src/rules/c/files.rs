@@ -1,10 +1,11 @@
-use crate::s::ROOT;
-use std::{
-    fs,
-    path::{Path, PathBuf},
+use {
+    super::path,
+    crate::s::ROOT,
+    std::{
+        fs,
+        path::{Path, PathBuf},
+    },
 };
-
-use super::path;
 
 pub fn rs(dir_name: &str) -> Vec<PathBuf> {
     let dir = ROOT.join(dir_name);

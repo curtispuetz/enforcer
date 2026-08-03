@@ -1,6 +1,4 @@
-use crate::s::FILE_CONFIG;
-
-use super::words;
+use {super::words, crate::s::FILE_CONFIG};
 
 pub fn call(segments: &[String]) -> bool {
     let called = words::significant(segments);

@@ -1,18 +1,18 @@
-use syn::{
-    Block, Stmt,
-    spanned::Spanned,
-    visit::{self, Visit},
-    visit_mut::VisitMut,
-};
-
-use crate::{
-    rules::c::{alpha, files, path},
-    s::EXISTING_SRC_DIRS,
-};
-
-use super::{
-    skeleton,
-    t::{Candidate, Occurrence},
+use {
+    super::{
+        skeleton,
+        t::{Candidate, Occurrence},
+    },
+    crate::{
+        rules::c::{alpha, files, path},
+        s::EXISTING_SRC_DIRS,
+    },
+    syn::{
+        Block, Stmt,
+        spanned::Spanned,
+        visit::{self, Visit},
+        visit_mut::VisitMut,
+    },
 };
 
 pub fn all_fragments(min_stmts: usize) -> Vec<Candidate> {

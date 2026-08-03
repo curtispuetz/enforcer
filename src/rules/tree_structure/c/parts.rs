@@ -1,11 +1,12 @@
-use std::path::Path;
-
-use crate::{
-    rules::{
-        c::scan,
-        tree_structure::t::{FileViolation, PartReport},
+use {
+    crate::{
+        rules::{
+            c::scan,
+            tree_structure::t::{FileViolation, PartReport},
+        },
+        t::{ItemsViolation, Outcome},
     },
-    t::{ItemsViolation, Outcome},
+    std::path::Path,
 };
 
 pub fn from_files(

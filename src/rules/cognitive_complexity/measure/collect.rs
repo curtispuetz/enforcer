@@ -1,8 +1,8 @@
-use syn::{Block, ImplItem, Item, TraitItem};
-
-use crate::rules::{c::fn_name, cognitive_complexity::t::Function};
-
-use super::score;
+use {
+    super::score,
+    crate::rules::{c::fn_name, cognitive_complexity::t::Function},
+    syn::{Block, ImplItem, Item, TraitItem},
+};
 
 pub fn functions(file: &syn::File) -> Vec<Function> {
     let mut found = Vec::new();

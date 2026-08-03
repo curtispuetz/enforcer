@@ -1,14 +1,14 @@
-use std::path::Path;
-
-use crate::{
-    rules::{
-        c::{files, path},
-        tree_structure::{c::parts, t::PartReport},
+use {
+    super::{defs, impls, t::Defs},
+    crate::{
+        rules::{
+            c::{files, path},
+            tree_structure::{c::parts, t::PartReport},
+        },
+        t::{ItemsViolation, Outcome},
     },
-    t::{ItemsViolation, Outcome},
+    std::path::Path,
 };
-
-use super::{defs, impls, t::Defs};
 
 pub fn part() -> PartReport {
     let defs = defs::find();

@@ -1,6 +1,4 @@
-use std::collections::HashMap;
-
-use syn::UseTree;
+use {std::collections::HashMap, syn::UseTree};
 
 pub fn bindings(file: &syn::File) -> HashMap<String, Vec<String>> {
     let mut ret = HashMap::new();

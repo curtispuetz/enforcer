@@ -1,13 +1,13 @@
-use std::{fs, path::Path};
-
-use crate::{
-    rules::c::{path, scan},
-    t::Outcome,
-};
-
-use super::{
-    report,
-    t::{Config, Violation},
+use {
+    super::{
+        report,
+        t::{Config, Violation},
+    },
+    crate::{
+        rules::c::{path, scan},
+        t::Outcome,
+    },
+    std::{fs, path::Path},
 };
 
 pub fn run() -> bool {

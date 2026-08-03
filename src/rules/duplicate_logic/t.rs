@@ -1,8 +1,8 @@
-use std::{collections::HashSet, fmt};
-
-use syn::Block;
-
-use crate::s::FILE_CONFIG;
+use {
+    crate::s::FILE_CONFIG,
+    std::{collections::HashSet, fmt},
+    syn::Block,
+};
 
 pub struct Config {
     pub min_stmts: usize,

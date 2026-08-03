@@ -1,6 +1,4 @@
-use syn::UseTree;
-
-use crate::rules::c::ast;
+use {crate::rules::c::ast, syn::UseTree};
 
 pub fn trees(file: &syn::File) -> Vec<&UseTree> {
     file.items

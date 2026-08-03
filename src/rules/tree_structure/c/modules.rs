@@ -1,13 +1,13 @@
-use std::{
-    fs,
-    path::{Path, PathBuf},
-};
-
-use super::util;
-use crate::rules::c::path;
-use crate::{
-    rules::s::COMMON,
-    s::{EXISTING_SRC_DIRS, ROOT},
+use {
+    super::util,
+    crate::{
+        rules::{c::path, s::COMMON},
+        s::{EXISTING_SRC_DIRS, ROOT},
+    },
+    std::{
+        fs,
+        path::{Path, PathBuf},
+    },
 };
 
 pub fn common() -> Vec<PathBuf> {

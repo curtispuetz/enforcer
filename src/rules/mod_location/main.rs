@@ -1,11 +1,11 @@
-use std::path::Path;
-
-use crate::{
-    rules::c::{files, path, scan},
-    t::Outcome,
+use {
+    super::{report, t::Violation},
+    crate::{
+        rules::c::{files, path, scan},
+        t::Outcome,
+    },
+    std::path::Path,
 };
-
-use super::{report, t::Violation};
 
 pub fn run() -> bool {
     scan::run(_check_file, report::print)

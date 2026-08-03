@@ -1,5 +1,7 @@
-use crate::rules::c::calls;
-use syn::visit::{self, Visit};
+use {
+    crate::rules::c::calls,
+    syn::visit::{self, Visit},
+};
 
 pub struct CallsCollector {
     pub paths: Vec<Vec<String>>,

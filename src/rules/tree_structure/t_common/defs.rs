@@ -1,14 +1,14 @@
-use std::{collections::HashMap, path::Path};
-
-use crate::{
-    rules::{
-        c::{ast, files},
-        tree_structure::c::path,
+use {
+    super::t::{Defs, TypeDef},
+    crate::{
+        rules::{
+            c::{ast, files},
+            tree_structure::c::path,
+        },
+        s::EXISTING_SRC_DIRS,
     },
-    s::EXISTING_SRC_DIRS,
+    std::{collections::HashMap, path::Path},
 };
-
-use super::t::{Defs, TypeDef};
 
 pub fn find() -> Defs {
     let mut defs = Defs {

@@ -1,6 +1,4 @@
-use std::collections::HashSet;
-
-use crate::s::FILE_CONFIG;
+use {crate::s::FILE_CONFIG, std::collections::HashSet};
 
 pub struct Config {
     pub max: usize,

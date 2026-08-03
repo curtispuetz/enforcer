@@ -1,8 +1,8 @@
-use std::path::Path;
-
-use syn::{File, Ident, Item, Visibility};
-
-use crate::rules::tree_structure::t::SurfaceItem;
+use {
+    crate::rules::tree_structure::t::SurfaceItem,
+    std::path::Path,
+    syn::{File, Ident, Item, Visibility},
+};
 
 pub fn of(ast: &File, file: &Path) -> Vec<SurfaceItem> {
     let mut ret = Vec::new();

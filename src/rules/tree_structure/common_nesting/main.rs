@@ -1,6 +1,7 @@
-use crate::rules::tree_structure::t::{FileViolation, PartReport};
-
-use super::nesting;
+use {
+    super::nesting,
+    crate::rules::tree_structure::t::{FileViolation, PartReport},
+};
 
 pub fn part() -> PartReport {
     let res = nesting::run();

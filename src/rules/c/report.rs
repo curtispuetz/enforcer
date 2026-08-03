@@ -1,8 +1,7 @@
-use colored::Colorize;
-
-use crate::s::FILE_CONFIG;
-
-use crate::t::ItemsViolation;
+use {
+    crate::{s::FILE_CONFIG, t::ItemsViolation},
+    colored::Colorize,
+};
 
 pub fn items(
     name: &str,

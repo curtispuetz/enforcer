@@ -1,8 +1,8 @@
-use std::path::{Path, PathBuf};
-
-use syn::{File, Item};
-
-use crate::rules::c::{ast, path};
+use {
+    crate::rules::c::{ast, path},
+    std::path::{Path, PathBuf},
+    syn::{File, Item},
+};
 
 pub fn public(file: &Path, ast: &File) -> Vec<(String, PathBuf)> {
     let mut ret = Vec::new();

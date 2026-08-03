@@ -1,5 +1,7 @@
-use crate::s::{FILE_CONFIG, ROOT};
-use std::path::Path;
+use {
+    crate::s::{FILE_CONFIG, ROOT},
+    std::path::Path,
+};
 
 pub fn ignored(path: &Path) -> bool {
     let rel = rel(path);

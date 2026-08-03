@@ -1,7 +1,4 @@
-use std::path::PathBuf;
-
-use crate::t::ItemsViolation;
-use colored::Colorize;
+use {crate::t::ItemsViolation, colored::Colorize, std::path::PathBuf};
 
 pub struct SurfaceItem {
     pub kind: &'static str,

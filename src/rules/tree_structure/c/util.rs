@@ -1,5 +1,4 @@
-use crate::rules::s::COMMON;
-use std::path::Path;
+use {crate::rules::s::COMMON, std::path::Path};
 
 pub fn common_file_kind(path: &Path) -> Option<&'static str> {
     if path.extension().and_then(|e| e.to_str()) != Some("rs") {

@@ -1,6 +1,4 @@
-use colored::Colorize;
-
-use crate::s::FILE_CONFIG;
+use {crate::s::FILE_CONFIG, colored::Colorize};
 
 pub fn print(fixed: Vec<String>) {
     if fixed.is_empty() {

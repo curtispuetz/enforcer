@@ -1,8 +1,8 @@
-use colored::Colorize;
-
-use crate::rules::c::report;
-
-use super::t::{Group, Hole};
+use {
+    super::t::{Group, Hole},
+    crate::rules::c::report,
+    colored::Colorize,
+};
 
 // not-obvious: this rule is cross-file, so its counts are fragments and groups
 // rather than the files `report::summary` assumes

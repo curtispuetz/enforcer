@@ -1,10 +1,11 @@
-use std::collections::HashMap;
-
-use crate::rules::c::calls;
-use proc_macro2::{Ident, Span};
-use syn::{
-    Expr, ExprCall, ExprPath, GenericParam, PatIdent,
-    visit::{self, Visit},
+use {
+    crate::rules::c::calls,
+    proc_macro2::{Ident, Span},
+    std::collections::HashMap,
+    syn::{
+        Expr, ExprCall, ExprPath, GenericParam, PatIdent,
+        visit::{self, Visit},
+    },
 };
 
 #[derive(Default)]

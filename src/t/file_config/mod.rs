@@ -9,13 +9,7 @@ mod imports;
 mod mod_count;
 mod tree_structure;
 
-pub use calls::*;
-pub use cognitive_complexity::*;
-pub use comments::*;
-pub use config::*;
-pub use duplicate_fns::*;
-pub use duplicate_logic::*;
-pub use file_sizes::*;
-pub use imports::*;
-pub use mod_count::*;
-pub use tree_structure::*;
+pub use {
+    calls::*, cognitive_complexity::*, comments::*, config::*, duplicate_fns::*,
+    duplicate_logic::*, file_sizes::*, imports::*, mod_count::*, tree_structure::*,
+};

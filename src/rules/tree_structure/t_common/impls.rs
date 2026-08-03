@@ -1,8 +1,8 @@
-use std::{collections::HashMap, path::Path};
-
-use crate::rules::c::imports;
-
-use super::{resolve, t::Defs};
+use {
+    super::{resolve, t::Defs},
+    crate::rules::c::imports,
+    std::{collections::HashMap, path::Path},
+};
 
 pub fn misplaced(file: &syn::File, path: &Path, defs: &Defs) -> Vec<String> {
     let (imported, mut items) = imports::bindings_and_items(file);

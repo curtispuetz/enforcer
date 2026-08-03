@@ -1,7 +1,8 @@
-use proc_macro2::{Ident, TokenStream};
-use syn::visit::{self, Visit};
-
-use super::Misnamed;
+use {
+    super::Misnamed,
+    proc_macro2::{Ident, TokenStream},
+    syn::visit::{self, Visit},
+};
 
 pub struct Finder<'a> {
     pub names: &'a Misnamed,

@@ -1,6 +1,4 @@
-use colored::Colorize;
-
-use super::t::Command;
+use {super::t::Command, colored::Colorize};
 
 pub fn print(names: &[String]) -> bool {
     if names.is_empty() {

@@ -1,8 +1,4 @@
-use std::collections::HashSet;
-
-use syn::ItemFn;
-
-use crate::s::FILE_CONFIG;
+use {crate::s::FILE_CONFIG, std::collections::HashSet, syn::ItemFn};
 
 pub struct Config {
     pub ignore: HashSet<String>,

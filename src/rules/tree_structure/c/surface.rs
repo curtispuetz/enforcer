@@ -1,13 +1,12 @@
-use std::{
-    collections::HashSet,
-    path::{Path, PathBuf},
+use {
+    super::{children, dedup, leaves, modules, path, reexports},
+    crate::rules::{c::files, tree_structure::t::SurfaceItem},
+    std::{
+        collections::HashSet,
+        path::{Path, PathBuf},
+    },
+    syn::UseTree,
 };
-
-use syn::UseTree;
-
-use crate::rules::{c::files, tree_structure::t::SurfaceItem};
-
-use super::{children, dedup, leaves, modules, path, reexports};
 
 type Visited = HashSet<(PathBuf, Vec<String>)>;
 

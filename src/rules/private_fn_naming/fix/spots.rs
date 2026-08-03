@@ -1,8 +1,8 @@
-use syn::visit::Visit;
-
-use crate::rules::private_fn_naming::t::{Finder, Misnamed};
-
-use super::macros;
+use {
+    super::macros,
+    crate::rules::private_fn_naming::t::{Finder, Misnamed},
+    syn::visit::Visit,
+};
 
 pub fn of_names(
     file: &syn::File,

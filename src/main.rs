@@ -1,6 +1,7 @@
-use std::{process, str::FromStr};
-
-use enforcer::{help, run, t::Command};
+use {
+    enforcer::{help, run, t::Command},
+    std::{process, str::FromStr},
+};
 
 fn main() {
     let mut args = _args();

@@ -1,6 +1,4 @@
-use serde::Deserialize;
-
-use super::Imports;
+use {super::Imports, serde::Deserialize};
 
 #[derive(Deserialize, Default)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]

@@ -1,19 +1,18 @@
-use std::collections::HashSet;
-
-use colored::Colorize;
-
-use crate::{
-    rules::{
-        c::scan,
-        tree_structure::t::{FileViolation, PartReport},
+use {
+    super::{
+        macros,
+        t::{Config, Violation},
+        verify,
     },
-    s::{EXISTING_SRC_DIRS, FILE_CONFIG},
-};
-
-use super::{
-    macros,
-    t::{Config, Violation},
-    verify,
+    crate::{
+        rules::{
+            c::scan,
+            tree_structure::t::{FileViolation, PartReport},
+        },
+        s::{EXISTING_SRC_DIRS, FILE_CONFIG},
+    },
+    colored::Colorize,
+    std::collections::HashSet,
 };
 
 pub fn part() -> PartReport {

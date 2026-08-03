@@ -1,8 +1,10 @@
-use crate::{
-    rules::{c::report, t::Results},
-    t::ItemsViolation,
+use {
+    crate::{
+        rules::{c::report, t::Results},
+        t::ItemsViolation,
+    },
+    colored::Colorize,
 };
-use colored::Colorize;
 
 pub fn print(res: Results<ItemsViolation>) -> bool {
     _listed(

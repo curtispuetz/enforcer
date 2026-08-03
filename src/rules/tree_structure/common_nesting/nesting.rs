@@ -1,8 +1,9 @@
-use std::path::{Path, PathBuf};
-
-use crate::{
-    rules::{c::path, t::Results, tree_structure::c::modules},
-    t::ItemsViolation,
+use {
+    crate::{
+        rules::{c::path, t::Results, tree_structure::c::modules},
+        t::ItemsViolation,
+    },
+    std::path::{Path, PathBuf},
 };
 
 pub fn run() -> Results<ItemsViolation> {

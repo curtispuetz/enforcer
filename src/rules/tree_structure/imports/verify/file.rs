@@ -1,15 +1,17 @@
-use crate::rules::tree_structure::c::path as path2;
-use std::{collections::HashSet, path::Path};
-
-use crate::{
-    rules::{
-        c::{files, path},
-        tree_structure::imports::t::{BadImport, Config, Violation},
+use {
+    super::{imports, rules},
+    crate::{
+        rules::{
+            c::{files, path},
+            tree_structure::{
+                c::path as path2,
+                imports::t::{BadImport, Config, Violation},
+            },
+        },
+        t::Outcome,
     },
-    t::Outcome,
+    std::{collections::HashSet, path::Path},
 };
-
-use super::{imports, rules};
 
 pub fn run(path: &Path, config: &Config) -> Outcome<Violation> {
     let (Some(file_dir), Some(own_module)) =

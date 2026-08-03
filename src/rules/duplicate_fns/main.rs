@@ -1,13 +1,12 @@
-use crate::rules::c::alpha;
-use std::collections::HashMap;
-use syn::{visit::Visit, visit_mut::VisitMut};
-
-use proc_macro2::Span;
-use syn::{Ident, ItemFn, Visibility};
-
-use super::{
-    collect, report,
-    t::{Config, Duplicate, Group},
+use {
+    super::{
+        collect, report,
+        t::{Config, Duplicate, Group},
+    },
+    crate::rules::c::alpha,
+    proc_macro2::Span,
+    std::collections::HashMap,
+    syn::{Ident, ItemFn, Visibility, visit::Visit, visit_mut::VisitMut},
 };
 
 pub fn run() -> bool {

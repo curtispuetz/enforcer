@@ -1,8 +1,9 @@
-use std::collections::HashMap;
-
-use crate::rules::{
-    c::path,
-    tree_structure::c::{modules, surface},
+use {
+    crate::rules::{
+        c::path,
+        tree_structure::c::{modules, surface},
+    },
+    std::collections::HashMap,
 };
 
 pub fn disallowed() -> HashMap<String, Vec<String>> {

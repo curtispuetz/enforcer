@@ -1,8 +1,8 @@
-use colored::Colorize;
-
-use crate::rules::{c::report, t::Results};
-
-use super::t::{Config, Violation};
+use {
+    super::t::{Config, Violation},
+    crate::rules::{c::report, t::Results},
+    colored::Colorize,
+};
 
 pub fn print(config: Config, res: Results<Violation>) -> bool {
     report::summary(

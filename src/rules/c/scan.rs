@@ -1,8 +1,8 @@
-use std::path::Path;
-
-use crate::{rules::t::Results, s::EXISTING_SRC_DIRS, t::Outcome};
-
-use super::files;
+use {
+    super::files,
+    crate::{rules::t::Results, s::EXISTING_SRC_DIRS, t::Outcome},
+    std::path::Path,
+};
 
 pub fn run<V>(
     rule: impl FnMut(&Path) -> Outcome<V>,

@@ -1,6 +1,7 @@
-use std::path::Path;
-
-use crate::rules::c::{ast, files};
+use {
+    crate::rules::c::{ast, files},
+    std::path::Path,
+};
 
 pub fn of(path: &Path) -> Vec<String> {
     let mut issues = Vec::new();

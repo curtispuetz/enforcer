@@ -1,8 +1,4 @@
-use colored::Colorize;
-
-use crate::s::FILE_CONFIG;
-
-use super::t::PartReport;
+use {super::t::PartReport, crate::s::FILE_CONFIG, colored::Colorize};
 
 pub fn print(parts: Vec<PartReport>) -> bool {
     let any_failed = parts.iter().any(|p| !p.violations.is_empty());
