@@ -25,7 +25,7 @@ impl Command {
         names.join(", ")
     }
 
-    pub fn desc(self) -> &'static str {
+    pub fn help(self) -> &'static str {
         match self {
             Command::All => "",
             Command::TreeStructure => include_str!("../rules/tree_structure/desc.xml"),

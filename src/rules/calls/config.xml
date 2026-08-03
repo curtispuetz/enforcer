@@ -1,0 +1,3 @@
+<config toml_table="calls">
+  - ignore: list of calls exempt from the repeated-word check. An entry is a `::`-separated path suffix of the call as written.
+</config>

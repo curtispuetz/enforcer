@@ -9,7 +9,7 @@ pub fn print(names: &[String]) -> bool {
     for name in names {
         match name.parse::<Command>() {
             Ok(Command::All) => _usage(),
-            Ok(command) => _desc(command),
+            Ok(command) => _help(command),
             Err(_) => {
                 eprintln!("{} unknown rule '{name}'", "enforcer:".red().bold());
                 ok = false;
@@ -27,7 +27,7 @@ fn _usage() {
     println!("{}", "--report: print the available reports".bold());
 }
 
-fn _desc(command: Command) {
+fn _help(command: Command) {
     println!("{}", command.to_string().cyan().bold());
-    println!("{}", command.desc().trim_end());
+    println!("{}", command.help().trim_end());
 }

@@ -1,0 +1,3 @@
+<config toml_table="tree-structure.imports">
+  - ignore_export_macros: when true, imports of macros that use `#[macro_export]` are exempt (default false)
+</config>

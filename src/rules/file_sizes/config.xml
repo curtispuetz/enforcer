@@ -1,0 +1,4 @@
+<config toml_table="file-sizes">
+  - max: max number of lines (default 99)
+  - ignore: list of exempt files from the rule
+</config>

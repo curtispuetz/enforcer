@@ -1,0 +1,3 @@
+<config toml_table="duplicate-fns">
+  - ignore: list of functions to skip. A file path followed by `::` and the function or `Type::method` (e.g. `src/main.rs::run`, `src/main.rs::Config::new`). Naming any single member of a duplicate group exempts the whole group.
+</config>
