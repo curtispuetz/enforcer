@@ -38,7 +38,7 @@
             "command": "cargo enforcer all",
         },
         {
-            "label": "nightly fmt",
+            "label": "fmt",
             "type": "shell",
             "command": "cargo +nightly fmt",
             "presentation": {
@@ -47,17 +47,13 @@
             }
         },
         {
-            "label": "fix imports",
+            "label": "fmti",
             "type": "shell",
-            "command": "python",
-            "osx": {
-                "command": "python3"
-            },
-            "args": [
-                "${userHome}/Tools/bin/fix_rust_imports.py",
-                "${workspaceFolder}/",
-                "todo_package_name"
-            ]
-        }
+            "command": "cargo +nightly fmt -- --config imports_granularity=item",
+            "presentation": {
+                "reveal": "never",
+                "focus": false,
+            }
+        },
     ]
 }
