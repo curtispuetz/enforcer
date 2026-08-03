@@ -28,15 +28,6 @@ impl Command {
         names.join(", ")
     }
 
-    pub fn extra_desc(self) -> Option<&'static str> {
-        match self {
-            Command::CognitiveComplexity => {
-                Some(include_str!("../rules/cognitive_complexity/scoring.xml"))
-            }
-            _ => None,
-        }
-    }
-
     pub fn desc(self) -> &'static str {
         match self {
             Command::All => "",
@@ -51,9 +42,11 @@ impl Command {
             Command::Calls => include_str!("../rules/calls/desc.xml"),
             Command::ModCount => include_str!("../rules/mod_count/desc.xml"),
             Command::UsePrivacy => include_str!("../rules/use_privacy/desc.xml"),
-            Command::CognitiveComplexity => {
-                include_str!("../rules/cognitive_complexity/desc.xml")
-            }
+            Command::CognitiveComplexity => concat!(
+                include_str!("../rules/cognitive_complexity/desc.xml"),
+                "\n",
+                include_str!("../rules/cognitive_complexity/scoring.xml")
+            ),
             Command::DuplicateFns => include_str!("../rules/duplicate_fns/desc.xml"),
             Command::DuplicateLogic => {
                 include_str!("../rules/duplicate_logic/desc.xml")
