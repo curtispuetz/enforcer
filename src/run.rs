@@ -67,6 +67,7 @@ fn _report(command: Command) {
         Command::CognitiveComplexity => rules::cognitive_complexity::report(),
         Command::FileSizes => rules::file_sizes::report(),
         Command::ModCount => rules::mod_count::report(),
+        Command::Comments => rules::comments::report(),
         _ => {}
     }
 }

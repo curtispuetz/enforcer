@@ -1,13 +1,11 @@
-use {super::files, crate::s::EXISTING_SRC_DIRS, colored::Colorize, std::path::Path};
+use {super::files, colored::Colorize, std::path::Path};
 
 const MAX_BAR: usize = 40;
 
 pub fn measure(each: impl Fn(&Path) -> Vec<usize>) -> Vec<usize> {
     let mut values = Vec::new();
-    for dir_name in EXISTING_SRC_DIRS.iter() {
-        for path in files::rs(dir_name) {
-            values.extend(each(&path));
-        }
+    for path in files::all() {
+        values.extend(each(&path));
     }
     values
 }

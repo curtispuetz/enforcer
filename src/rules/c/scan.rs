@@ -1,6 +1,6 @@
 use {
     super::files,
-    crate::{rules::t::Results, s::EXISTING_SRC_DIRS, t::Outcome},
+    crate::{rules::t::Results, t::Outcome},
     std::path::Path,
 };
 
@@ -23,13 +23,11 @@ pub fn run_with_config<V, C>(
 
 pub fn src_files<V>(mut rule: impl FnMut(&Path) -> Outcome<V>) -> Results<V> {
     let mut r = Results::new();
-    for dir_name in EXISTING_SRC_DIRS.iter() {
-        for path in files::rs(dir_name) {
-            match rule(&path) {
-                Outcome::Skipped => {}
-                Outcome::Passed => r.passed += 1,
-                Outcome::Failed(violation) => r.violations.push(violation),
-            }
+    for path in files::all() {
+        match rule(&path) {
+            Outcome::Skipped => {}
+            Outcome::Passed => r.passed += 1,
+            Outcome::Failed(violation) => r.violations.push(violation),
         }
     }
     r

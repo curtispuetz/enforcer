@@ -1,7 +1,8 @@
-use super::t::{BadComment, Comment, Config};
-
-const NOT_OBVIOUS: &str = "not-obvious: ";
-const TODO: &str = "TODO";
+use super::{
+    classify,
+    cnst::{NOT_OBVIOUS, TODO},
+    t::{BadComment, Comment, Config},
+};
 
 pub fn eval(comment: &Comment, config: &Config) -> Option<BadComment> {
     if _is_allowed_prefix(comment) || _allowed_trailing(comment, config) {
@@ -15,9 +16,7 @@ pub fn eval(comment: &Comment, config: &Config) -> Option<BadComment> {
 }
 
 fn _is_allowed_prefix(comment: &Comment) -> bool {
-    let body = _inner(&comment.full, comment.is_block);
-    let body = body.trim_start();
-    body.starts_with(NOT_OBVIOUS) || body.starts_with(TODO)
+    classify::not_obvious(comment) || classify::todo(comment)
 }
 
 fn _allowed_trailing(comment: &Comment, config: &Config) -> bool {
@@ -41,16 +40,5 @@ fn _reason(comment: &Comment, config: &Config) -> String {
         )
     } else {
         format!("comment must start with '{NOT_OBVIOUS}' or '{TODO}'")
-    }
-}
-
-fn _inner(full: &str, is_block: bool) -> &str {
-    if is_block {
-        let body = full.strip_prefix("/*").unwrap_or(full);
-        let body = body.strip_suffix("*/").unwrap_or(body);
-        body.trim_start_matches(['*', '!'])
-    } else {
-        let body = full.trim_start_matches('/');
-        body.strip_prefix('!').unwrap_or(body)
     }
 }
