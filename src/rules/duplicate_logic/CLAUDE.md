@@ -1,3 +1,3 @@
 <rule-onboarding>
-@architecture.xml
+@docs/architecture.xml
 </rule-onboarding>

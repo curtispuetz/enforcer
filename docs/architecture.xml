@@ -14,7 +14,7 @@
     `src/s/` holds static data. `src/c/` is shared logic. `src/t/` is shared types.
   </shared-code>
   <rule-impls>
-    Aside from the shared-code, each rule is implemented in its own folder under `src/rules` (Rules related to tree structure are grouped in `src/rules/tree_structure/`). In each folder, there is a description of the rule in desc.xml.
+    Aside from the shared-code, each rule is implemented in its own folder under `src/rules` (Rules related to tree structure are grouped in `src/rules/tree_structure/`). In each folder, there is a description of the rule in docs/desc.xml.
   </rule-impls>
   <rule-anatomy>
     The conventional layout of a rule folder (see `mod_location`, `mod_over_file`
@@ -38,8 +38,8 @@
     in `src/run.rs`. Private fns are prefixed with `_` per the project convention.
   </rule-anatomy>
   <rule-docs>
-    Every rule folder carries:
-    - `desc.xml` — the human spec of the rule. READ THIS FIRST when implementing or changing a rule — it is the source of truth for behavior.
+    Every rule folder carries a `docs/` subfolder holding its xml docs:
+    - `docs/desc.xml` — the human spec of the rule. READ THIS FIRST when implementing or changing a rule — it is the source of truth for behavior.
   </rule-docs>
   <shared-helpers>
     Reusable building blocks the rules lean on, so you rarely need bespoke fs/AST code:
