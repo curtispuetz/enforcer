@@ -2,6 +2,12 @@
   <what-this-is>
     This is a crate called 'enforcer' that enforces structural rules on a Rust codebase. The enforcer reports any violations of rules. We are running it on this codebase itself, but also of course intend to use it on other codebases.
   </what-this-is>
+  <notes>
+    - Config params are read from `enforcer.toml` in the project root. These change how the rules behave.
+    - There is a --fix option to apply automated fixes for some rules.
+    - There is a --report option to generate reports related to a rule for some rules.
+    - There is a --help option to describe all information about a given rule.
+  </notes>
   <tests>
     There is no test suite at the moment. Don't add tests unless asked.
   </tests>

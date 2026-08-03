@@ -44,6 +44,13 @@ fn _print_rows(counts: &BTreeMap<usize, usize>) {
         );
     }
     println!("\n  {total} functions scored");
+    println!("  average score: {:.2}", _average(counts));
+}
+
+fn _average(counts: &BTreeMap<usize, usize>) -> f64 {
+    let total: usize = counts.values().sum();
+    let sum: usize = counts.iter().map(|(score, count)| score * count).sum();
+    sum as f64 / total.max(1) as f64
 }
 
 fn _bar(count: usize, most: usize) -> String {
