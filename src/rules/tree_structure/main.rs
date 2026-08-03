@@ -1,11 +1,14 @@
-use super::{common_items, common_nesting, imports, report, t_common};
+use {
+    super::{common_items, common_nesting, imports, t_common},
+    crate::rules::c::parts,
+};
 
 pub fn run() -> bool {
-    let parts = vec![
+    let reports = vec![
         imports::part(),
         common_items::part(),
         common_nesting::part(),
         t_common::part(),
     ];
-    report::print(parts)
+    parts::print("tree-structure", reports)
 }

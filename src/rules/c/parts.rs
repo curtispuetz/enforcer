@@ -1,11 +1,33 @@
-use {super::t::PartReport, crate::s::FILE_CONFIG, colored::Colorize};
+use {
+    super::scan,
+    crate::{
+        rules::t::{FileViolation, PartReport},
+        s::FILE_CONFIG,
+        t::{ItemsViolation, Outcome},
+    },
+    colored::Colorize,
+    std::path::Path,
+};
 
-pub fn print(parts: Vec<PartReport>) -> bool {
+pub fn from_files(
+    name: &'static str,
+    rule: impl FnMut(&Path) -> Outcome<ItemsViolation>,
+) -> PartReport {
+    let res = scan::src_files(rule);
+    PartReport {
+        name,
+        unit: "files",
+        passed: res.passed,
+        violations: res.violations.into_iter().map(FileViolation::new).collect(),
+    }
+}
+
+pub fn print(name: &str, parts: Vec<PartReport>) -> bool {
     let any_failed = parts.iter().any(|p| !p.violations.is_empty());
     if !any_failed && !FILE_CONFIG.debug {
         return false;
     }
-    println!("{}", "tree-structure report:".bold().cyan());
+    println!("{}", format!("{name} report:").bold().cyan());
     println!();
     for part in &parts {
         if FILE_CONFIG.debug || !part.violations.is_empty() {

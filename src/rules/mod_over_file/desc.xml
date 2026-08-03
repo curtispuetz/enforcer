@@ -1,6 +1,0 @@
-<mod-over-file-rule>
-  <desc>Verifies that a folder module uses the `mod.rs` form (not the sibling-file form).</desc>
-  <rationale>
-    I don't know about this one, but we have to make one choice of the two, and I think I want everything related to the folder inside the folder.
-  </rationale>
-</mod-over-file-rule>

@@ -2,8 +2,8 @@ use {
     super::{defs, impls, t::Defs},
     crate::{
         rules::{
-            c::{files, path},
-            tree_structure::{c::parts, t::PartReport},
+            c::{files, parts, path},
+            t::PartReport,
         },
         t::{ItemsViolation, Outcome},
     },

@@ -7,7 +7,7 @@ use {
     crate::{
         rules::{
             c::scan,
-            tree_structure::t::{FileViolation, PartReport},
+            t::{FileViolation, PartReport},
         },
         s::{EXISTING_SRC_DIRS, FILE_CONFIG},
     },

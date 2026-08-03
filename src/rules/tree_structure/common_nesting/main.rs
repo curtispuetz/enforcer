@@ -1,6 +1,6 @@
 use {
     super::nesting,
-    crate::rules::tree_structure::t::{FileViolation, PartReport},
+    crate::rules::t::{FileViolation, PartReport},
 };
 
 pub fn part() -> PartReport {

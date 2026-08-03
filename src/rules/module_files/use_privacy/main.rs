@@ -1,14 +1,17 @@
 use {
-    super::{issues, report},
+    super::issues,
     crate::{
-        rules::c::{outcome, path, scan},
+        rules::{
+            c::{outcome, parts, path},
+            t::PartReport,
+        },
         t::{ItemsViolation, Outcome},
     },
     std::path::Path,
 };
 
-pub fn run() -> bool {
-    scan::run(_check_file, report::print)
+pub fn part() -> PartReport {
+    parts::from_files("use-privacy", _check_file)
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {

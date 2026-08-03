@@ -1,8 +1,0 @@
-<mod-lib-contents-rule>
-  <desc>
-    Verifies that every `mod.rs` and `lib.rs` file contains only `mod` and `use` statements.
-  </desc>
-  <rationale>
-    Having logic in these files makes reasoning about the module structure more difficult.
-  </rationale>
-</mod-lib-contents-rule>

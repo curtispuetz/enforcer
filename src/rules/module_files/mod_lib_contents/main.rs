@@ -1,14 +1,16 @@
 use {
-    super::report,
     crate::{
-        rules::c::{files, outcome, path, scan},
+        rules::{
+            c::{files, outcome, parts, path},
+            t::PartReport,
+        },
         t::{ItemsViolation, Outcome},
     },
     std::path::Path,
 };
 
-pub fn run() -> bool {
-    scan::run(_check_file, report::print)
+pub fn part() -> PartReport {
+    parts::from_files("mod-lib-contents", _check_file)
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {

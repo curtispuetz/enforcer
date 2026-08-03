@@ -1,5 +1,5 @@
 [mod-count]
-ignore = ["src/rules"]
+ignore = ["src/rules", "src/rules/c"]
 
 [duplicate-fns]
 ignore = [
