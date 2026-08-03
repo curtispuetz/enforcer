@@ -12,7 +12,11 @@ use {
 
 pub fn part() -> PartReport {
     let defs = defs::find();
-    parts::from_files("t-common", |path| _check_file(path, &defs))
+    parts::from_files(
+        "t-common",
+        "The following file(s) have an impl outside the t common module holding the type's definition:",
+        |path| _check_file(path, &defs),
+    )
 }
 
 fn _check_file(path: &Path, defs: &Defs) -> Outcome<ItemsViolation> {

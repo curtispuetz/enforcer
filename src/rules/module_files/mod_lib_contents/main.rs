@@ -10,7 +10,11 @@ use {
 };
 
 pub fn part() -> PartReport {
-    parts::from_files("mod-lib-contents", _check_file)
+    parts::from_files(
+        "mod-lib-contents",
+        "The following mod.rs or lib.rs file(s) contain statements other than mod and use:",
+        _check_file,
+    )
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {

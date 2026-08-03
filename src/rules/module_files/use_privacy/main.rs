@@ -11,7 +11,11 @@ use {
 };
 
 pub fn part() -> PartReport {
-    parts::from_files("use-privacy", _check_file)
+    parts::from_files(
+        "use-privacy",
+        "The following file(s) have a `pub use` outside mod.rs or lib.rs:",
+        _check_file,
+    )
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {

@@ -12,7 +12,11 @@ use {
 
 pub fn part() -> PartReport {
     let disallowed = contents::disallowed();
-    parts::from_files("common-items", |path| _check_file(path, &disallowed))
+    parts::from_files(
+        "common-items",
+        "The following file(s) define an item outside its common module home, or expose an item a common module may not expose:",
+        |path| _check_file(path, &disallowed),
+    )
 }
 
 fn _check_file(

@@ -10,7 +10,11 @@ use {
 };
 
 pub fn part() -> PartReport {
-    parts::from_files("mod-over-file", _check_file)
+    parts::from_files(
+        "mod-over-file",
+        "The following file(s) shadow a sibling folder and should become that folder's mod.rs:",
+        _check_file,
+    )
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {

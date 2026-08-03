@@ -20,6 +20,8 @@ pub fn part() -> PartReport {
     let res = scan::src_files(|path| verify::file::run(path, &config));
     PartReport {
         name: "imports",
+        failures_header:
+            "The following file(s) have an import pointing up or across the module tree, or written in the wrong form:",
         unit: "files",
         passed: res.passed,
         violations: res.violations.into_iter().map(_render).collect(),

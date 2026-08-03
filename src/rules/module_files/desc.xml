@@ -1,28 +1,12 @@
 <module-files-rule>
-  <part1-mod-over-file>
-    <desc>Verifies that a folder module uses the `mod.rs` form (not the sibling-file form).</desc>
-    <rationale>
-      I don't know about this one, but we have to make one choice of the two, and I think I want everything related to the folder inside the folder.
-    </rationale>
-  </part1-mod-over-file>
-  <part2-mod-location>
-    <desc>Verifies that `mod` statements appear only in `mod.rs` and `lib.rs` files.</desc>
-    <rationale>We want consistent locations for all module declarations.</rationale>
-  </part2-mod-location>
-  <part3-mod-lib-contents>
-    <desc>
-      Verifies that every `mod.rs` and `lib.rs` file contains only `mod` and `use` statements.
-    </desc>
-    <rationale>
-      Having logic in these files makes reasoning about the module structure more difficult.
-    </rationale>
-  </part3-mod-lib-contents>
-  <part4-use-privacy>
-    <desc>
-      Verifies that every `use` statement in a non-`mod.rs`/`lib.rs` file is private.
-    </desc>
-    <rationale>
-      Want re-exports in the module-declaring files (`mod.rs`/`lib.rs`), which define each folder's public surface.
-    </rationale>
-  </part4-use-privacy>
+  <desc>
+    Verifies that:
+    - Folder modules use the `mod.rs` form (not the sibling-file form).
+    - `mod.rs` and `lib.rs` files contain only `mod` and `use` statements.
+    - `mod` statements are only in `mod.rs` and `lib.rs` files.
+    - Every `use` statement in a non-`mod.rs`/`lib.rs` file is private.
+  </desc>
+  <rationale>
+    We want mod.rs files to be the place where module declarations and re-exports happen. And we want these files scoped to just that purpose.
+  </rationale>
 </module-files-rule>

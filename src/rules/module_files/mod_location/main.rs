@@ -10,7 +10,11 @@ use {
 };
 
 pub fn part() -> PartReport {
-    parts::from_files("mod-location", _check_file)
+    parts::from_files(
+        "mod-location",
+        "The following file(s) have mod statements but are not mod.rs or lib.rs:",
+        _check_file,
+    )
 }
 
 fn _check_file(path: &Path) -> Outcome<ItemsViolation> {

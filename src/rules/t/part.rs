@@ -2,6 +2,7 @@ use {crate::t::ItemsViolation, colored::Colorize};
 
 pub struct PartReport {
     pub name: &'static str,
+    pub failures_header: &'static str,
     pub unit: &'static str,
     pub passed: usize,
     pub violations: Vec<FileViolation>,

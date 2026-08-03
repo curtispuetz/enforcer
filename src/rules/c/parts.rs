@@ -11,11 +11,13 @@ use {
 
 pub fn from_files(
     name: &'static str,
+    failures_header: &'static str,
     rule: impl FnMut(&Path) -> Outcome<ItemsViolation>,
 ) -> PartReport {
     let res = scan::src_files(rule);
     PartReport {
         name,
+        failures_header,
         unit: "files",
         passed: res.passed,
         violations: res.violations.into_iter().map(FileViolation::new).collect(),
@@ -64,7 +66,7 @@ fn _failures(part: &PartReport) {
     if part.violations.is_empty() {
         return;
     }
-    println!("\n{}", format!("{}:", part.name).bold());
+    println!("\n{}\n", part.failures_header.bold());
     for violation in &part.violations {
         println!("  {}", violation.path.bold());
         for line in &violation.lines {
