@@ -3,6 +3,7 @@ pub mod ast;
 pub mod calls;
 pub mod files;
 pub mod fn_name;
+pub mod histogram;
 pub mod imports;
 pub mod outcome;
 pub mod parts;

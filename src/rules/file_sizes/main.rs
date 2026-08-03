@@ -1,13 +1,13 @@
 use {
     super::{
-        report,
+        count, report,
         t::{Config, Violation},
     },
     crate::{
         rules::c::{path, scan},
         t::Outcome,
     },
-    std::{fs, path::Path},
+    std::path::Path,
 };
 
 pub fn run() -> bool {
@@ -19,7 +19,7 @@ fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     if config.ignore.contains(&relative) {
         return Outcome::Skipped;
     }
-    let lines = _line_count(path);
+    let lines = count::lines(path);
     if lines > config.max_lines {
         Outcome::Failed(Violation {
             path: relative,
@@ -28,10 +28,4 @@ fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     } else {
         Outcome::Passed
     }
-}
-
-fn _line_count(path: &Path) -> usize {
-    fs::read_to_string(path)
-        .map(|contents| contents.lines().count())
-        .unwrap_or(0)
 }

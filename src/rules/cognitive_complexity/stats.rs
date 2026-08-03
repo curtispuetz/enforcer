@@ -1,6 +1,9 @@
 use {
     super::measure,
-    crate::{rules::c::files, s::EXISTING_SRC_DIRS},
+    crate::{
+        rules::c::{files, histogram},
+        s::EXISTING_SRC_DIRS,
+    },
     colored::Colorize,
     std::collections::BTreeMap,
 };
@@ -39,7 +42,7 @@ fn _print_rows(counts: &BTreeMap<usize, usize>) {
         println!(
             "  {}  {} {}",
             format!("{score:>3}").bold(),
-            _bar(count, most).cyan(),
+            histogram::bar(count, most).cyan(),
             count.to_string().dimmed()
         );
     }
@@ -51,8 +54,4 @@ fn _average(counts: &BTreeMap<usize, usize>) -> f64 {
     let total: usize = counts.values().sum();
     let sum: usize = counts.iter().map(|(score, count)| score * count).sum();
     sum as f64 / total.max(1) as f64
-}
-
-fn _bar(count: usize, most: usize) -> String {
-    "█".repeat(count * 40 / most.max(1))
 }

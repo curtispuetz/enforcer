@@ -63,8 +63,10 @@ fn _fix(command: Command) {
 }
 
 fn _report(command: Command) {
-    if matches!(command, Command::CognitiveComplexity) {
-        rules::cognitive_complexity::report();
+    match command {
+        Command::CognitiveComplexity => rules::cognitive_complexity::report(),
+        Command::FileSizes => rules::file_sizes::report(),
+        _ => {}
     }
 }
 
