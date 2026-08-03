@@ -9,6 +9,9 @@
       ignore - list of functions to skip. A file path followed by `::` and the function or `Type::method` (e.g. `src/main.rs::run`, `src/main.rs::Config::new`)
     </item>
   </config>
+  <report>
+    Supports `--report`: prints the distribution of scores across the codebase.
+  </report>
   <scoring>
     <structural>
       +1 (plus the current nesting depth) for each `if`, `match`, `for`, `while`, and `loop`. The nesting depth increases inside their bodies, so the same construct costs more the deeper it sits.

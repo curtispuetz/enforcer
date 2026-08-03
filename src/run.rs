@@ -1,19 +1,19 @@
 use {
-    super::{rules, s::FILE_CONFIG, t::Command},
+    super::{
+        rules,
+        s::FILE_CONFIG,
+        t::{Command, Mode},
+    },
     colored::Colorize,
     strum::IntoEnumIterator,
 };
 
-pub fn rules(commands: &[Command], fix: bool) -> bool {
-    if fix {
-        _fix_each(commands);
-        return false;
+pub fn rules(commands: &[Command], mode: Mode) -> bool {
+    match mode {
+        Mode::Check => _check(commands),
+        Mode::Fix => _for_each(commands, _fix),
+        Mode::Report => _for_each(commands, _report),
     }
-    let any_failed = _each(commands);
-    if !any_failed && !FILE_CONFIG.debug {
-        println!("{} All rules passed", "[Success]".green().bold());
-    }
-    any_failed
 }
 
 pub fn rule(command: Command) -> bool {
@@ -39,13 +39,35 @@ pub fn rule(command: Command) -> bool {
     ret
 }
 
-fn _fix_each(commands: &[Command]) {
+fn _check(commands: &[Command]) -> bool {
+    let any_failed = _each(commands);
+    if !any_failed && !FILE_CONFIG.debug {
+        println!("{} All rules passed", "[Success]".green().bold());
+    }
+    any_failed
+}
+
+fn _for_each(commands: &[Command], action: fn(Command)) -> bool {
     for command in commands {
         match command {
-            Command::All => _fix_each(&_others()),
-            Command::PrivateFnNaming => rules::private_fn_naming::fix(),
-            _ => {}
+            Command::All => {
+                _for_each(&_others(), action);
+            }
+            _ => action(*command),
         }
+    }
+    false
+}
+
+fn _fix(command: Command) {
+    if matches!(command, Command::PrivateFnNaming) {
+        rules::private_fn_naming::fix();
+    }
+}
+
+fn _report(command: Command) {
+    if matches!(command, Command::CognitiveComplexity) {
+        rules::cognitive_complexity::report();
     }
 }
 

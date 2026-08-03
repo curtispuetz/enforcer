@@ -1,5 +1,8 @@
 use {
-    enforcer::{help, run, t::Command},
+    enforcer::{
+        help, run,
+        t::{Command, Mode},
+    },
     std::{process, str::FromStr},
 };
 
@@ -8,20 +11,32 @@ fn main() {
     if _asks_for_help(&args) {
         _exit_help(&args);
     }
-    let fix = _take_fix_flag(&mut args);
+    let mode = _mode(&mut args);
     if args.is_empty() {
         eprintln!("enforcer: no rule specified");
-        eprintln!("usage: cargo enforcer <rule> [<rule>...] [--fix]");
+        eprintln!("usage: cargo enforcer <rule> [<rule>...] [--fix|--report]");
         _exit_unusable();
     }
-    if run::rules(&_commands(&args), fix) {
+    if run::rules(&_commands(&args), mode) {
         process::exit(1);
     }
 }
 
-fn _take_fix_flag(args: &mut Vec<String>) -> bool {
-    let asked = args.iter().any(|a| a == "--fix");
-    args.retain(|a| a != "--fix");
+fn _mode(args: &mut Vec<String>) -> Mode {
+    match (_take_flag(args, "--fix"), _take_flag(args, "--report")) {
+        (true, true) => {
+            eprintln!("enforcer: use either --fix or --report, not both");
+            process::exit(2)
+        }
+        (true, false) => Mode::Fix,
+        (false, true) => Mode::Report,
+        (false, false) => Mode::Check,
+    }
+}
+
+fn _take_flag(args: &mut Vec<String>, flag: &str) -> bool {
+    let asked = args.iter().any(|a| a == flag);
+    args.retain(|a| a != flag);
     asked
 }
 
