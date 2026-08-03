@@ -5,19 +5,20 @@ use {
 };
 
 pub fn rules(commands: &[Command], fix: bool) -> bool {
-    let any_failed = _each(commands, fix);
+    if fix {
+        _fix_each(commands);
+        return false;
+    }
+    let any_failed = _each(commands);
     if !any_failed && !FILE_CONFIG.debug {
         println!("{} All rules passed", "[Success]".green().bold());
     }
     any_failed
 }
 
-pub fn rule(command: Command, fix: bool) -> bool {
-    if fix {
-        _fix(command);
-    }
+pub fn rule(command: Command) -> bool {
     let ret = match command {
-        Command::All => _all(fix),
+        Command::All => _all(),
         Command::TreeStructure => rules::tree_structure::run(),
         Command::FileSizes => rules::file_sizes::run(),
         Command::ModLocation => rules::mod_location::run(),
@@ -38,23 +39,30 @@ pub fn rule(command: Command, fix: bool) -> bool {
     ret
 }
 
-fn _fix(command: Command) {
-    if matches!(command, Command::PrivateFnNaming) {
-        rules::private_fn_naming::fix();
+fn _fix_each(commands: &[Command]) {
+    for command in commands {
+        match command {
+            Command::All => _fix_each(&_others()),
+            Command::PrivateFnNaming => rules::private_fn_naming::fix(),
+            _ => {}
+        }
     }
 }
 
-fn _all(fix: bool) -> bool {
-    let commands: Vec<Command> = Command::iter()
-        .filter(|command| !matches!(command, Command::All))
-        .collect();
-    _each(&commands, fix)
+fn _all() -> bool {
+    _each(&_others())
 }
 
-fn _each(commands: &[Command], fix: bool) -> bool {
+fn _others() -> Vec<Command> {
+    Command::iter()
+        .filter(|command| !matches!(command, Command::All))
+        .collect()
+}
+
+fn _each(commands: &[Command]) -> bool {
     let mut any_failed = false;
     for command in commands {
-        if rule(*command, fix) {
+        if rule(*command) {
             any_failed = true;
         }
     }

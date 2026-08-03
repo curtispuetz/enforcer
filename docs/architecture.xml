@@ -28,8 +28,8 @@
     bigger rules (e.g. `imports/verify/`, `calls/find/`).
     - Optional `fix/` (see `private_fn_naming`) — `pub fn fix()` applies the rule's
     automated fix in place. Wire it up by re-exporting it from the rule's `mod.rs`
-    and adding an arm to `run::_fix`, which runs before the rule is checked when
-    the user passes `--fix`.
+    and adding an arm to `run::_fix_each`. When the user passes `--fix`, only the
+    fixes run — the rule checks are skipped entirely.
     Wiring a new rule requires three edits beyond the folder: add `pub mod &lt;name&gt;;`
     to `src/rules/mod.rs`, a `Command` variant in `src/t/command.rs`, and a match arm
     in `src/run.rs`. Private fns are prefixed with `_` per the project convention.
