@@ -1,5 +1,5 @@
 use {
-    super::util,
+    super::{modules, util},
     crate::{rules::c::path, s::ROOT},
     std::path::{Component, Path},
 };
@@ -42,12 +42,13 @@ pub fn absolute(segments: &[String], file: &Path) -> Option<Vec<String>> {
     (acc.first().map(String::as_str) == Some("crate")).then_some(acc)
 }
 
-pub fn under_dir(path: &Path, dir: &str) -> bool {
-    let rel = path.strip_prefix(ROOT.as_path()).unwrap_or(path);
-    rel.components()
-        .any(|c| matches!(c, Component::Normal(s) if s.to_str() == Some(dir)))
+pub fn in_common(path: &Path, name: &str) -> bool {
+    nearest_common(path) == Some(name)
 }
 
-pub fn in_common(path: &Path, name: &str) -> bool {
-    under_dir(path, name) || util::common_file_kind(path) == Some(name)
+// not-obvious: common modules may nest inside one another, so only the innermost
+// one governs a file.
+pub fn nearest_common(path: &Path) -> Option<&'static str> {
+    util::common_file_kind(path)
+        .or_else(|| modules::ancestor(path).map(|(_, kind)| kind))
 }

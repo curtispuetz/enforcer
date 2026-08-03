@@ -64,19 +64,7 @@
     </desc>
     <rationale>We want consistent items on the public surface of common modules</rationale>
   </part3-common-publics>
-  <part4-common-nesting>
-    <desc>
-      Verifies that no common modules are nested in other common modules.
-    </desc>
-    <rationale>Make reasoning about common modules easier</rationale>
-    <exception>
-      <desc>
-        A common module may be nested inside another common module of the same kind (e.g. `/c/foo/c/bar`, `/t/foo/t/bar`). There may be as much nesting of these as desired.
-      </desc>
-      <rationale>It's commonly necessary to nest a common module to share code within a common module of that same kind.</rationale>
-    </exception>
-  </part4-common-nesting>
-  <part5-impl-locations>
+  <part4-impl-locations>
     <desc>
       Verifies that all impls:
       - Live in a `t` common module; and
@@ -90,5 +78,5 @@
     <rationale>
       To have an expected location for impls. Also to gently encourage small impls, preferring free-functions over methods.
     </rationale>
-  </part5-impl-locations>
+  </part4-impl-locations>
 </tree-structure-rule>
