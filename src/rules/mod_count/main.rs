@@ -1,10 +1,10 @@
 use {
     super::{
-        report,
+        count, report,
         t::{Config, Violation},
     },
     crate::{
-        rules::c::{files, path, scan},
+        rules::c::{path, scan},
         t::Outcome,
     },
     std::path::Path,
@@ -22,20 +22,10 @@ fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     if config.ignore.contains(&module) {
         return Outcome::Skipped;
     }
-    let count = _mod_count(path);
+    let count = count::mods(path);
     if count > config.max {
         Outcome::Failed(Violation { module, count })
     } else {
         Outcome::Passed
     }
-}
-
-fn _mod_count(path: &Path) -> usize {
-    let mut count = 0;
-    for item in files::ast_parse(path).items {
-        if matches!(item, syn::Item::Mod(_)) {
-            count += 1;
-        }
-    }
-    count
 }

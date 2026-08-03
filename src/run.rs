@@ -66,6 +66,7 @@ fn _report(command: Command) {
     match command {
         Command::CognitiveComplexity => rules::cognitive_complexity::report(),
         Command::FileSizes => rules::file_sizes::report(),
+        Command::ModCount => rules::mod_count::report(),
         _ => {}
     }
 }
