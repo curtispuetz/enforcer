@@ -55,6 +55,8 @@ Some of the rules are opinionated, and deliberately so. They encode one particul
 
 `all` runs every rule above.
 
+## Complete Descriptions
+
 For complete descriptions of individual rules, along with configuration options:
 
 ```sh
@@ -71,13 +73,19 @@ Top-level:
 
 ## Automated fixes
 
-Add `--fix` to apply the automated fixes any of the selected rules offer, before the rules are checked:
+Add `--fix` to apply automated fixes for a rule, which some rules may offer:
 
 ```sh
 cargo enforcer all --fix
 ```
 
-Only `private-fn-naming` has a fix for now.
+## Reports
+
+Add `--report` to see stats about your codebase related to a rule:
+
+```sh
+cargo enforcer all --report
+```
 
 ## License
 

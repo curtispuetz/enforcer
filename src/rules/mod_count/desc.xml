@@ -4,9 +4,7 @@
   </desc>
   <rationale>To encourage a more nested and less flat codebase.</rationale>
   <config toml_table="mod-count">
-    <item>max - maximum `mod` declarations allowed per file (default 10).</item>
-    <item>
-      ignore - list of module paths to skip (the directory containing the `mod.rs`/`lib.rs` the rule is for, relative to the project root, e.g. `src/app`).
-    </item>
+    - max: maximum `mod` declarations allowed per file (default 10)
+    - ignore: list of module paths to skip (the directory containing the `mod.rs`/`lib.rs` the rule is for, relative to the project root, e.g. `src/app`)
   </config>
 </mod-count-rule>
