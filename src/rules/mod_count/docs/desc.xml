@@ -1,6 +1,6 @@
 <mod-count-rule>
   <desc>
-    Verifies that no `mod.rs` or `lib.rs` file declares more than a specified maximum number of modules (i.e. `mod` statements).
+    Verifies that no `mod.rs` or `lib.rs` file declares more than a specified maximum number of modules (i.e. `mod` statements) (default 10).
   </desc>
   <rationale>To encourage a more nested and less flat codebase.</rationale>
 </mod-count-rule>

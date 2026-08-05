@@ -1,6 +1,6 @@
 <file-sizes-rule>
   <desc>
-    Verifies that no source file has more than a specified maximum number of lines.
+    Verifies that no source file has more than a specified maximum number of lines (default 99).
   </desc>
   <rationale>To encourage smaller, more focused files.</rationale>
 </file-sizes-rule>
