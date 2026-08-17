@@ -1,4 +1,8 @@
-use {crate::s::FILE_CONFIG, std::collections::HashSet, syn::ItemFn};
+use {
+    crate::{rules::c::path, s::FILE_CONFIG},
+    std::collections::HashSet,
+    syn::ItemFn,
+};
 
 pub struct Config {
     pub ignore: HashSet<String>,
@@ -6,11 +10,9 @@ pub struct Config {
 
 impl Config {
     pub fn new() -> Self {
-        let mut ignore = HashSet::new();
-        for entry in FILE_CONFIG.duplicate_fns.ignore.iter() {
-            ignore.insert(entry.replace('\\', "/"));
+        Config {
+            ignore: path::ignore_set(&FILE_CONFIG.duplicate_fns.ignore),
         }
-        Config { ignore }
     }
 }
 

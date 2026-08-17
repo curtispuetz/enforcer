@@ -1,7 +1,11 @@
 use {
     crate::s::{FILE_CONFIG, ROOT},
-    std::path::Path,
+    std::{collections::HashSet, path::Path},
 };
+
+pub fn ignore_set(entries: &[String]) -> HashSet<String> {
+    entries.iter().map(|e| e.replace('\\', "/")).collect()
+}
 
 pub fn ignored(path: &Path) -> bool {
     let rel = rel(path);
