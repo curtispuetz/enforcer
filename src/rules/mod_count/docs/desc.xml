@@ -3,4 +3,8 @@
     Verifies that no `mod.rs` or `lib.rs` file declares more than a specified maximum number of modules (i.e. `mod` statements) (default 10).
   </desc>
   <rationale>To encourage a more nested and less flat codebase.</rationale>
+  <config toml_table="mod-count">
+    - max: maximum `mod` declarations allowed per file (default 10)
+    - ignore: list of module paths to skip (the directory containing the `mod.rs`/`lib.rs` the rule is for, relative to the project root, e.g. `src/app`)
+  </config>
 </mod-count-rule>

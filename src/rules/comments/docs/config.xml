@@ -1,3 +1,0 @@
-<config toml_table="comments">
-  - max_trailing_comment_len (default 20)
-</config>

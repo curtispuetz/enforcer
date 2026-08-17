@@ -1,4 +1,0 @@
-<config toml_table="mod-count">
-  - max: maximum `mod` declarations allowed per file (default 10)
-  - ignore: list of module paths to skip (the directory containing the `mod.rs`/`lib.rs` the rule is for, relative to the project root, e.g. `src/app`)
-</config>

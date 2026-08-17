@@ -79,4 +79,7 @@
       To have an expected location for impls. Also to gently encourage small impls, preferring free-functions over methods.
     </rationale>
   </part4-impl-locations>
+  <config toml_table="tree-structure.imports">
+    - ignore_export_macros: when true, imports of macros that use `#[macro_export]` are exempt (default false)
+  </config>
 </tree-structure-rule>

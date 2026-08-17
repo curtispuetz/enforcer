@@ -26,53 +26,28 @@ impl Command {
     }
 
     pub fn help(self) -> String {
-        let Some((desc, rest)) = self._docs().split_first() else {
+        let desc = self._desc();
+        if desc.is_empty() {
             return String::new();
-        };
-        let mut parts = vec![_unwrap_root(desc)];
-        parts.extend(rest.iter().map(|doc| doc.trim().to_string()));
-        parts.join("\n")
+        }
+        _unwrap_root(desc)
     }
 
-    fn _docs(self) -> &'static [&'static str] {
+    fn _desc(self) -> &'static str {
         match self {
-            Command::All => &[],
-            Command::TreeStructure => &[
-                include_str!("../rules/tree_structure/docs/desc.xml"),
-                include_str!("../rules/tree_structure/docs/config.xml"),
-            ],
-            Command::FileSizes => &[
-                include_str!("../rules/file_sizes/docs/desc.xml"),
-                include_str!("../rules/file_sizes/docs/config.xml"),
-            ],
-            Command::Modules => &[include_str!("../rules/modules/docs/desc.xml")],
-            Command::Comments => &[
-                include_str!("../rules/comments/docs/desc.xml"),
-                include_str!("../rules/comments/docs/config.xml"),
-            ],
-            Command::Calls => &[
-                include_str!("../rules/calls/docs/desc.xml"),
-                include_str!("../rules/calls/docs/config.xml"),
-            ],
-            Command::ModCount => &[
-                include_str!("../rules/mod_count/docs/desc.xml"),
-                include_str!("../rules/mod_count/docs/config.xml"),
-            ],
-            Command::CognitiveComplexity => &[
-                include_str!("../rules/cognitive_complexity/docs/desc.xml"),
-                include_str!("../rules/cognitive_complexity/docs/scoring.xml"),
-                include_str!("../rules/cognitive_complexity/docs/config.xml"),
-            ],
-            Command::DuplicateFns => &[
-                include_str!("../rules/duplicate_fns/docs/desc.xml"),
-                include_str!("../rules/duplicate_fns/docs/config.xml"),
-            ],
-            Command::DuplicateLogic => &[
-                include_str!("../rules/duplicate_logic/docs/desc.xml"),
-                include_str!("../rules/duplicate_logic/docs/holes.xml"),
-                include_str!("../rules/duplicate_logic/docs/config.xml"),
-            ],
-            Command::PrivateFnNaming => &[include_str!("../rules/private_fn_naming/docs/desc.xml")],
+            Command::All => "",
+            Command::TreeStructure => include_str!("../rules/tree_structure/docs/desc.xml"),
+            Command::FileSizes => include_str!("../rules/file_sizes/docs/desc.xml"),
+            Command::Modules => include_str!("../rules/modules/docs/desc.xml"),
+            Command::Comments => include_str!("../rules/comments/docs/desc.xml"),
+            Command::Calls => include_str!("../rules/calls/docs/desc.xml"),
+            Command::ModCount => include_str!("../rules/mod_count/docs/desc.xml"),
+            Command::CognitiveComplexity => {
+                include_str!("../rules/cognitive_complexity/docs/desc.xml")
+            }
+            Command::DuplicateFns => include_str!("../rules/duplicate_fns/docs/desc.xml"),
+            Command::DuplicateLogic => include_str!("../rules/duplicate_logic/docs/desc.xml"),
+            Command::PrivateFnNaming => include_str!("../rules/private_fn_naming/docs/desc.xml"),
         }
     }
 }
