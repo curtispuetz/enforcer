@@ -5,6 +5,7 @@ pub mod files;
 pub mod fn_name;
 pub mod histogram;
 pub mod imports;
+pub mod macros;
 pub mod outcome;
 pub mod parts;
 pub mod path;

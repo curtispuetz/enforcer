@@ -3,7 +3,10 @@
   and calls `find::violations`, collecting a `Violation` per file with a list of offending
   calls. Inside `find/`: `imports.rs` maps each `use` binding name to its full path;
   `calls.rs` walks the syn AST (via `syn::visit`) collecting the path segments of every
-  `Expr::Call` with a plain path callee; `words.rs` decides whether a name looks like a
+  `Expr::Call` with a plain path callee. Macro invocations are opaque token streams to
+  `syn`, so the collector also visits every `syn::Macro`: `c::macros::exprs` parses the
+  token stream (comma-separated expressions, else statements, else per-chunk best effort)
+  and the resulting expressions are walked too, so calls written inside macros are checked. `words.rs` decides whether a name looks like a
   function and finds a duplicate word among segments; `ignored.rs` matches a call against the
   `[calls] ignore` config entries (a `::`-separated suffix of the call's segments); `message.rs` formats the two violation
   kinds; `main.rs` orchestrates. `report::report` prints the pass/fail summary.
