@@ -20,7 +20,7 @@
   <config toml_table="duplicate-logic">
     - min_stmts: how short a repeated run may be before it is a violation; runs of fewer statements than this are ignored (default 2).
     - max_holes: how many holes a group may have and still be a violation; 0 means the copies must match exactly after renaming (default 4).
-    - min_nodes_per_hole: how much shared structure each hole must have as a count of syntax nodes; groups below this are too small to be worth a parameter and are ignored (default 20).
+    - min_nodes_per_hole: how much shared structure each hole must have as a count of syntax nodes; groups below this are too small to be worth a parameter and are ignored (default 16).
     - ignore: list of group ids to skip (copy them from the violation report)
   </config>
 </duplicate-logic-rule>
