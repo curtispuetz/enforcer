@@ -55,5 +55,17 @@
                 "focus": false,
             }
         },
+        {
+            "label": "$(hubot)",
+            "type": "shell",
+            "command": "claude",
+            "isBackground": true,
+            "runOptions": {
+                "instanceLimit": 10
+            },
+            "presentation": {
+                "panel": "new"
+            }
+        },
     ]
 }
