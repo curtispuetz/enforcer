@@ -55,7 +55,7 @@
   </part2-item-homes>
   <part3-common-publics>
     <desc>
-      Verifies that the public surface (i.e. leaf items reachable from outside the module) in the following common modules is limited to the following items:
+      Verifies that the public surface (i.e. items exported; reachable from outside the module) in the following common modules is limited to the following items:
       - `s`: `static`
       - `cnst`: `const`
       - `t`: `struct`, `enum`, `type` alias, and `trait`
@@ -63,6 +63,7 @@
       - `c`: `fn`
     </desc>
     <rationale>We want consistent items on the public surface of common modules</rationale>
+    <note>To be clear, a module can have other items; just other items can't be on the modules public surface</note>
   </part3-common-publics>
   <part4-impl-locations>
     <desc>
