@@ -3,10 +3,10 @@
     Verifies that functions are not called:
     - Bare (i.e. imported and called directly); or
     - With a qualified path that repeats any word in its segments.
-    So, to clarify, that means one of the function's parent modules are imported, and the function is called with segments that do not repeat any word.
+    So, to clarify, that means one of the function's parent modules is imported, and the function is called with segments that do not repeat any word.
   </desc>
   <rationale>
-    We want function names to be short and their functionality to be defined from their parent module names as well as its own name. And, repeated words are a sign of redundancy.
+    We want function names to be short and their functionality to be defined from their parent module names as well as it's own name. And, repeated words are a sign of redundancy.
   </rationale>
   <exceptions>
     - Private functions

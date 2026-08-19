@@ -51,7 +51,7 @@
       - `trait`: `t` and `ext_traits`
     </desc>
     <exemption>Private items are allowed anywhere</exemption>
-    <rationale>We want consistent locations for all user defined items</rationale>
+    <rationale>We want consistent locations for all user-defined items</rationale>
   </part2-item-homes>
   <part3-common-publics>
     <desc>
@@ -63,7 +63,7 @@
       - `c`: `fn`
     </desc>
     <rationale>We want consistent items on the public surface of common modules</rationale>
-    <note>To be clear, a module can have other items; just other items can't be on the modules public surface</note>
+    <note>To be clear, a module can have other items; just other items can't be on the module's public surface</note>
   </part3-common-publics>
   <part4-impl-locations>
     <desc>
