@@ -1,6 +1,6 @@
 use {
     super::{
-        folders, index,
+        cluster, folders, index,
         t::{FileImports, Folder, Member},
         verdict,
     },
@@ -18,41 +18,40 @@ pub fn part() -> PartReport {
     for folder in folders::all() {
         let unneeded = verdict::unneeded(&folder, &imports);
         passed += folder.members.len() - unneeded.len();
-        for member in &folder.members {
-            if unneeded.contains(member.name.as_str()) {
-                violations.push(_render(&folder, member, &imports));
-            }
+        for members in cluster::group(&folder, &unneeded, &imports) {
+            violations.push(_render(&folder, &members, &imports));
         }
     }
     PartReport {
         name: "c-common",
         failures_header: "The following module(s) sit in a `c` common module, but are only imported from beside it, where a sideways import would do:",
-        unit: "c modules",
+        unit: "c module groups",
         passed,
         violations,
     }
 }
 
-fn _render(folder: &Folder, member: &Member, imports: &[FileImports]) -> FileViolation {
-    let mut lines = vec!["imported only by:".red().to_string()];
-    for importer in verdict::importers(folder, member, imports) {
+fn _render(folder: &Folder, members: &[&Member], imports: &[FileImports]) -> FileViolation {
+    let names: Vec<&str> = members.iter().map(|m| m.name.as_str()).collect();
+    let mut lines = vec![
+        "only used from beside this `c`:".red().to_string(),
+        format!("  {}", names.join(", ")),
+        "imported only by:".red().to_string(),
+    ];
+    for importer in cluster::importers(folder, members, imports) {
         lines.push(format!("  {}", path::rel(&importer.path)));
     }
-    let hint = format!(
-        "move it up beside them, to {}, declared with a private `mod`",
-        _destination(member)
-    );
+    let hint = "move out of `c`, beside the importers, or under the importer if there is only one";
     lines.push(hint.dimmed().to_string());
     FileViolation {
-        path: path::rel(&member.path),
+        path: path::rel(_location(folder, members)),
         lines,
     }
 }
 
-fn _destination(member: &Member) -> String {
-    let parent = member.path.parent().and_then(|c| c.parent());
-    match (parent, member.path.file_name()) {
-        (Some(parent), Some(file_name)) => path::rel(&parent.join(file_name)),
-        _ => member.name.clone(),
+fn _location<'a>(folder: &'a Folder, members: &[&'a Member]) -> &'a std::path::Path {
+    match members {
+        [member] => &member.path,
+        _ => &folder.path,
     }
 }

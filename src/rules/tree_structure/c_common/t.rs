@@ -8,6 +8,7 @@ pub struct FileImports {
 }
 
 pub struct Folder {
+    pub path: PathBuf,
     pub parent: Vec<String>,
     pub segments: Vec<String>,
     pub members: Vec<Member>,

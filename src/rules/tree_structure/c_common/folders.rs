@@ -25,6 +25,7 @@ fn _folder(dir: &Path) -> Option<Folder> {
         .filter_map(|entry| _member(&entry.path(), &segments))
         .collect();
     Some(Folder {
+        path: dir.to_path_buf(),
         parent: parent.to_vec(),
         segments,
         members,
