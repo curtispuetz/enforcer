@@ -80,6 +80,12 @@
       To have an expected location for impls. Also to gently encourage small impls, preferring free-functions over methods.
     </rationale>
   </part4-impl-locations>
+  <part5-c-common-need>
+    <desc>
+      Verifies that every module directly inside a `c` common folder is needed there. A module at `X/c/m` is not needed (violation) when every file importing it is a direct sibling of the `c` folder (i.e. a file directly in `X/`), because it could then be the plain sibling `X/m`, imported sideways.
+    </desc>
+    <rationale>To keep c modules for code that actually has to be shared across the tree.</rationale>
+  </part5-c-common-need>
   <config toml_table="tree-structure.imports">
     - ignore_export_macros: when true, imports of macros that use `#[macro_export]` are exempt (default false)
   </config>

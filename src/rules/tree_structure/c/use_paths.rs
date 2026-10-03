@@ -1,6 +1,6 @@
 use syn::{Ident, UseTree};
 
-pub fn internal_use_paths(file: &syn::File) -> Vec<Vec<String>> {
+pub fn internal(file: &syn::File) -> Vec<Vec<String>> {
     let mut ret = Vec::new();
     for item in &file.items {
         if let Some(tree) = _use_tree(item) {

@@ -1,10 +1,10 @@
 use {
-    super::{imports, rules},
+    super::rules,
     crate::{
         rules::{
             c::{files, path},
             tree_structure::{
-                c::path as path2,
+                c::{path as path2, use_paths},
                 imports::t::{BadImport, Config, Violation},
             },
         },
@@ -37,7 +37,7 @@ fn _disallowed_imports(
     config: &Config,
 ) -> Vec<BadImport> {
     let mut violations = Vec::new();
-    for use_path in imports::internal_use_paths(&files::ast_parse(path)) {
+    for use_path in use_paths::internal(&files::ast_parse(path)) {
         if _is_ignored_macro(&use_path, config) {
             continue;
         }
