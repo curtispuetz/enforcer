@@ -56,16 +56,36 @@
             }
         },
         {
-            "label": "$(hubot)",
+            "label": "agent",
             "type": "shell",
-            "command": "claude",
+            "command": "cargo curtisp-tools ${input:agent} docs/teammates/${input:teammate}.md",
             "isBackground": true,
             "runOptions": {
                 "instanceLimit": 10
             },
-            "presentation": {
-                "panel": "new"
-            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "agent",
+            "type": "pickString",
+            "description": "AI agent",
+            "options": [
+                "claude",
+                "copilot",
+                "codex",
+                "grok"
+            ],
+            "default": "claude"
         },
+        {
+            "id": "teammate",
+            "type": "pickString",
+            "description": "teammate profile",
+            "options": [
+                "dev"
+            ],
+            "default": "dev"
+        }
     ]
 }
