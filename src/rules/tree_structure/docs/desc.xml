@@ -23,7 +23,7 @@
     </more-details>
     <common-modules>
       <desc>
-        These are modules for shared code. The following are their names and what they are for:
+        These are modules for shared code. The following are their names and what they are allowed to export:
         - c: free-functions
         - t: types
         - s: `static` items
@@ -49,6 +49,7 @@
       - `const`: `cnst`
       - `struct`, `enum`, and `type` alias: `t`
       - `trait`: `t` and `ext_traits`
+      (note: free-functions are exempt from this rule)
     </desc>
     <exemption>Private items are allowed anywhere</exemption>
     <rationale>We want consistent locations for all user-defined items</rationale>
@@ -61,6 +62,7 @@
       - `t`: `struct`, `enum`, `type` alias, and `trait`
       - `ext_traits`: `trait`
       - `c`: `fn`
+      (note: so this means, for example, private child module of a `t` may hold pub fns)
     </desc>
     <rationale>We want consistent items on the public surface of common modules</rationale>
     <note>To be clear, a module can have other items; just other items can't be on the module's public surface</note>
