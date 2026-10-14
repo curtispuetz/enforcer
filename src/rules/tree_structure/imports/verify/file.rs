@@ -3,19 +3,30 @@ use {
     crate::{
         rules::{
             c::{files, path, use_paths},
-            tree_structure::imports::t::{BadImport, Config, Violation},
+            tree_structure::imports::t::{BadImport, Config, Fix, Violation},
         },
         t::Outcome,
     },
-    std::{collections::HashSet, path::Path},
+    std::{
+        collections::{HashMap, HashSet},
+        path::Path,
+    },
 };
 
+type Found = (Vec<String>, &'static str, Option<Fix>);
+
 pub fn run(path: &Path, config: &Config) -> Outcome<Violation> {
-    let (Some(file_dir), Some(own_module)) = (path::file_dir(path), path::module(path))
-    else {
+    if path::module(path).is_none() {
         return Outcome::Skipped;
-    };
-    let imports = _disallowed_imports(path, &file_dir, &own_module, config);
+    }
+    let imports: Vec<BadImport> = _found(path, config)
+        .into_iter()
+        .map(|(use_path, reason, fix)| BadImport {
+            text: format!("use {};", use_path.join("::")),
+            reason,
+            fix,
+        })
+        .collect();
     if imports.is_empty() {
         Outcome::Passed
     } else {
@@ -26,28 +37,37 @@ pub fn run(path: &Path, config: &Config) -> Outcome<Violation> {
     }
 }
 
-fn _disallowed_imports(
-    path: &Path,
-    file_dir: &[String],
-    own_module: &[String],
-    config: &Config,
-) -> Vec<BadImport> {
-    let mut violations = Vec::new();
+pub fn fixes(path: &Path, config: &Config) -> (HashMap<Vec<String>, Vec<String>>, usize) {
+    let mut rewrites = HashMap::new();
+    let mut manual = 0;
+    for (use_path, _, fix) in _found(path, config) {
+        match fix {
+            Some(Fix::Rewrite(new_path)) => {
+                rewrites.insert(use_path, new_path);
+            }
+            _ => manual += 1,
+        }
+    }
+    (rewrites, manual)
+}
+
+fn _found(path: &Path, config: &Config) -> Vec<Found> {
+    let (Some(file_dir), Some(own_module)) = (path::file_dir(path), path::module(path))
+    else {
+        return Vec::new();
+    };
+    let mut found = Vec::new();
     for use_path in use_paths::internal(&files::ast_parse(path)) {
         if _is_ignored_macro(&use_path, config) {
             continue;
         }
         if let Some((reason, fix)) =
-            rules::import_violation(&use_path, file_dir, own_module)
+            rules::import_violation(&use_path, &file_dir, &own_module)
         {
-            violations.push(BadImport {
-                text: format!("use {};", use_path.join("::")),
-                reason,
-                fix,
-            });
+            found.push((use_path, reason, fix));
         }
     }
-    violations
+    found
 }
 
 fn _is_ignored_macro(use_path: &[String], config: &Config) -> bool {

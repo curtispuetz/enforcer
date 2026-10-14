@@ -1,7 +1,10 @@
 use {
-    super::{macros, render, t::Config, verify},
+    super::{autofix, macros, render, t::Config, verify},
     crate::{
-        rules::{c::scan, t::PartReport},
+        rules::{
+            c::{files, scan},
+            t::PartReport,
+        },
         s::{EXISTING_SRC_DIRS, FILE_CONFIG},
     },
     std::collections::HashSet,
@@ -18,6 +21,20 @@ pub fn part() -> PartReport {
         passed: res.passed,
         violations: res.violations.into_iter().map(render::violation).collect(),
     }
+}
+
+pub fn fix() {
+    let config = _init_config();
+    let mut manual = 0;
+    let fixed = files::all()
+        .iter()
+        .filter_map(|path| {
+            let (rewrites, left) = verify::file::fixes(path, &config);
+            manual += left;
+            (!rewrites.is_empty()).then(|| autofix::file(path, &rewrites))?
+        })
+        .collect();
+    autofix::print(fixed, manual);
 }
 
 fn _init_config() -> Config {

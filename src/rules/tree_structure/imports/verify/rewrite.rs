@@ -11,14 +11,13 @@ pub fn relative(
     }
     // not-obvious: a mod.rs/lib.rs is its folder's module, so `super` would leave
     // the folder; its children are reached by a bare path instead.
-    let path = rest.join("::");
     if own_module.len() == file_dir.len() {
-        Some(Fix::Rewrite(format!("use {path};")))
+        Some(Fix::Rewrite(rest.to_vec()))
     } else {
-        Some(Fix::Rewrite(format!("use super::{path};")))
+        Some(Fix::Rewrite([&["super".to_string()], rest].concat()))
     }
 }
 
 pub fn absolute(resolved: &[String]) -> Fix {
-    Fix::Rewrite(format!("use {};", resolved.join("::")))
+    Fix::Rewrite(resolved.to_vec())
 }

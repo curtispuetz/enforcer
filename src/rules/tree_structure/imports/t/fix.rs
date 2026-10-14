@@ -1,4 +1,4 @@
 pub enum Fix {
-    Rewrite(String),
+    Rewrite(Vec<String>),
     MoveToCommon,
 }

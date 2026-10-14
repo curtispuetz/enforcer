@@ -4,6 +4,8 @@ use {
     colored::Colorize,
 };
 
+const AUTO: &str = "(`cargo enforcer tree-structure --fix` does this automatically)";
+
 pub fn violation(violation: Violation) -> FileViolation {
     let mut lines = Vec::new();
     for import in &violation.imports {
@@ -20,7 +22,14 @@ pub fn violation(violation: Violation) -> FileViolation {
 
 fn _fix_text(fix: &Fix) -> String {
     match fix {
-        Fix::Rewrite(text) => text.clone(),
+        Fix::Rewrite(path) => format!("change it to `use {};` {AUTO}", _path(path)),
         Fix::MoveToCommon => "move to a reachable common module".to_string(),
+    }
+}
+
+fn _path(path: &[String]) -> String {
+    match path.split_last() {
+        Some((last, rest)) if last == "self" => format!("{}::{{self}}", rest.join("::")),
+        _ => path.join("::"),
     }
 }

@@ -57,8 +57,10 @@ fn _for_each(commands: &[Command], action: fn(Command)) -> bool {
 }
 
 fn _fix(command: Command) {
-    if matches!(command, Command::PrivateFnNaming) {
-        rules::private_fn_naming::fix();
+    match command {
+        Command::PrivateFnNaming => rules::private_fn_naming::fix(),
+        Command::TreeStructure => rules::tree_structure::fix(),
+        _ => {}
     }
 }
 

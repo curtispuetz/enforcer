@@ -6,4 +6,4 @@ mod main;
 mod t;
 mod t_common;
 
-pub use main::run;
+pub use {imports::fix, main::run};
