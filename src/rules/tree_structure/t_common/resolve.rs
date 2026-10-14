@@ -1,6 +1,6 @@
 use {
     super::{t::TypeDef, util},
-    crate::rules::tree_structure::c::path,
+    crate::rules::{c::path, tree_structure::c::modules},
     std::{collections::HashMap, path::Path},
 };
 
@@ -58,5 +58,5 @@ pub fn trait_base_name(imp: &syn::ItemImpl) -> Option<String> {
 }
 
 pub fn is_ext_traits(path: &Path) -> bool {
-    path::in_common(path, "ext_traits")
+    modules::in_common(path, "ext_traits")
 }

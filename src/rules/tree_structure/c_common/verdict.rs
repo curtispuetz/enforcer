@@ -1,6 +1,6 @@
 use {
-    super::t::{FileImports, Folder, Member},
-    crate::rules::s::COMMON,
+    super::t::{Folder, Member},
+    crate::rules::{s::COMMON, t::FileImports},
     std::collections::HashSet,
 };
 

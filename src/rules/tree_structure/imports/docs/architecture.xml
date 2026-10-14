@@ -9,7 +9,7 @@
   `file.rs` orchestrates one file's verification; `location.rs` derives a file's containing-folder
   segments (`file_dir_segments`) and its own module path (`own_module_segments`, which
   appends the file stem for a normal file but not for `mod.rs`/`lib.rs`) and flags the
-  common `c`/`s`/`t`/`ext_traits` dirs; the shared `tree_structure/c/use_paths.rs` walks the syn AST to extract
+  common `c`/`s`/`t`/`ext_traits` dirs; the shared `rules/c/use_paths.rs` walks the syn AST to extract
   `crate::`/`super::`-rooted use paths (expanding groups/globs/renames); `rules.rs`
   resolves each path to an absolute module path (using `own_module` for `super`) and
   returns the violation reason, if any, including the common-directory recursion. This

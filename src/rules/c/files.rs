@@ -29,3 +29,9 @@ pub fn ast_parse(path: &Path) -> syn::File {
     let source = fs::read_to_string(path).expect("failed to read file");
     syn::parse_file(&source).expect("failed to parse file")
 }
+
+pub fn lines(path: &Path) -> usize {
+    fs::read_to_string(path)
+        .map(|contents| contents.lines().count())
+        .unwrap_or(0)
+}

@@ -40,6 +40,16 @@ pub fn ancestor(module: &Path) -> Option<(PathBuf, &'static str)> {
     None
 }
 
+pub fn in_common(path: &Path, name: &str) -> bool {
+    nearest_common(path) == Some(name)
+}
+
+// not-obvious: common modules may nest inside one another, so only the innermost
+// one governs a file.
+pub fn nearest_common(path: &Path) -> Option<&'static str> {
+    util::common_file_kind(path).or_else(|| ancestor(path).map(|(_, kind)| kind))
+}
+
 pub fn root_file(module: &Path) -> PathBuf {
     if module.is_dir() {
         return module.join("mod.rs");

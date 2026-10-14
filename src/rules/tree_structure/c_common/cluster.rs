@@ -1,8 +1,9 @@
 use {
     super::{
-        t::{FileImports, Folder, Member},
+        t::{Folder, Member},
         verdict,
     },
+    crate::rules::t::FileImports,
     std::collections::{BTreeMap, HashSet},
 };
 

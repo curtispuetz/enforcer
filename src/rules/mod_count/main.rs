@@ -1,20 +1,32 @@
 use {
     super::{
-        count, report,
+        count, report, suggest,
         t::{Config, Violation},
     },
     crate::{
-        rules::c::{path, scan},
+        rules::{
+            c::{graph, path, scan},
+            t::FileImports,
+        },
         t::Outcome,
     },
-    std::path::Path,
+    std::{cell::LazyCell, path::Path},
 };
 
 pub fn run() -> bool {
-    scan::run_with_config(Config::new(), _check_file, report::print)
+    let index: LazyCell<Vec<FileImports>> = LazyCell::new(graph::build);
+    scan::run_with_config(
+        Config::new(),
+        |path, config| _check_file(path, config, &index),
+        report::print,
+    )
 }
 
-fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
+fn _check_file(
+    path: &Path,
+    config: &Config,
+    index: &LazyCell<Vec<FileImports>>,
+) -> Outcome<Violation> {
     if !path::is_mod_or_lib(path) {
         return Outcome::Skipped;
     }
@@ -24,7 +36,12 @@ fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     }
     let count = count::mods(path);
     if count > config.max {
-        Outcome::Failed(Violation { module, count })
+        let fixes = suggest::fixes(path, config, index);
+        Outcome::Failed(Violation {
+            module,
+            count,
+            fixes,
+        })
     } else {
         Outcome::Passed
     }

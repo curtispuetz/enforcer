@@ -1,10 +1,7 @@
 use {
     super::t::{Defs, TypeDef},
     crate::{
-        rules::{
-            c::{ast, files},
-            tree_structure::c::path,
-        },
+        rules::c::{ast, files, path},
         s::EXISTING_SRC_DIRS,
     },
     std::{collections::HashMap, path::Path},

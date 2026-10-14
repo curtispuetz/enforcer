@@ -1,6 +1,9 @@
 use {
-    super::{children, dedup, leaves, modules, path, reexports},
-    crate::rules::{c::files, tree_structure::t::SurfaceItem},
+    super::{children, dedup, leaves, modules, reexports},
+    crate::rules::{
+        c::{files, path},
+        tree_structure::t::SurfaceItem,
+    },
     std::{
         collections::HashSet,
         path::{Path, PathBuf},
@@ -67,7 +70,7 @@ fn _descend(
     visited: &mut Visited,
     out: &mut Vec<SurfaceItem>,
 ) {
-    if let Some(child) = children::find(file, &p.ident.to_string()) {
+    if let Some(child) = path::child(file, &p.ident.to_string()) {
         _reexported(&p.tree, &child, module, visited, out);
     }
 }

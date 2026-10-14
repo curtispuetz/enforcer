@@ -1,18 +1,18 @@
 use {
     super::{
-        cluster, folders, index,
-        t::{FileImports, Folder, Member},
+        cluster, folders,
+        t::{Folder, Member},
         verdict,
     },
     crate::rules::{
-        c::path,
-        t::{FileViolation, PartReport},
+        c::{graph, path},
+        t::{FileImports, FileViolation, PartReport},
     },
     colored::Colorize,
 };
 
 pub fn part() -> PartReport {
-    let imports = index::build();
+    let imports = graph::build();
     let mut passed = 0;
     let mut violations = Vec::new();
     for folder in folders::all() {

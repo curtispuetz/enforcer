@@ -2,11 +2,8 @@ use {
     super::rules,
     crate::{
         rules::{
-            c::{files, path},
-            tree_structure::{
-                c::{path as path2, use_paths},
-                imports::t::{BadImport, Config, Violation},
-            },
+            c::{files, path, use_paths},
+            tree_structure::imports::t::{BadImport, Config, Violation},
         },
         t::Outcome,
     },
@@ -14,8 +11,7 @@ use {
 };
 
 pub fn run(path: &Path, config: &Config) -> Outcome<Violation> {
-    let (Some(file_dir), Some(own_module)) =
-        (path2::file_dir(path), path2::module(path))
+    let (Some(file_dir), Some(own_module)) = (path::file_dir(path), path::module(path))
     else {
         return Outcome::Skipped;
     };

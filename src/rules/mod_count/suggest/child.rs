@@ -1,0 +1,19 @@
+use {
+    crate::rules::{c::path, t::ChildLinks},
+    std::path::{Path, PathBuf},
+};
+
+pub fn movable(links: &[ChildLinks]) -> Vec<&ChildLinks> {
+    links
+        .iter()
+        .filter(|link| !link.is_common && link.name != "main")
+        .collect()
+}
+
+pub fn file(mod_rs: &Path, name: &str) -> Option<PathBuf> {
+    path::child(mod_rs, name).filter(|found| !path::is_mod_or_lib(found))
+}
+
+pub fn folder(mod_rs: &Path, name: &str) -> Option<PathBuf> {
+    path::child(mod_rs, name).filter(|found| path::is_mod_or_lib(found))
+}

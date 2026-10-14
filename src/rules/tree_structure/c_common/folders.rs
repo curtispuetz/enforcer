@@ -1,10 +1,6 @@
 use {
     super::t::{Folder, Member},
-    crate::rules::{
-        c::path as path1,
-        s::COMMON,
-        tree_structure::c::{modules, path},
-    },
+    crate::rules::{c::path, s::COMMON, tree_structure::c::modules},
     std::{fs, path::Path},
 };
 
@@ -34,7 +30,7 @@ fn _folder(dir: &Path) -> Option<Folder> {
 
 fn _member(path: &Path, folder: &[String]) -> Option<Member> {
     let name = _module_name(path)?;
-    if COMMON.contains(&name.as_str()) || path1::ignored(path) {
+    if COMMON.contains(&name.as_str()) || path::ignored(path) {
         return None;
     }
     let mut segments = folder.to_vec();
@@ -50,7 +46,7 @@ fn _module_name(path: &Path) -> Option<String> {
     let is_module = if path.is_dir() {
         path.join("mod.rs").is_file()
     } else {
-        path.extension().is_some_and(|e| e == "rs") && !path1::is_mod_or_lib(path)
+        path.extension().is_some_and(|e| e == "rs") && !path::is_mod_or_lib(path)
     };
     let stem = path.file_stem()?.to_str()?;
     is_module.then(|| stem.to_string())

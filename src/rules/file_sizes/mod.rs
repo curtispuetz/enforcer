@@ -1,4 +1,3 @@
-mod count;
 mod main;
 mod report;
 mod stats;

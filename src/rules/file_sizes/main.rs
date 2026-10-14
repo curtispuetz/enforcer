@@ -1,10 +1,10 @@
 use {
     super::{
-        count, report,
+        report,
         t::{Config, Violation},
     },
     crate::{
-        rules::c::{path, scan},
+        rules::c::{files, path, scan},
         t::Outcome,
     },
     std::path::Path,
@@ -19,7 +19,7 @@ fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
     if config.ignore.contains(&relative) {
         return Outcome::Skipped;
     }
-    let lines = count::lines(path);
+    let lines = files::lines(path);
     if lines > config.max_lines {
         Outcome::Failed(Violation {
             path: relative,

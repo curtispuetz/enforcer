@@ -1,5 +1,5 @@
 use {
-    crate::rules::{c::ast, tree_structure::c::path},
+    crate::rules::{c::ast, tree_structure::c::modules},
     std::path::Path,
     syn::{File, Ident, Item, Visibility},
 };
@@ -8,7 +8,7 @@ pub fn misplaced(path: &Path, file: &File) -> Vec<String> {
     let mut ret = Vec::new();
     for item in &file.items {
         if let Some((common, desc)) = _home(item)
-            && !common.iter().any(|c| path::in_common(path, c))
+            && !common.iter().any(|c| modules::in_common(path, c))
         {
             ret.push(format!("{desc} -> {}", common.join(" or ")));
         }
