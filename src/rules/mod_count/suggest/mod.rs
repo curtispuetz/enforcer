@@ -1,5 +1,6 @@
 mod child;
 mod group;
+mod label;
 mod main;
 mod merge;
 mod nest;

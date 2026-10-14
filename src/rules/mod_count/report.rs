@@ -1,7 +1,7 @@
 use {
     super::{
         describe,
-        t::{Config, Violation},
+        t::{Config, Fix, Violation},
     },
     crate::rules::{c::report, t::Results},
     colored::Colorize,
@@ -39,17 +39,26 @@ fn _print_failures(config: &Config, violations: Vec<Violation>) {
 }
 
 fn _print_fixes(violation: &Violation) {
-    if violation.fixes.is_empty() {
-        let none =
-            "suggested fix: no automatic suggestion; merge or regroup modules by hand";
-        println!("    {}", none.dimmed());
-        return;
+    match violation.fixes.as_slice() {
+        [] => _print_line(
+            "suggested fix: no automatic suggestion; merge or regroup modules by hand",
+        ),
+        [fix] => _print_line(&format!("suggested fix: {}", describe::fix(fix))),
+        fixes => _print_list(fixes),
     }
-    for fix in violation.fixes.iter().take(MAX_FIXES_SHOWN) {
-        println!("    {}", describe::fix(fix).dimmed());
+}
+
+fn _print_list(fixes: &[Fix]) {
+    _print_line("suggested fixes:");
+    for fix in fixes.iter().take(MAX_FIXES_SHOWN) {
+        _print_line(&format!("- {}", describe::fix(fix)));
     }
-    let hidden = violation.fixes.len().saturating_sub(MAX_FIXES_SHOWN);
+    let hidden = fixes.len().saturating_sub(MAX_FIXES_SHOWN);
     if hidden > 0 {
-        println!("    {}", format!("... and {hidden} more").dimmed());
+        _print_line(&format!("... and {hidden} more"));
     }
+}
+
+fn _print_line(line: &str) {
+    println!("    {}", line.dimmed());
 }

@@ -11,7 +11,7 @@ pub fn fix(fix: &Fix) -> String {
         ),
         Fix::Nest { owner, owned, room } => {
             format!(
-                "nest {} under {owner} ({})",
+                "nest {} under {owner}/ ({})",
                 owned.join(", "),
                 _nest_how(owner, *room)
             )
@@ -24,7 +24,7 @@ pub fn fix(fix: &Fix) -> String {
             )
         }
     };
-    format!("suggested fix: {text}: frees {frees}")
+    format!("{text}: frees {frees}")
 }
 
 fn _nest_how(owner: &str, room: Option<usize>) -> String {

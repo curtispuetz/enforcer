@@ -1,5 +1,5 @@
 use {
-    super::{group, merge, nest},
+    super::{group, label, merge, nest},
     crate::rules::{
         c::siblings,
         mod_count::t::{Config, Fix},
@@ -16,7 +16,16 @@ pub fn fixes(mod_rs: &Path, config: &Config, index: &[FileImports]) -> Vec<Fix> 
     fixes.sort_by_cached_key(_rank);
     let mut seen = BTreeSet::new();
     fixes.retain(|fix| seen.insert(_footprint(fix)));
-    fixes
+    fixes.sort_by_key(_display_order);
+    label::all(mod_rs, fixes)
+}
+
+fn _display_order(fix: &Fix) -> u8 {
+    match fix {
+        Fix::Nest { .. } => 0,
+        Fix::Group { .. } => 1,
+        Fix::Merge { .. } => 2,
+    }
 }
 
 fn _footprint(fix: &Fix) -> BTreeSet<String> {

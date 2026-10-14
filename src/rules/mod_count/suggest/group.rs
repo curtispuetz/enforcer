@@ -56,7 +56,7 @@ fn _outside(
 ) -> Option<String> {
     match importer {
         Importer::Sibling(name) if members.contains(name) => None,
-        Importer::Sibling(name) => Some(name.clone()),
+        Importer::Sibling(name) => Some(child::label(mod_rs, name)),
         Importer::Parent => Some(path::rel(mod_rs)),
         Importer::Elsewhere(file) => Some(path::rel(file)),
     }

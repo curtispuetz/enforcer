@@ -17,3 +17,11 @@ pub fn file(mod_rs: &Path, name: &str) -> Option<PathBuf> {
 pub fn folder(mod_rs: &Path, name: &str) -> Option<PathBuf> {
     path::child(mod_rs, name).filter(|found| path::is_mod_or_lib(found))
 }
+
+pub fn label(mod_rs: &Path, name: &str) -> String {
+    match path::child(mod_rs, name) {
+        Some(found) if path::is_mod_or_lib(&found) => format!("{name}/"),
+        Some(_) => format!("{name}.rs"),
+        None => name.to_string(),
+    }
+}
