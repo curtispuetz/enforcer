@@ -1,5 +1,6 @@
 mod macros;
 mod main;
+mod render;
 mod t;
 mod verify;
 

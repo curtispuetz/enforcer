@@ -1,3 +1,5 @@
+use super::fix::Fix;
+
 pub struct Violation {
     pub path: String,
     pub imports: Vec<BadImport>,
@@ -6,4 +8,5 @@ pub struct Violation {
 pub struct BadImport {
     pub text: String,
     pub reason: &'static str,
+    pub fix: Option<Fix>,
 }

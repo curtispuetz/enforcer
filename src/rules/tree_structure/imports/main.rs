@@ -1,17 +1,9 @@
 use {
-    super::{
-        macros,
-        t::{Config, Violation},
-        verify,
-    },
+    super::{macros, render, t::Config, verify},
     crate::{
-        rules::{
-            c::scan,
-            t::{FileViolation, PartReport},
-        },
+        rules::{c::scan, t::PartReport},
         s::{EXISTING_SRC_DIRS, FILE_CONFIG},
     },
-    colored::Colorize,
     std::collections::HashSet,
 };
 
@@ -24,19 +16,7 @@ pub fn part() -> PartReport {
             "The following file(s) have an import pointing up or across the module tree, or written in the wrong form:",
         unit: "files",
         passed: res.passed,
-        violations: res.violations.into_iter().map(_render).collect(),
-    }
-}
-
-fn _render(violation: Violation) -> FileViolation {
-    let mut lines = Vec::new();
-    for import in &violation.imports {
-        lines.push(import.text.red().to_string());
-        lines.push(format!("  {}", import.reason.dimmed()));
-    }
-    FileViolation {
-        path: violation.path,
-        lines,
+        violations: res.violations.into_iter().map(render::violation).collect(),
     }
 }
 

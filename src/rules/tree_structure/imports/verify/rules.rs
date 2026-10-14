@@ -1,4 +1,7 @@
-use crate::rules::s::COMMON;
+use {
+    super::{reach, rewrite},
+    crate::rules::tree_structure::imports::t::Fix,
+};
 
 enum Form {
     Crate,
@@ -9,18 +12,35 @@ pub fn import_violation(
     use_path: &[String],
     file_dir: &[String],
     own_module: &[String],
-) -> Option<&'static str> {
+) -> Option<(&'static str, Option<Fix>)> {
     let (form, resolved) = _resolve(use_path, own_module)?;
     let sideways_or_deeper = resolved.starts_with(file_dir);
     match form {
         Form::Super if sideways_or_deeper => None,
-        Form::Super => Some("`super` must not go up, only sideways or deeper"),
-        Form::Crate if sideways_or_deeper => {
-            Some("sideways or deeper import must use `super::`, not `crate::`")
-        }
-        Form::Crate if _allowed_through_common_dir(&resolved, file_dir) => None,
-        Form::Crate => Some("import reaches up or across the module tree"),
+        Form::Super => Some((
+            "`super` must not go up, only sideways or deeper",
+            _super_up_fix(&resolved, file_dir),
+        )),
+        Form::Crate if sideways_or_deeper => Some((
+            "sideways or deeper import must use `super::`, not `crate::`",
+            rewrite::relative(&resolved, file_dir, own_module),
+        )),
+        Form::Crate if reach::through_common(&resolved, file_dir) => None,
+        Form::Crate => Some((
+            "import reaches up or across the module tree",
+            Some(Fix::MoveToCommon),
+        )),
     }
+}
+
+fn _super_up_fix(resolved: &[String], file_dir: &[String]) -> Option<Fix> {
+    if resolved.first().map(String::as_str) != Some("crate") {
+        return None;
+    }
+    if reach::through_common(resolved, file_dir) {
+        return Some(rewrite::absolute(resolved));
+    }
+    Some(Fix::MoveToCommon)
 }
 
 fn _resolve(use_path: &[String], own_module: &[String]) -> Option<(Form, Vec<String>)> {
@@ -41,25 +61,4 @@ fn _joined(base: &[String], rest: &[String]) -> Vec<String> {
     let mut ret = base.to_vec();
     ret.extend_from_slice(rest);
     ret
-}
-
-fn _within_or_common(use_path: &[String], file_dir: &[String]) -> bool {
-    use_path.starts_with(file_dir) || _allowed_through_common_dir(use_path, file_dir)
-}
-
-fn _allowed_through_common_dir(use_path: &[String], file_dir: &[String]) -> bool {
-    for (i, seg) in use_path.iter().enumerate() {
-        if !_is_common(seg) || !file_dir.starts_with(&use_path[..i]) {
-            continue;
-        }
-        if file_dir.get(i) == Some(seg) {
-            return _within_or_common(&use_path[i + 1..], &file_dir[i + 1..]);
-        }
-        return true;
-    }
-    false
-}
-
-fn _is_common(name: &str) -> bool {
-    COMMON.contains(&name)
 }

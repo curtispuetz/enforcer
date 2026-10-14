@@ -41,10 +41,13 @@ fn _disallowed_imports(
         if _is_ignored_macro(&use_path, config) {
             continue;
         }
-        if let Some(reason) = rules::import_violation(&use_path, file_dir, own_module) {
+        if let Some((reason, fix)) =
+            rules::import_violation(&use_path, file_dir, own_module)
+        {
             violations.push(BadImport {
                 text: format!("use {};", use_path.join("::")),
                 reason,
+                fix,
             });
         }
     }
