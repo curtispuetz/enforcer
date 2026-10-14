@@ -1,6 +1,6 @@
 use {
     super::{
-        cluster, folders,
+        cluster, folders, hint,
         t::{Folder, Member},
         verdict,
     },
@@ -38,11 +38,11 @@ fn _render(folder: &Folder, members: &[&Member], imports: &[FileImports]) -> Fil
         format!("  {}", names.join(", ")),
         "imported only by:".red().to_string(),
     ];
-    for importer in cluster::importers(folder, members, imports) {
+    let importers = cluster::importers(folder, members, imports);
+    for importer in &importers {
         lines.push(format!("  {}", path::rel(&importer.path)));
     }
-    let hint = "move out of `c`, beside the importers, or under the importer if there is only one";
-    lines.push(hint.dimmed().to_string());
+    lines.extend(hint::lines(folder, members, &importers));
     FileViolation {
         path: path::rel(_location(folder, members)),
         lines,

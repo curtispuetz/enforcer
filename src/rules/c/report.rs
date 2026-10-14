@@ -1,4 +1,5 @@
 use {
+    super::suggestions,
     crate::{s::FILE_CONFIG, t::ItemsViolation},
     colored::Colorize,
 };
@@ -9,10 +10,22 @@ pub fn items(
     success_msg: &str,
     header: &'static str,
     violations: Vec<ItemsViolation>,
+    fixes: &[String],
 ) -> bool {
     summary(name, passed, success_msg, violations, |v| {
-        _print_items(header, v)
+        _print_items(header, v);
+        _print_fixes(fixes);
     })
+}
+
+fn _print_fixes(fixes: &[String]) {
+    if fixes.is_empty() {
+        return;
+    }
+    println!();
+    for line in suggestions::lines(fixes) {
+        println!("  {line}");
+    }
 }
 
 fn _print_items(header: &str, violations: Vec<ItemsViolation>) {

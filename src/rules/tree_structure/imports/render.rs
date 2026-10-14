@@ -1,6 +1,6 @@
 use {
     super::t::{Fix, Violation},
-    crate::rules::t::FileViolation,
+    crate::rules::{c::suggestions, t::FileViolation},
     colored::Colorize,
 };
 
@@ -9,9 +9,8 @@ pub fn violation(violation: Violation) -> FileViolation {
     for import in &violation.imports {
         lines.push(import.text.red().to_string());
         lines.push(format!("  {}", import.reason.dimmed()));
-        if let Some(fix) = &import.fix {
-            lines.push(format!("  {}", _fix_line(fix).dimmed()));
-        }
+        let fixes: Vec<String> = import.fix.iter().map(_fix_text).collect();
+        lines.extend(suggestions::lines(&fixes).iter().map(|l| format!("  {l}")));
     }
     FileViolation {
         path: violation.path,
@@ -19,9 +18,9 @@ pub fn violation(violation: Violation) -> FileViolation {
     }
 }
 
-fn _fix_line(fix: &Fix) -> String {
+fn _fix_text(fix: &Fix) -> String {
     match fix {
-        Fix::Rewrite(text) => format!("suggested fix: {text}"),
-        Fix::MoveToCommon => "suggested fix: move to a reachable common module".to_string(),
+        Fix::Rewrite(text) => text.clone(),
+        Fix::MoveToCommon => "move to a reachable common module".to_string(),
     }
 }

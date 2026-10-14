@@ -37,7 +37,7 @@ fn _print_listed(header: &str, violations: Vec<ItemsViolation>) {
     for violation in &violations {
         println!("  {}", violation.path.bold());
         for item in &violation.items {
-            println!("    {}", item.red());
+            println!("    {item}");
         }
     }
 }

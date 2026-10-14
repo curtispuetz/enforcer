@@ -11,9 +11,7 @@ use {
 pub fn violations(file: &syn::File) -> Vec<String> {
     let (imported, mut items) = imports::bindings_and_items(file);
     for segments in _paths(file) {
-        if let Some(item) = _item(&segments, &imported) {
-            items.push(item);
-        }
+        items.extend(_item(&segments, &imported).unwrap_or_default());
     }
     items
 }
@@ -21,7 +19,7 @@ pub fn violations(file: &syn::File) -> Vec<String> {
 fn _item(
     segments: &[String],
     imported: &HashMap<String, Vec<String>>,
-) -> Option<String> {
+) -> Option<Vec<String>> {
     let name = segments.last()?;
     if !calls::is_function_like(name) {
         return None;
@@ -39,7 +37,7 @@ fn _item(
 fn _direct_import(
     name: &str,
     imported: &HashMap<String, Vec<String>>,
-) -> Option<String> {
+) -> Option<Vec<String>> {
     let path = imported.get(name)?;
     if !_is_internal_path(path) {
         return None;

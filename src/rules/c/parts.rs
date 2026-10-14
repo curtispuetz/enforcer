@@ -1,5 +1,5 @@
 use {
-    super::scan,
+    super::{scan, suggestions},
     crate::{
         rules::t::{FileViolation, PartReport},
         s::FILE_CONFIG,
@@ -14,14 +14,33 @@ pub fn from_files(
     failures_header: &'static str,
     rule: impl FnMut(&Path) -> Outcome<ItemsViolation>,
 ) -> PartReport {
-    let res = scan::src_files(rule);
+    with_fixes(name, failures_header, rule, |_, _| Vec::new())
+}
+
+pub fn with_fixes(
+    name: &'static str,
+    failures_header: &'static str,
+    mut rule: impl FnMut(&Path) -> Outcome<ItemsViolation>,
+    fixes: impl Fn(&Path, &ItemsViolation) -> Vec<String>,
+) -> PartReport {
+    let res = scan::src_files(|path| match rule(path) {
+        Outcome::Skipped => Outcome::Skipped,
+        Outcome::Passed => Outcome::Passed,
+        Outcome::Failed(v) => Outcome::Failed(_fixed(fixes(path, &v), v)),
+    });
     PartReport {
         name,
         failures_header,
         unit: "files",
         passed: res.passed,
-        violations: res.violations.into_iter().map(FileViolation::new).collect(),
+        violations: res.violations,
     }
+}
+
+fn _fixed(fixes: Vec<String>, violation: ItemsViolation) -> FileViolation {
+    let mut ret = FileViolation::new(violation);
+    ret.lines.extend(suggestions::lines(&fixes));
+    ret
 }
 
 pub fn print(name: &str, parts: Vec<PartReport>) -> bool {

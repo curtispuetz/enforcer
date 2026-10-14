@@ -10,10 +10,11 @@ use {
 };
 
 pub fn part() -> PartReport {
-    parts::from_files(
+    parts::with_fixes(
         "mod-over-file",
         "The following file(s) shadow a sibling folder and should become that folder's mod.rs:",
         _check_file,
+        |path, _| _fix(path).into_iter().collect(),
     )
 }
 
@@ -25,10 +26,20 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
 }
 
 fn _shadowed_folder(path: &Path) -> Vec<String> {
-    match (path.parent(), path.file_stem().and_then(|s| s.to_str())) {
+    match (path.parent(), path.file_stem()) {
         (Some(parent), Some(stem)) if parent.join(stem).is_dir() => {
-            vec![format!("shadows a sibling folder; move into {stem}/mod.rs")]
+            vec!["shadows a sibling folder".to_string()]
         }
         _ => Vec::new(),
     }
+}
+
+fn _fix(path: &Path) -> Option<String> {
+    let stem = path.file_stem()?.to_str()?;
+    let verb = if path.with_extension("").join("mod.rs").is_file() {
+        "merge it into"
+    } else {
+        "move it to"
+    };
+    Some(format!("{verb} {stem}/mod.rs"))
 }

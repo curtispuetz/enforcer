@@ -10,10 +10,11 @@ use {
 };
 
 pub fn part() -> PartReport {
-    parts::from_files(
+    parts::with_fixes(
         "mod-lib-contents",
         "The following mod.rs or lib.rs file(s) contain statements other than mod and use:",
         _check_file,
+        |path, violation| _fix(path, violation.items.len()).into_iter().collect(),
     )
 }
 
@@ -22,6 +23,19 @@ fn _check_file(path: &Path) -> Outcome<ItemsViolation> {
         return Outcome::Skipped;
     }
     outcome::of_items(path, _disallowed_items(path))
+}
+
+fn _fix(path: &Path, count: usize) -> Option<String> {
+    let name = path.file_name()?.to_str()?;
+    let them = if count == 1 { "it" } else { "them" };
+    let home = if name == "lib.rs" && path.with_file_name("main.rs").is_file() {
+        "a new sibling module"
+    } else {
+        "a sibling main.rs"
+    };
+    Some(format!(
+        "move {them} into {home}, and pub use what's needed from {name}"
+    ))
 }
 
 fn _disallowed_items(path: &Path) -> Vec<String> {

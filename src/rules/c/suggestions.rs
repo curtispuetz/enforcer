@@ -3,9 +3,15 @@ use colored::Colorize;
 const MAX_LISTED: usize = 3;
 
 pub fn print(texts: &[String]) {
+    for line in lines(texts) {
+        println!("    {line}");
+    }
+}
+
+pub fn lines(texts: &[String]) -> Vec<String> {
     match texts {
-        [] => {}
-        [text] => _line(&format!("suggested fix: {text}")),
+        [] => Vec::new(),
+        [text] => vec![_dim(&format!("suggested fix: {text}"))],
         texts => _list(texts),
     }
 }
@@ -21,13 +27,12 @@ pub fn shortlist(items: &[String]) -> String {
     format!("{}{tail}", shown.join(", "))
 }
 
-fn _list(texts: &[String]) {
-    _line("suggested fixes:");
-    for text in texts {
-        _line(&format!("- {text}"));
-    }
+fn _list(texts: &[String]) -> Vec<String> {
+    let mut lines = vec![_dim("suggested fixes:")];
+    lines.extend(texts.iter().map(|text| _dim(&format!("- {text}"))));
+    lines
 }
 
-fn _line(line: &str) {
-    println!("    {}", line.dimmed());
+fn _dim(line: &str) -> String {
+    line.dimmed().to_string()
 }

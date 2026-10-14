@@ -3,6 +3,8 @@ use crate::{
     t::ItemsViolation,
 };
 
+const FIX: &str = "run cargo enforcer private-fn-naming --fix";
+
 pub fn print(res: Results<ItemsViolation>) -> bool {
     report::items(
         "fn-naming",
@@ -13,5 +15,6 @@ pub fn print(res: Results<ItemsViolation>) -> bool {
         ),
         "The following file(s) define private functions/methods without a leading underscore:",
         res.violations,
+        &[FIX.to_string()],
     )
 }

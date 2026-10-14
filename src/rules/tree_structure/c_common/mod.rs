@@ -1,5 +1,6 @@
 mod cluster;
 mod folders;
+mod hint;
 mod main;
 mod t;
 mod verdict;

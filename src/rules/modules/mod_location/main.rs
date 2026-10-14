@@ -1,4 +1,5 @@
 use {
+    super::fix,
     crate::{
         rules::{
             c::{files, outcome, parts, path},
@@ -10,10 +11,11 @@ use {
 };
 
 pub fn part() -> PartReport {
-    parts::from_files(
+    parts::with_fixes(
         "mod-location",
         "The following file(s) have mod statements but are not mod.rs or lib.rs:",
         _check_file,
+        |path, _| fix::of(path).into_iter().collect(),
     )
 }
 
