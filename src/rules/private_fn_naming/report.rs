@@ -3,7 +3,8 @@ use crate::{
     t::ItemsViolation,
 };
 
-const FIX: &str = "run cargo enforcer private-fn-naming --fix";
+const FIX: &str = "add '_' to the start of the names \
+    (`cargo enforcer private-fn-naming --fix` does this automatically)";
 
 pub fn print(res: Results<ItemsViolation>) -> bool {
     report::items(
