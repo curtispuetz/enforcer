@@ -1,4 +1,4 @@
-use {crate::rules::c::files, std::path::Path};
+use {super::files, std::path::Path};
 
 pub fn mods(path: &Path) -> usize {
     let mut count = 0;

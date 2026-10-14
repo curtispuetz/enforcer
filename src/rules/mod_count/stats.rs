@@ -1,6 +1,6 @@
 use {
-    super::{count, t::Config},
-    crate::rules::c::{histogram, path},
+    super::t::Config,
+    crate::rules::c::{count, histogram, path},
     colored::Colorize,
     std::path::Path,
 };

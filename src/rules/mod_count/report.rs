@@ -48,7 +48,7 @@ fn _print_fixes(violation: &Violation) {
     }
     texts.push(format!(
         "add \"{}\" to the [mod-count] ignore list in enforcer.toml, \
-        if this module is meant to have many children",
+        if it's clean for this module to have many children",
         violation.module
     ));
     suggestions::print(&texts);

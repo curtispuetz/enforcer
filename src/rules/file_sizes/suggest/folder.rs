@@ -1,7 +1,7 @@
 use {
-    super::{blocked, room},
+    super::blocked,
     crate::rules::{
-        c::{child, nesting, path},
+        c::{child, nesting, path, room},
         s::COMMON,
         t::{ChildLinks, FileImports},
     },

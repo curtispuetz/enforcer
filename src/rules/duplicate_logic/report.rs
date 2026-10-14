@@ -1,6 +1,6 @@
 use {
     super::t::{Group, Hole},
-    crate::rules::c::report,
+    crate::rules::c::{dedupe, report},
     colored::Colorize,
 };
 
@@ -35,6 +35,7 @@ fn _print_groups(groups: Vec<Group>) {
             println!("    {}", location.red());
         }
         _print_holes(&group.holes);
+        dedupe::print(group.occurrences.iter().map(|occ| occ.path.as_str()));
         println!();
     }
 }

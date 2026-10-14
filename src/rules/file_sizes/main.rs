@@ -31,7 +31,7 @@ fn _check_file(
         Outcome::Failed(Violation {
             path: relative,
             lines,
-            fixes: suggest::fixes(path, config, index),
+            fixes: suggest::fixes(path, index),
         })
     } else {
         Outcome::Passed

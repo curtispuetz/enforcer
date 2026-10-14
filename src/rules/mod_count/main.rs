@@ -1,11 +1,11 @@
 use {
     super::{
-        count, report, suggest,
+        report, suggest,
         t::{Config, Violation},
     },
     crate::{
         rules::{
-            c::{path, scan},
+            c::{count, path, scan},
             t::FileImports,
         },
         t::Outcome,
