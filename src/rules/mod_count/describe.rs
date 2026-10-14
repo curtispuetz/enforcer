@@ -1,6 +1,4 @@
-use super::t::Fix;
-
-const MAX_REPOINT_SHOWN: usize = 3;
+use {super::t::Fix, crate::rules::c::suggestions};
 
 pub fn fix(fix: &Fix) -> String {
     let frees = fix.frees();
@@ -40,16 +38,5 @@ fn _repoint(repoint: &[String]) -> String {
     if repoint.is_empty() {
         return String::new();
     }
-    let shown: Vec<&str> = repoint
-        .iter()
-        .take(MAX_REPOINT_SHOWN)
-        .map(String::as_str)
-        .collect();
-    let more = repoint.len().saturating_sub(MAX_REPOINT_SHOWN);
-    let tail = if more > 0 {
-        format!(" +{more} more")
-    } else {
-        String::new()
-    };
-    format!(" (repoint imports in {}{tail})", shown.join(", "))
+    format!(" (repoint imports in {})", suggestions::shortlist(repoint))
 }

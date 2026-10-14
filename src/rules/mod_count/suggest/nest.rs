@@ -1,11 +1,10 @@
 use {
-    super::child,
     crate::rules::{
-        c::{exports, files},
+        c::{child, exports, files, nesting},
         mod_count::t::Fix,
-        t::{ChildLinks, Importer},
+        t::ChildLinks,
     },
-    std::{collections::BTreeSet, path::Path},
+    std::path::Path,
 };
 
 pub fn all(mod_rs: &Path, links: &[ChildLinks], max: usize) -> Vec<Fix> {
@@ -22,7 +21,7 @@ fn _nest(
     movable: &[&ChildLinks],
     max: usize,
 ) -> Option<Fix> {
-    let owned = _owned(owner, movable);
+    let owned = nesting::owned(owner, movable);
     if owned.is_empty() {
         return None;
     }
@@ -39,37 +38,6 @@ fn _nest(
         owned: owned.into_iter().collect(),
         room,
     })
-}
-
-fn _owned(owner: &ChildLinks, movable: &[&ChildLinks]) -> BTreeSet<String> {
-    let mut owned: BTreeSet<String> = movable
-        .iter()
-        .filter(|link| link.name != owner.name)
-        .map(|link| link.name.clone())
-        .collect();
-    loop {
-        let kept: BTreeSet<String> = movable
-            .iter()
-            .filter(|link| {
-                owned.contains(&link.name) && _ownable(link, &owner.name, &owned)
-            })
-            .map(|link| link.name.clone())
-            .collect();
-        if kept.len() == owned.len() {
-            return owned;
-        }
-        owned = kept;
-    }
-}
-
-fn _ownable(link: &ChildLinks, owner: &str, owned: &BTreeSet<String>) -> bool {
-    let inside = |name: &String| name == owner || owned.contains(name);
-    !link.importers.is_empty()
-        && link.imports.iter().all(inside)
-        && link
-            .importers
-            .iter()
-            .all(|importer| matches!(importer, Importer::Sibling(name) if inside(name)))
 }
 
 fn _mods(mod_rs: &Path) -> usize {

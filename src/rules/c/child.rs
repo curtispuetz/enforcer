@@ -1,5 +1,6 @@
 use {
-    crate::rules::{c::path, t::ChildLinks},
+    super::path,
+    crate::rules::t::{ChildLinks, Importer},
     std::path::{Path, PathBuf},
 };
 
@@ -23,5 +24,13 @@ pub fn label(mod_rs: &Path, name: &str) -> String {
         Some(found) if path::is_mod_or_lib(&found) => format!("{name}/"),
         Some(_) => format!("{name}.rs"),
         None => name.to_string(),
+    }
+}
+
+pub fn importer(mod_rs: &Path, importer: &Importer) -> String {
+    match importer {
+        Importer::Sibling(name) => label(mod_rs, name),
+        Importer::Parent => path::rel(mod_rs),
+        Importer::Elsewhere(file) => path::rel(file),
     }
 }

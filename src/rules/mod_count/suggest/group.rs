@@ -1,7 +1,6 @@
 use {
-    super::child,
     crate::rules::{
-        c::path,
+        c::{child, nesting},
         mod_count::t::Fix,
         t::{ChildLinks, Importer},
     },
@@ -11,7 +10,7 @@ use {
 pub fn all(mod_rs: &Path, links: &[ChildLinks]) -> Vec<Fix> {
     let mut fixes = Vec::new();
     for link in child::movable(links) {
-        let members = _closure(link, links);
+        let members = nesting::closure(link, links);
         if members.len() > 1 && !members.contains("main") {
             fixes.push(Fix::Group {
                 repoint: _repoint(mod_rs, &members, links),
@@ -20,19 +19,6 @@ pub fn all(mod_rs: &Path, links: &[ChildLinks]) -> Vec<Fix> {
         }
     }
     fixes
-}
-
-fn _closure(start: &ChildLinks, links: &[ChildLinks]) -> BTreeSet<String> {
-    let mut members = BTreeSet::from([start.name.clone()]);
-    let mut todo = vec![start];
-    while let Some(next) = todo.pop() {
-        for name in &next.imports {
-            if members.insert(name.clone()) {
-                todo.extend(links.iter().find(|link| &link.name == name));
-            }
-        }
-    }
-    members
 }
 
 fn _repoint(
@@ -56,8 +42,6 @@ fn _outside(
 ) -> Option<String> {
     match importer {
         Importer::Sibling(name) if members.contains(name) => None,
-        Importer::Sibling(name) => Some(child::label(mod_rs, name)),
-        Importer::Parent => Some(path::rel(mod_rs)),
-        Importer::Elsewhere(file) => Some(path::rel(file)),
+        other => Some(child::importer(mod_rs, other)),
     }
 }

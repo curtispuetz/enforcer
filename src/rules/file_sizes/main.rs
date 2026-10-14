@@ -1,20 +1,27 @@
 use {
     super::{
-        report,
+        report, suggest,
         t::{Config, Violation},
     },
     crate::{
-        rules::c::{files, path, scan},
+        rules::{
+            c::{files, path, scan},
+            t::FileImports,
+        },
         t::Outcome,
     },
-    std::path::Path,
+    std::{cell::LazyCell, path::Path},
 };
 
 pub fn run() -> bool {
-    scan::run_with_config(Config::new(), _check_file, report::print)
+    scan::run_with_graph(Config::new(), _check_file, report::print)
 }
 
-fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
+fn _check_file(
+    path: &Path,
+    config: &Config,
+    index: &LazyCell<Vec<FileImports>>,
+) -> Outcome<Violation> {
     let relative = path::rel(path);
     if config.ignore.contains(&relative) {
         return Outcome::Skipped;
@@ -24,6 +31,7 @@ fn _check_file(path: &Path, config: &Config) -> Outcome<Violation> {
         Outcome::Failed(Violation {
             path: relative,
             lines,
+            fixes: suggest::fixes(path, config, index),
         })
     } else {
         Outcome::Passed

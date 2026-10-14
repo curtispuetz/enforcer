@@ -1,6 +1,5 @@
 use {
-    super::child,
-    crate::rules::mod_count::t::Fix,
+    crate::rules::{c::child, mod_count::t::Fix},
     std::path::Path,
 };
 

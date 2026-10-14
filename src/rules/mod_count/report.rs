@@ -1,13 +1,16 @@
 use {
     super::{
         describe,
-        t::{Config, Fix, Violation},
+        t::{Config, Violation},
     },
-    crate::rules::{c::report, t::Results},
+    crate::rules::{
+        c::{report, suggestions},
+        t::Results,
+    },
     colored::Colorize,
 };
 
-const MAX_FIXES_SHOWN: usize = 5;
+const NO_FIX: &str = "no automatic move found; merge or regroup modules by hand";
 
 pub fn print(config: Config, res: Results<Violation>) -> bool {
     report::summary(
@@ -39,26 +42,14 @@ fn _print_failures(config: &Config, violations: Vec<Violation>) {
 }
 
 fn _print_fixes(violation: &Violation) {
-    match violation.fixes.as_slice() {
-        [] => _print_line(
-            "suggested fix: no automatic suggestion; merge or regroup modules by hand",
-        ),
-        [fix] => _print_line(&format!("suggested fix: {}", describe::fix(fix))),
-        fixes => _print_list(fixes),
+    let mut texts: Vec<String> = violation.fixes.iter().map(describe::fix).collect();
+    if texts.is_empty() {
+        texts.push(NO_FIX.to_string());
     }
-}
-
-fn _print_list(fixes: &[Fix]) {
-    _print_line("suggested fixes:");
-    for fix in fixes.iter().take(MAX_FIXES_SHOWN) {
-        _print_line(&format!("- {}", describe::fix(fix)));
-    }
-    let hidden = fixes.len().saturating_sub(MAX_FIXES_SHOWN);
-    if hidden > 0 {
-        _print_line(&format!("... and {hidden} more"));
-    }
-}
-
-fn _print_line(line: &str) {
-    println!("    {}", line.dimmed());
+    texts.push(format!(
+        "add \"{}\" to the [mod-count] ignore list in enforcer.toml, \
+        if this module is meant to have many children",
+        violation.module
+    ));
+    suggestions::print(&texts);
 }

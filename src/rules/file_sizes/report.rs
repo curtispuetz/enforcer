@@ -1,6 +1,9 @@
 use {
     super::t::{Config, Violation},
-    crate::rules::{c::report, t::Results},
+    crate::rules::{
+        c::{report, suggestions},
+        t::Results,
+    },
     colored::Colorize,
 };
 
@@ -29,5 +32,16 @@ fn _print_failures(config: &Config, violations: Vec<Violation>) {
             violation.path.bold(),
             format!("{} lines", violation.lines).red()
         );
+        _print_fixes(violation);
     }
+}
+
+fn _print_fixes(violation: &Violation) {
+    let mut texts = violation.fixes.clone();
+    texts.push(format!(
+        "add \"{}\" to the [file-sizes] ignore list in enforcer.toml, \
+        if the file is simple and just holds a lot of data",
+        violation.path
+    ));
+    suggestions::print(&texts);
 }

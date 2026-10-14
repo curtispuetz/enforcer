@@ -1,7 +1,10 @@
 use {
-    super::files,
-    crate::{rules::t::Results, t::Outcome},
-    std::path::Path,
+    super::{files, graph},
+    crate::{
+        rules::t::{FileImports, Results},
+        t::Outcome,
+    },
+    std::{cell::LazyCell, path::Path},
 };
 
 pub fn run<V>(
@@ -19,6 +22,15 @@ pub fn run_with_config<V, C>(
 ) -> bool {
     let r = src_files(|path| rule(path, &config));
     print(config, r)
+}
+
+pub fn run_with_graph<V, C>(
+    config: C,
+    mut rule: impl FnMut(&Path, &C, &LazyCell<Vec<FileImports>>) -> Outcome<V>,
+    print: impl FnOnce(C, Results<V>) -> bool,
+) -> bool {
+    let index: LazyCell<Vec<FileImports>> = LazyCell::new(graph::build);
+    run_with_config(config, |path, config| rule(path, config, &index), print)
 }
 
 pub fn src_files<V>(mut rule: impl FnMut(&Path) -> Outcome<V>) -> Results<V> {

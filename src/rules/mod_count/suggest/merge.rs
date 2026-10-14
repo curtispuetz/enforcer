@@ -1,7 +1,6 @@
 use {
-    super::child,
     crate::rules::{
-        c::files,
+        c::{child, files},
         mod_count::t::Fix,
         s::COMMON,
         t::{ChildLinks, Importer},

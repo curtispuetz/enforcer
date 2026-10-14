@@ -1,4 +1,3 @@
-mod child;
 mod group;
 mod label;
 mod main;

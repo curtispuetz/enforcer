@@ -5,7 +5,7 @@ use {
     },
     crate::{
         rules::{
-            c::{graph, path, scan},
+            c::{path, scan},
             t::FileImports,
         },
         t::Outcome,
@@ -14,12 +14,7 @@ use {
 };
 
 pub fn run() -> bool {
-    let index: LazyCell<Vec<FileImports>> = LazyCell::new(graph::build);
-    scan::run_with_config(
-        Config::new(),
-        |path, config| _check_file(path, config, &index),
-        report::print,
-    )
+    scan::run_with_graph(Config::new(), _check_file, report::print)
 }
 
 fn _check_file(

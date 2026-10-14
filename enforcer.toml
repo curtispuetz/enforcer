@@ -4,5 +4,6 @@ ignore = ["src/rules", "src/rules/c"]
 [duplicate-fns]
 ignore = [
     "src/rules/calls/main.rs::run",
-    "src/rules/cognitive_complexity/main.rs::run"
+    "src/rules/cognitive_complexity/main.rs::run",
+    "src/rules/file_sizes/main.rs::run"
 ]
