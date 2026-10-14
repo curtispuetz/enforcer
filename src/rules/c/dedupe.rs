@@ -11,11 +11,6 @@ fn _fixes<'a>(paths: impl IntoIterator<Item = &'a str>) -> Vec<String> {
     match home::of(paths) {
         None => Vec::new(),
         Some(Home::File(file)) => vec![format!("extract a private fn in {file}")],
-        Some(Home::Crates) => vec![
-            "the copies span tests/, whose files build as separate crates, so share it \
-            from the library or from a tests/common/ module"
-                .to_string(),
-        ],
         Some(Home::Siblings { folder, files }) => _siblings(&folder, &files),
         Some(Home::Common {
             lowest,

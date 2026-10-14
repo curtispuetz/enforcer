@@ -1,6 +1,5 @@
 pub enum Home {
     File(String),
-    Crates,
     Siblings {
         folder: String,
         files: Vec<String>,

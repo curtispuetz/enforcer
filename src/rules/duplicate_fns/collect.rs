@@ -1,20 +1,15 @@
 use {
     super::t::CollectedFn,
-    crate::{
-        rules::c::{files, fn_name, path},
-        s::EXISTING_SRC_DIRS,
-    },
+    crate::rules::c::{files, fn_name, path},
     syn::{ImplItem, ImplItemFn, Item, ItemFn},
 };
 
-pub fn all_codebase_fns() -> Vec<CollectedFn> {
+pub fn fns(dir_name: &str) -> Vec<CollectedFn> {
     let mut found = Vec::new();
-    for dir_name in EXISTING_SRC_DIRS.iter() {
-        for file_path in files::rs(dir_name) {
-            let file = files::ast_parse(&file_path);
-            let relative = path::rel(&file_path);
-            _items(&file.items, &relative, &mut found);
-        }
+    for file_path in files::rs(dir_name) {
+        let file = files::ast_parse(&file_path);
+        let relative = path::rel(&file_path);
+        _items(&file.items, &relative, &mut found);
     }
     found
 }

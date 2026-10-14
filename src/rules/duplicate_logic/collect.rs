@@ -3,10 +3,7 @@ use {
         skeleton,
         t::{Candidate, Occurrence},
     },
-    crate::{
-        rules::c::{alpha, files, path},
-        s::EXISTING_SRC_DIRS,
-    },
+    crate::rules::c::{alpha, files, path},
     syn::{
         Block, Stmt,
         spanned::Spanned,
@@ -15,18 +12,16 @@ use {
     },
 };
 
-pub fn all_fragments(min_stmts: usize) -> Vec<Candidate> {
+pub fn fragments(dir_name: &str, min_stmts: usize) -> Vec<Candidate> {
     let mut walk = Walk {
         path: String::new(),
         min_stmts,
         candidates: Vec::new(),
     };
-    for dir_name in EXISTING_SRC_DIRS.iter() {
-        for file_path in files::rs(dir_name) {
-            let file = files::ast_parse(&file_path);
-            walk.path = path::rel(&file_path);
-            walk.visit_file(&file);
-        }
+    for file_path in files::rs(dir_name) {
+        let file = files::ast_parse(&file_path);
+        walk.path = path::rel(&file_path);
+        walk.visit_file(&file);
     }
     walk.candidates
 }

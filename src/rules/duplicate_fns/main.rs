@@ -1,9 +1,9 @@
 use {
     super::{
         collect, report,
-        t::{Config, Duplicate, Group},
+        t::{CollectedFn, Config, Duplicate, Group},
     },
-    crate::rules::c::alpha,
+    crate::rules::c::{alpha, scan},
     proc_macro2::Span,
     std::collections::HashMap,
     syn::{Ident, ItemFn, Visibility, visit::Visit, visit_mut::VisitMut},
@@ -11,9 +11,13 @@ use {
 
 pub fn run() -> bool {
     let config = Config::new();
-    let fns = collect::all_codebase_fns();
-    let total = fns.len();
+    let (total, groups) = scan::per_src_dir(collect::fns, |fns| {
+        _groups(_buckets(fns), &config)
+    });
+    report::print(total, groups)
+}
 
+fn _buckets(fns: Vec<CollectedFn>) -> HashMap<ItemFn, Vec<Duplicate>> {
     let mut buckets: HashMap<ItemFn, Vec<Duplicate>> = HashMap::new();
     for function in fns {
         let key = _canonicalize_item_fn(&function.item);
@@ -23,8 +27,7 @@ pub fn run() -> bool {
             line: function.line,
         });
     }
-
-    report::print(total, _groups(buckets, &config))
+    buckets
 }
 
 fn _groups(buckets: HashMap<ItemFn, Vec<Duplicate>>, config: &Config) -> Vec<Group> {

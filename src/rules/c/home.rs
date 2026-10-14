@@ -6,9 +6,6 @@ pub fn of<'a>(paths: impl IntoIterator<Item = &'a str>) -> Option<Home> {
     if let [file] = files.as_slice() {
         return Some(Home::File(file.clone()));
     }
-    if files.iter().any(|file| file.starts_with("tests/")) {
-        return Some(Home::Crates);
-    }
     let dirs: Vec<Vec<String>> = files.iter().map(|file| _dir(file)).collect();
     let lowest = _lowest(&dirs)?;
     if dirs.iter().all(|dir| dir.len() == lowest.len()) {
