@@ -11,9 +11,8 @@ use {
 
 pub fn run() -> bool {
     let config = Config::new();
-    let (total, groups) = scan::per_src_dir(collect::fns, |fns| {
-        _groups(_buckets(fns), &config)
-    });
+    let (total, groups) =
+        scan::per_src_dir(collect::fns, |fns| _groups(_buckets(fns), &config));
     report::print(total, groups)
 }
 

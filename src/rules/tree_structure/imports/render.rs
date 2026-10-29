@@ -29,7 +29,9 @@ fn _fix_text(fix: &Fix) -> String {
 
 fn _path(path: &[String]) -> String {
     match path.split_last() {
-        Some((last, rest)) if last == "self" => format!("{}::{{self}}", rest.join("::")),
+        Some((last, rest)) if last == "self" => {
+            format!("{}::{{self}}", rest.join("::"))
+        }
         _ => path.join("::"),
     }
 }

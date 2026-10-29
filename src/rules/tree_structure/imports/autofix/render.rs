@@ -46,7 +46,11 @@ fn _lines(items: &[Tree], inner: usize) -> Vec<String> {
         let text = format!("{},", tree(item, inner, inner));
         let simple = !text.contains("::") && !text.contains('\n');
         match lines.last_mut() {
-            Some(line) if packable && simple && inner + line.len() + text.len() < MAX_WIDTH => {
+            Some(line)
+                if packable
+                    && simple
+                    && inner + line.len() + text.len() < MAX_WIDTH =>
+            {
                 line.push(' ');
                 line.push_str(&text);
             }

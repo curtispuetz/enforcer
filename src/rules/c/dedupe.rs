@@ -1,5 +1,5 @@
 use {
-    super::{count, home, room, suggestions},
+    super::{home, room, suggestions},
     crate::{rules::t::Home, s::ROOT},
 };
 
@@ -28,8 +28,7 @@ fn _siblings(folder: &str, files: &[String]) -> Vec<String> {
         .map(|name| ROOT.join(folder).join(name))
         .find(|file| file.is_file())
     {
-        module =
-            room::noted(&module, &mod_rs, &room::of(&mod_rs, count::mods(&mod_rs)));
+        module = room::noted(&module, &mod_rs, &room::of(&mod_rs));
     }
     module.push_str(" and import it with super::<module>::…");
     let names: Vec<&str> = files

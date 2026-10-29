@@ -6,11 +6,19 @@ use {
     syn::{UseGroup, UseTree},
 };
 
-pub fn fixable(tree: &UseTree, prefix: &[String], removal: &mut Removal) -> Option<Tree> {
+pub fn fixable(
+    tree: &UseTree,
+    prefix: &[String],
+    removal: &mut Removal,
+) -> Option<Tree> {
     match tree {
         UseTree::Path(p) => {
             let seg = p.ident.to_string();
-            let sub = fixable(&p.tree, &[prefix, std::slice::from_ref(&seg)].concat(), removal)?;
+            let sub = fixable(
+                &p.tree,
+                &[prefix, std::slice::from_ref(&seg)].concat(),
+                removal,
+            )?;
             Some(Tree::Path(seg, Box::new(sub)))
         }
         UseTree::Name(n) => {
@@ -19,7 +27,12 @@ pub fn fixable(tree: &UseTree, prefix: &[String], removal: &mut Removal) -> Opti
         }
         UseTree::Rename(r) => {
             let (name, alias) = (r.ident.to_string(), r.rename.to_string());
-            _take(prefix, Some(&name), Tree::Rename(name.clone(), alias), removal)
+            _take(
+                prefix,
+                Some(&name),
+                Tree::Rename(name.clone(), alias),
+                removal,
+            )
         }
         UseTree::Glob(_) => _take(prefix, None, Tree::Glob, removal),
         UseTree::Group(g) => _group(g, prefix, removal),

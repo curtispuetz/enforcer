@@ -1,6 +1,6 @@
 use {
     crate::rules::{
-        c::{child, exports, files, nesting},
+        c::{child, count, nesting},
         mod_count::t::Fix,
         t::ChildLinks,
     },
@@ -29,7 +29,7 @@ fn _nest(
         child::file(mod_rs, &owner.name),
         child::folder(mod_rs, &owner.name),
     ) {
-        (_, Some(owner_rs)) => Some(max.saturating_sub(_mods(&owner_rs))),
+        (_, Some(owner_rs)) => Some(max.saturating_sub(count::mods(&owner_rs))),
         (Some(_), None) if owner.imports.is_subset(&owned) => None,
         _ => return None,
     };
@@ -38,10 +38,4 @@ fn _nest(
         owned: owned.into_iter().collect(),
         room,
     })
-}
-
-fn _mods(mod_rs: &Path) -> usize {
-    exports::table(mod_rs, &files::ast_parse(mod_rs))
-        .children
-        .len()
 }

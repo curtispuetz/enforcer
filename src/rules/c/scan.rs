@@ -48,7 +48,10 @@ pub fn per_src_dir<T, G>(
         })
         .collect();
     let total = per_dir.iter().map(|(count, _)| count).sum();
-    (total, per_dir.into_iter().flat_map(|(_, groups)| groups).collect())
+    (
+        total,
+        per_dir.into_iter().flat_map(|(_, groups)| groups).collect(),
+    )
 }
 
 pub fn src_files<V>(mut rule: impl FnMut(&Path) -> Outcome<V>) -> Results<V> {

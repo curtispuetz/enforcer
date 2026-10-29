@@ -31,7 +31,11 @@ pub fn part() -> PartReport {
     }
 }
 
-fn _render(folder: &Folder, members: &[&Member], imports: &[FileImports]) -> FileViolation {
+fn _render(
+    folder: &Folder,
+    members: &[&Member],
+    imports: &[FileImports],
+) -> FileViolation {
     let names: Vec<&str> = members.iter().map(|m| m.name.as_str()).collect();
     let mut lines = vec![
         "only used from beside this `c`:".red().to_string(),

@@ -7,7 +7,10 @@ use {
 
 type Edit = (Range<usize>, String);
 
-pub fn file(path: &Path, rewrites: &HashMap<Vec<String>, Vec<String>>) -> Option<String> {
+pub fn file(
+    path: &Path,
+    rewrites: &HashMap<Vec<String>, Vec<String>>,
+) -> Option<String> {
     let source = fs::read_to_string(path).expect("failed to read file");
     let ast = syn::parse_file(&source).expect("failed to parse file");
     let mut moved = Vec::new();
@@ -20,7 +23,11 @@ pub fn file(path: &Path, rewrites: &HashMap<Vec<String>, Vec<String>>) -> Option
         return None;
     }
     fs::write(path, _applied(source, edits)).expect("failed to write file");
-    Some(format!("{} ({})", path::rel(path), suggestions::shortlist(&moved)))
+    Some(format!(
+        "{} ({})",
+        path::rel(path),
+        suggestions::shortlist(&moved)
+    ))
 }
 
 fn _edit(
@@ -62,7 +69,11 @@ fn _position(source: &str, start: usize) -> (usize, usize) {
 }
 
 fn _applied(mut source: String, mut edits: Vec<Edit>) -> String {
-    let newline = if source.contains("\r\n") { "\r\n" } else { "\n" };
+    let newline = if source.contains("\r\n") {
+        "\r\n"
+    } else {
+        "\n"
+    };
     edits.sort_by_key(|(range, _)| std::cmp::Reverse(range.start));
     for (range, text) in edits {
         source.replace_range(range, &text.replace('\n', newline));

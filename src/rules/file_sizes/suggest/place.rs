@@ -21,10 +21,7 @@ pub fn of(path: &Path, index: &[FileImports]) -> Place {
         };
     }
     if mod_rs == path || (name == "main" && mod_rs.ends_with("lib.rs")) {
-        return Place::Parent {
-            mod_rs,
-            mods: links.len(),
-        };
+        return Place::Parent { mod_rs };
     }
     Place::Loose
 }

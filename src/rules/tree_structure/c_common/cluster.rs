@@ -20,7 +20,10 @@ pub fn group<'a>(
     let mut labels: Vec<usize> = (0..members.len()).collect();
     for (b, member) in members.iter().enumerate() {
         for file in verdict::importers(folder, member, index) {
-            if let Some(a) = members.iter().position(|m| file.module.starts_with(&m.segments)) {
+            if let Some(a) = members
+                .iter()
+                .position(|m| file.module.starts_with(&m.segments))
+            {
                 _merge(&mut labels, a, b);
             }
         }

@@ -23,5 +23,8 @@ fn _fix(mod_rs: &Path, fix: Fix) -> Fix {
 }
 
 fn _names(mod_rs: &Path, names: Vec<String>) -> Vec<String> {
-    names.iter().map(|name| child::label(mod_rs, name)).collect()
+    names
+        .iter()
+        .map(|name| child::label(mod_rs, name))
+        .collect()
 }

@@ -70,7 +70,11 @@ fn _sorted(mut heavy: Vec<&Counts>) -> Vec<&Counts> {
 fn _print_per_file(counts: &[Counts]) {
     let files = counts.len();
     println!("\n  {files} files measured");
-    _print_total("not-obvious", counts.iter().map(|f| f.not_obvious).sum(), files);
+    _print_total(
+        "not-obvious",
+        counts.iter().map(|f| f.not_obvious).sum(),
+        files,
+    );
     _print_total("TODO", counts.iter().map(|f| f.todo).sum(), files);
 }
 

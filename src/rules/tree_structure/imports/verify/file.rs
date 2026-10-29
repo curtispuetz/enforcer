@@ -37,7 +37,10 @@ pub fn run(path: &Path, config: &Config) -> Outcome<Violation> {
     }
 }
 
-pub fn fixes(path: &Path, config: &Config) -> (HashMap<Vec<String>, Vec<String>>, usize) {
+pub fn fixes(
+    path: &Path,
+    config: &Config,
+) -> (HashMap<Vec<String>, Vec<String>>, usize) {
     let mut rewrites = HashMap::new();
     let mut manual = 0;
     for (use_path, _, fix) in _found(path, config) {

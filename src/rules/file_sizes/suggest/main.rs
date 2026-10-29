@@ -16,10 +16,10 @@ pub fn fixes(path: &Path, index: &[FileImports]) -> Vec<String> {
             name,
             links,
         } => _declared(path, &mod_rs, &name, &links, index),
-        Place::Parent { mod_rs, mods } => vec![room::noted(
+        Place::Parent { mod_rs } => vec![room::noted(
             &format!("move part of {file} into a new module"),
             &mod_rs,
-            &room::of(&mod_rs, mods),
+            &room::of(&mod_rs),
         )],
         Place::Loose => vec![format!(
             "split {file} into smaller modules (no mod.rs or lib.rs declares it, so slots aren't checked)"
@@ -34,7 +34,7 @@ fn _declared(
     links: &[ChildLinks],
     index: &[FileImports],
 ) -> Vec<String> {
-    let room = room::of(mod_rs, links.len());
+    let room = room::of(mod_rs);
     let sibling = room::noted(
         &format!("move part of {name}.rs into a new sibling file"),
         mod_rs,

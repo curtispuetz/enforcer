@@ -39,7 +39,11 @@ pub fn lines(
     vec![format!("{head}: blocked, {up} {}", reasons.join(", ")), way]
 }
 
-fn _reason(mod_rs: &Path, link: &ChildLinks, inside: &impl Fn(&String) -> bool) -> String {
+fn _reason(
+    mod_rs: &Path,
+    link: &ChildLinks,
+    inside: &impl Fn(&String) -> bool,
+) -> String {
     let label = child::label(mod_rs, &link.name);
     let users: Vec<String> = link
         .importers

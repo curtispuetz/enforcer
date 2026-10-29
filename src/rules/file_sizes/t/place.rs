@@ -8,7 +8,6 @@ pub enum Place {
     },
     Parent {
         mod_rs: PathBuf,
-        mods: usize,
     },
     Loose,
 }

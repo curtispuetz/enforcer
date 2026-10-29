@@ -26,9 +26,12 @@ pub fn lines(
     let owned = nesting::owned(owner, &candidates);
     let blocked: Vec<&ChildLinks> = links
         .iter()
-        .filter(|link| owner.imports.contains(&link.name) && !owned.contains(&link.name))
+        .filter(|link| {
+            owner.imports.contains(&link.name) && !owned.contains(&link.name)
+        })
         .collect();
-    let head = format!("turn {name}.rs into folder {name}/ (mod.rs re-exporting main.rs)");
+    let head =
+        format!("turn {name}.rs into folder {name}/ (mod.rs re-exporting main.rs)");
     if !blocked.is_empty() {
         return blocked::lines(&head, mod_rs, owner, &owned, &blocked);
     }

@@ -1,7 +1,7 @@
 use {
     super::{group, label, merge, nest},
     crate::rules::{
-        c::siblings,
+        c::{count, siblings},
         mod_count::t::{Config, Fix},
         t::FileImports,
     },
@@ -9,7 +9,11 @@ use {
 };
 
 pub fn fixes(mod_rs: &Path, config: &Config, index: &[FileImports]) -> Vec<Fix> {
-    let links = siblings::of(mod_rs, index);
+    let counted = count::counted(mod_rs);
+    let links: Vec<_> = siblings::of(mod_rs, index)
+        .into_iter()
+        .filter(|link| counted.contains(&link.name))
+        .collect();
     let mut fixes = merge::all(mod_rs, &links, config.merge_max_lines);
     fixes.extend(nest::all(mod_rs, &links, config.max));
     fixes.extend(group::all(mod_rs, &links));

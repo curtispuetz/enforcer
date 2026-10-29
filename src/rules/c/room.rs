@@ -1,10 +1,11 @@
 use {
-    super::path,
+    super::{count, path},
     crate::{rules::t::Room, s::FILE_CONFIG},
     std::path::Path,
 };
 
-pub fn of(mod_rs: &Path, count: usize) -> Room {
+pub fn of(mod_rs: &Path) -> Room {
+    let count = count::mods(mod_rs);
     let max = FILE_CONFIG.mod_count.max;
     if path::ignore_set(&FILE_CONFIG.mod_count.ignore).contains(&_folder(mod_rs)) {
         Room::Uncapped

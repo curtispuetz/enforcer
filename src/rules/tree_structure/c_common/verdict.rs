@@ -28,7 +28,9 @@ fn _pass<'a>(
 ) -> bool {
     let mut changed = false;
     for member in &folder.members {
-        if !flagged.contains(member.name.as_str()) && _movable(folder, member, index, flagged) {
+        if !flagged.contains(member.name.as_str())
+            && _movable(folder, member, index, flagged)
+        {
             flagged.insert(member.name.as_str());
             changed = true;
         }
@@ -77,10 +79,17 @@ fn _beside(folder: &Folder, file: &FileImports, flagged: &HashSet<&str>) -> bool
         return true;
     }
     file.dir == folder.segments
-        && file.module.last().is_some_and(|name| flagged.contains(name.as_str()))
+        && file
+            .module
+            .last()
+            .is_some_and(|name| flagged.contains(name.as_str()))
 }
 
-fn _reaches_inner_common(folder: &Folder, member: &Member, index: &[FileImports]) -> bool {
+fn _reaches_inner_common(
+    folder: &Folder,
+    member: &Member,
+    index: &[FileImports],
+) -> bool {
     let depth = folder.segments.len();
     index
         .iter()
@@ -88,6 +97,7 @@ fn _reaches_inner_common(folder: &Folder, member: &Member, index: &[FileImports]
         .flat_map(|file| &file.targets)
         .any(|t| {
             t.starts_with(&folder.segments)
-                && t.get(depth).is_some_and(|name| COMMON.contains(&name.as_str()))
+                && t.get(depth)
+                    .is_some_and(|name| COMMON.contains(&name.as_str()))
         })
 }
