@@ -1,7 +1,7 @@
 use {
     super::{
+        importers,
         t::{Folder, Member},
-        verdict,
     },
     crate::rules::t::FileImports,
     std::collections::{BTreeMap, HashSet},
@@ -19,7 +19,7 @@ pub fn group<'a>(
         .collect();
     let mut labels: Vec<usize> = (0..members.len()).collect();
     for (b, member) in members.iter().enumerate() {
-        for file in verdict::importers(folder, member, index) {
+        for file in importers::of(folder, member, index) {
             if let Some(a) = members
                 .iter()
                 .position(|m| file.module.starts_with(&m.segments))
@@ -38,7 +38,7 @@ pub fn importers<'a>(
 ) -> Vec<&'a FileImports> {
     let mut ret: Vec<&FileImports> = cluster
         .iter()
-        .flat_map(|member| verdict::importers(folder, member, index))
+        .flat_map(|member| importers::of(folder, member, index))
         .filter(|file| !cluster.iter().any(|m| file.module.starts_with(&m.segments)))
         .collect();
     ret.sort_by(|a, b| a.path.cmp(&b.path));
