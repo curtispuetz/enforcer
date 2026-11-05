@@ -8,9 +8,10 @@
       - Up to a parent module; or
       - Across into a different branch of the tree
     </desc>
-    <exception>
-      Imports to a common module (see below section). If a common module is at `crate::app::[common]`, any files at or below `crate::app` may import it.
-    </exception>
+    <exceptions>
+      - Imports to a common module (see below section). If a common module is at `crate::app::[common]`, any files at or below `crate::app` may import it.
+      - Test-only code, gated by something like #[cfg(test)], may import anywhere.
+    </exceptions>
     <rationale>
       To keep a predictable module tree structure, where we know everything in a module's submodules are supporting logic for the module to call, and not the other way around (i.e. where submodules call up to their parent modules for supporting logic).
     </rationale>

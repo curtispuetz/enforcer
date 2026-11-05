@@ -22,4 +22,5 @@ pub mod room;
 pub mod scan;
 pub mod siblings;
 pub mod suggestions;
+pub mod test_only;
 pub mod use_paths;

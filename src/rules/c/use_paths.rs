@@ -1,9 +1,23 @@
-use syn::{Ident, UseTree};
+use {
+    super::test_only,
+    syn::{Ident, UseTree},
+};
 
 pub fn internal(file: &syn::File) -> Vec<Vec<String>> {
+    _internal(file, |_| true)
+}
+
+pub fn production(file: &syn::File) -> Vec<Vec<String>> {
+    _internal(file, |u| !test_only::attrs(&u.attrs))
+}
+
+fn _internal(
+    file: &syn::File,
+    keep: impl Fn(&syn::ItemUse) -> bool,
+) -> Vec<Vec<String>> {
     let mut ret = Vec::new();
     for item in &file.items {
-        if let Some(tree) = _use_tree(item) {
+        if let Some(tree) = _use_tree(item, &keep) {
             _add_tree_use_paths(tree, &mut ret);
         }
     }
@@ -18,9 +32,12 @@ fn _add_tree_use_paths(tree: &UseTree, ret: &mut Vec<Vec<String>>) {
     }
 }
 
-fn _use_tree(item: &syn::Item) -> Option<&UseTree> {
+fn _use_tree<'a>(
+    item: &'a syn::Item,
+    keep: &impl Fn(&syn::ItemUse) -> bool,
+) -> Option<&'a UseTree> {
     match item {
-        syn::Item::Use(u) => Some(&u.tree),
+        syn::Item::Use(u) if keep(u) => Some(&u.tree),
         _ => None,
     }
 }

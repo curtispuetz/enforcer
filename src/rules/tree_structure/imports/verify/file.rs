@@ -2,7 +2,7 @@ use {
     super::rules,
     crate::{
         rules::{
-            c::{files, path, use_paths},
+            c::{files, path, test_only, use_paths},
             tree_structure::imports::t::{BadImport, Config, Fix, Violation},
         },
         t::Outcome,
@@ -59,8 +59,11 @@ fn _found(path: &Path, config: &Config) -> Vec<Found> {
     else {
         return Vec::new();
     };
+    if test_only::file(path) {
+        return Vec::new();
+    }
     let mut found = Vec::new();
-    for use_path in use_paths::internal(&files::ast_parse(path)) {
+    for use_path in use_paths::production(&files::ast_parse(path)) {
         if _is_ignored_macro(&use_path, config) {
             continue;
         }
