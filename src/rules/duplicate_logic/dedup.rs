@@ -1,9 +1,13 @@
-use super::{
-    cluster,
-    t::{Candidate, Config, Group, Occurrence},
+use {
+    super::{
+        cluster,
+        t::{Candidate, Config, Group, Occurrence},
+    },
+    crate::rules::c::path,
 };
 
-pub fn groups(candidates: Vec<Candidate>, config: &Config) -> Vec<Group> {
+pub fn groups(mut candidates: Vec<Candidate>, config: &Config) -> Vec<Group> {
+    candidates.retain(|c| !path::under_any(&c.occurrence.path, &config.ignore));
     let raw = cluster::merge(candidates, config);
     let spans = _all_spans(&raw);
     let mut kept = _survivors(raw, &spans, config);

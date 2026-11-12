@@ -3,7 +3,7 @@ use {
         collect, report,
         t::{CollectedFn, Config, Duplicate, Group},
     },
-    crate::rules::c::{alpha, scan},
+    crate::rules::c::{alpha, path, scan},
     proc_macro2::Span,
     std::collections::HashMap,
     syn::{Ident, ItemFn, Visibility, visit::Visit, visit_mut::VisitMut},
@@ -12,13 +12,17 @@ use {
 pub fn run() -> bool {
     let config = Config::new();
     let (total, groups) =
-        scan::per_src_dir(collect::fns, |fns| _groups(_buckets(fns), &config));
+        scan::per_src_dir(collect::fns, |fns| _groups(_buckets(fns, &config), &config));
     report::print(total, groups)
 }
 
-fn _buckets(fns: Vec<CollectedFn>) -> HashMap<ItemFn, Vec<Duplicate>> {
+fn _buckets(fns: Vec<CollectedFn>, config: &Config) -> HashMap<ItemFn, Vec<Duplicate>> {
     let mut buckets: HashMap<ItemFn, Vec<Duplicate>> = HashMap::new();
+    let paths = config.ignore.iter().filter(|entry| !entry.contains("::"));
     for function in fns {
+        if path::under_any(&function.path, paths.clone()) {
+            continue;
+        }
         let key = _canonicalize_item_fn(&function.item);
         buckets.entry(key).or_default().push(Duplicate {
             path: function.path,

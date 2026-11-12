@@ -11,10 +11,14 @@ pub fn ignore_set(entries: &[String]) -> HashSet<String> {
 }
 
 pub fn ignored(path: &Path) -> bool {
-    let rel = rel(path);
-    FILE_CONFIG.ignore.iter().any(|i| {
-        let i = i.trim_start_matches("./").trim_end_matches('/');
-        !i.is_empty() && (rel == i || rel.starts_with(&format!("{i}/")))
+    under_any(&rel(path), &FILE_CONFIG.ignore)
+}
+
+pub fn under_any<'a>(rel: &str, entries: impl IntoIterator<Item = &'a String>) -> bool {
+    entries.into_iter().any(|entry| {
+        let entry = entry.replace('\\', "/");
+        let entry = entry.trim_start_matches("./").trim_end_matches('/');
+        !entry.is_empty() && (rel == entry || rel.starts_with(&format!("{entry}/")))
     })
 }
 

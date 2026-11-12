@@ -23,7 +23,7 @@ fn _check_file(
     index: &LazyCell<Vec<FileImports>>,
 ) -> Outcome<Violation> {
     let relative = path::rel(path);
-    if config.ignore.contains(&relative) {
+    if path::under_any(&relative, &config.ignore) {
         return Outcome::Skipped;
     }
     let lines = files::lines(path);

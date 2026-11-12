@@ -5,6 +5,6 @@
   <rationale>To encourage smaller, more focused files.</rationale>
   <config toml_table="file-sizes">
     - max: max number of lines (default 99)
-    - ignore: list of exempt files from the rule
+    - ignore: list of exempt files or folders (root-relative, e.g. `src/generated`); a folder exempts every file at or below it
   </config>
 </file-sizes-rule>
